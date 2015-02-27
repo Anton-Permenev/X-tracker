@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">X-tracker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings!</string>
+    <string name="action_profile">Profile</string>
+    <string name="title_activity_action_bar">ActionBarActivity</string>
+
+</resources>
