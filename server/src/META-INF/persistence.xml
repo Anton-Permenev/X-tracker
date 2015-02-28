@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="MainUnit">
+        <class>com.tracker.jpa.JumpsEntity</class>
+        <class>com.tracker.jpa.PointsEntity</class>
+        <class>com.tracker.jpa.TracksEntity</class>
+        <class>com.tracker.jpa.UsersEntity</class>
+        <properties>
+            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/x-tracker"/>
+            <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="eclipselink.jdbc.user" value="postgres"/>
+            <property name="eclipselink.jdbc.password" value="root"/>
+        </properties>
+    </persistence-unit>
+</persistence>
