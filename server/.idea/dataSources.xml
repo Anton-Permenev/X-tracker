@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1888359935">
+    <data-source source="LOCAL" name="PostgreSQL - x-tracker@localhost" uuid="547af976-49c8-408a-98f6-29790caba358">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/x-tracker</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>

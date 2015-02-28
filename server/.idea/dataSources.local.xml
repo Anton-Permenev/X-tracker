@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - x-tracker@localhost" uuid="547af976-49c8-408a-98f6-29790caba358">
+      <secret-storage>master_key</secret-storage>
+      <user-name>postgres</user-name>
+      <schema-pattern>x-tracker.xtracker</schema-pattern>
+      <default-schemas>x-tracker.pg_catalog x-tracker.public</default-schemas>
+    </data-source>
+  </component>
+</project>
