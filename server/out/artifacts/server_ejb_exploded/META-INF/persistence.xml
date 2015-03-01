@@ -7,10 +7,10 @@
         <class>com.tracker.jpa.TracksEntity</class>
         <class>com.tracker.jpa.UsersEntity</class>
         <properties>
-            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://178.62.215.201/xtracker"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/x-tracker"/>
             <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="eclipselink.jdbc.user" value="ilya"/>
-            <property name="eclipselink.jdbc.password" value="vladimir"/>
+            <property name="eclipselink.jdbc.user" value="postgres"/>
+            <property name="eclipselink.jdbc.password" value="root"/>
         </properties>
     </persistence-unit>
 </persistence>

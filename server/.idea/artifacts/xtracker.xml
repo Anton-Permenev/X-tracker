@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="xtracker">
+    <output-path>$PROJECT_DIR$/out/artifacts/xtracker</output-path>
+    <root id="archive" name="xtracker.ear" />
+  </artifact>
+</component>

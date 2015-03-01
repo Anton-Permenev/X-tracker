@@ -7,5 +7,11 @@
       <schema-pattern>x-tracker.xtracker</schema-pattern>
       <default-schemas>x-tracker.pg_catalog x-tracker.public</default-schemas>
     </data-source>
+    <data-source name="PostgreSQL - tracker@localhost" uuid="30ffd5ca-14f7-44e3-96ec-50bcd35bf206">
+      <secret-storage>master_key</secret-storage>
+      <user-name>postgres</user-name>
+      <schema-pattern>tracker.pg_catalog tracker.public</schema-pattern>
+      <default-schemas>tracker.pg_catalog tracker.public</default-schemas>
+    </data-source>
   </component>
 </project>
