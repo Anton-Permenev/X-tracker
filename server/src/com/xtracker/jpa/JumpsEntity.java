@@ -1,4 +1,4 @@
-package com.tracker.jpa;
+package com.xtracker.jpa;
 
 import javax.persistence.*;
 

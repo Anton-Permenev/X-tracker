@@ -11,9 +11,9 @@
     <facet type="jpa" name="JPA">
       <configuration>
         <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="EclipseLink" />
+        <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="MainUnit" value="547af976-49c8-408a-98f6-29790caba358" />
+          <factory-entry name="xtrackerUnit" value="8e4416b4-b74b-49de-850a-4096db844c4b" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />
       </configuration>
@@ -28,6 +28,13 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="javaeeApplication" name="javaEEApplication">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/META-INF/application.xml" />
+        </descriptors>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -38,7 +45,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ejb-3.2" level="project" />
     <orderEntry type="library" name="JPA 2.0-2.0" level="project" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0" level="application_server_libraries" />
+    <orderEntry type="library" name="Mojarra-2.2.1" level="project" />
   </component>
 </module>

@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3767690434">
-    <data-source source="LOCAL" name="PostgreSQL - x-tracker@localhost" uuid="547af976-49c8-408a-98f6-29790caba358">
+  <component name="DataSourceManagerImpl" format="xml" hash="1196872413">
+    <data-source source="LOCAL" name="PostgreSQL - xtracker@188.226.194.202" uuid="8e4416b4-b74b-49de-850a-4096db844c4b">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/x-tracker</jdbc-url>
-      <libraries />
-    </data-source>
-    <data-source source="LOCAL" name="PostgreSQL - tracker@localhost" uuid="30ffd5ca-14f7-44e3-96ec-50bcd35bf206">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:4444/tracker</jdbc-url>
+      <jdbc-url>jdbc:postgresql://188.226.194.202:5432/xtracker</jdbc-url>
       <libraries />
     </data-source>
   </component>
