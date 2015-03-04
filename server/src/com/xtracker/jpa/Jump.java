@@ -3,7 +3,7 @@ package com.xtracker.jpa;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "jumps", schema = "xtracker", catalog = "x-tracker")
+@Table(name = "jumps", schema = "x-tracker", catalog = "xtracker")
 public class Jump {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class Jump {
     @Column(name = "air_time", nullable = true, insertable = true, updatable = true)
     private Integer airTime;
     @ManyToOne
-    @JoinColumn(name = "track_id", referencedColumnName = "track_id")
+    @PrimaryKeyJoinColumn(name = "track_id", referencedColumnName = "track_id")
     private Track track;
 
     public long getJumpId() {

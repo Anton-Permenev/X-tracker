@@ -3,7 +3,7 @@ package com.xtracker.jpa;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "points", schema = "xtracker", catalog = "x-tracker")
+@Table(name = "points", schema = "x-tracker", catalog = "xtracker")
 public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Point {
     @Column(name = "lon", nullable = true, insertable = true, updatable = true, precision = 8)
     private Float lon;
     @ManyToOne
-    @JoinColumn(name = "track_id", referencedColumnName = "track_id")
+    @PrimaryKeyJoinColumn(name = "track_id", referencedColumnName = "track_id")
     private Track track;
 
     public long getPointId() {

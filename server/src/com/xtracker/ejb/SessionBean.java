@@ -1,6 +1,7 @@
 package com.xtracker.ejb;
 
-import com.xtracker.jpa.UsersEntity;
+
+import com.xtracker.jpa.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,7 +14,7 @@ public class SessionBean {
     EntityManager em;
 
     public SessionBean() {
-        UsersEntity usersEntity = new UsersEntity();
-        em.persist(usersEntity);
+        User user = new User();
+        em.persist(user);
     }
 }

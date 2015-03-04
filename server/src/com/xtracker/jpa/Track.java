@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "tracks", schema = "xtracker", catalog = "x-tracker")
+@Table(name = "tracks", schema = "x-tracker", catalog = "xtracker")
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Track {
     @OneToMany(mappedBy = "track")
     private List<Point> points;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public long getTrackId() {
