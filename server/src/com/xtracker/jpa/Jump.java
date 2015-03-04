@@ -3,7 +3,7 @@ package com.xtracker.jpa;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "jumps", schema = "x-tracker", catalog = "xtracker")
+@Table(name = "jumps", schema = "public", catalog = "xtracker")
 public class Jump {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
