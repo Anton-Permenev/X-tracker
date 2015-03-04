@@ -12,10 +12,10 @@ public class User {
     @Column(name = "user_id", nullable = false, insertable = true, updatable = true)
     private long userId;
     @Basic
-    @Column(name = "token", nullable = true, insertable = true, updatable = true, length = 2147483647)
+    @Column(name = "token", nullable = true, insertable = true, updatable = true, length = 104857)
     private String token;
     @Basic
-    @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 2147483647)
+    @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 104857)
     private String email;
     @OneToMany(mappedBy = "user")
     private List<Track> tracks;
