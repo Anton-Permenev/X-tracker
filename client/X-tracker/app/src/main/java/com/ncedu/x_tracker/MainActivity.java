@@ -1,5 +1,6 @@
 package com.ncedu.x_tracker;
 
+import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,7 +15,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.location.LocationServices;
 import com.ncedu.x_tracker.fragments.ScreenOne;
 import com.ncedu.x_tracker.fragments.ScreenThree;
 import com.ncedu.x_tracker.fragments.ScreenTwo;
@@ -29,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,8 @@ public class MainActivity extends ActionBarActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+
+
         // Initialize the first fragment when the application first loads.
         if (savedInstanceState == null) {
             selectItem(0);
@@ -104,6 +113,8 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
     /* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -112,7 +123,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /** Swaps fragments in the main content view */
+    /**
+     * Swaps fragments in the main content view
+     */
     private void selectItem(int position) {
         // Update the main content by replacing fragments
         Fragment fragment = null;

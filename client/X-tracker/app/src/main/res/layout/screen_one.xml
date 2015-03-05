@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
 
     <TextView
@@ -21,7 +21,6 @@
         android:id="@+id/startCaptureBtn"
         android:background="@drawable/oval_btn"
         android:adjustViewBounds="true"
-        android:onClick="addItem"
         android:layout_marginTop="89dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
