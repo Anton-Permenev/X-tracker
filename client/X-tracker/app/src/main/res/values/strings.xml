@@ -7,7 +7,7 @@
     <string name="action_profile">Profile</string>
     <string name="title_activity_action_bar">ActionBarActivity</string>
     <string-array name="screen_array">
-        <item>Screen 1</item>
+        <item>Start page</item>
         <item>Screen 2</item>
         <item>Screen 3</item>
     </string-array>
@@ -16,5 +16,6 @@
     <string name="screen_one">Screen one</string>
     <string name="screen_two">Screen two</string>
     <string name="screen_three">Screen three</string>
+    <string name="Start">Start!</string>
 
 </resources>
