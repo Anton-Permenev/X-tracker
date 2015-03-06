@@ -72,8 +72,8 @@ public class ScreenOne extends Fragment implements
 
         //Create a LocationRequest
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(3000);
+        mLocationRequest.setInterval(2000);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         return rootView;
@@ -101,8 +101,6 @@ public class ScreenOne extends Fragment implements
             mLatitude = String.valueOf(mCurrentLocation.getLatitude());
             mLongitude = String.valueOf(mCurrentLocation.getLongitude());
             track.add(mCurrentLocation);
-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-            textView1.setText(mLatitude + " | " + mLongitude);
         }
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -131,6 +129,8 @@ public class ScreenOne extends Fragment implements
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
+        TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+        textView1.setText(mCurrentLocation.getLatitude() + " | " + mCurrentLocation.getLongitude());
     }
 
     private void updateUI() {
