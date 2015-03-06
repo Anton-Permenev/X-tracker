@@ -15,6 +15,6 @@ public class SessionBean {
 
     public SessionBean() {
         User user = new User();
-        em.persist(user);
+        //em.persist(user);
     }
 }
