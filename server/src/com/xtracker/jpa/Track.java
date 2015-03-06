@@ -2,6 +2,7 @@ package com.xtracker.jpa;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,8 @@ public class Track {
     private Timestamp timeEnd;
     @OneToMany(mappedBy = "track")
     private List<Jump> jumps;
-    @OneToMany(mappedBy = "track")
-    private List<Point> points;
+    @OneToMany(mappedBy = "track"/*, cascade = CascadeType.PERSIST*/)
+    private List<Point> points = new ArrayList<>();
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
@@ -91,5 +92,8 @@ public class Track {
 
     public void setUser(User user) {
         this.user = user;
+        if (!user.getTracks().contains(this)) {
+            user.getTracks().add(this);
+        }
     }
 }
