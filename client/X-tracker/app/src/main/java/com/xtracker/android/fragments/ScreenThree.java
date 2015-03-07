@@ -1,4 +1,4 @@
-package com.ncedu.x_tracker.fragments;
+package com.xtracker.android.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ncedu.x_tracker.R;
+import com.xtracker.android.R;
 
 
 public class ScreenThree extends Fragment {

@@ -1,4 +1,4 @@
-package com.ncedu.x_tracker.rest;
+package com.xtracker.android.rest;
 
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;

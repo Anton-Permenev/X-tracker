@@ -1,4 +1,4 @@
-package com.ncedu.x_tracker;
+package com.xtracker.android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

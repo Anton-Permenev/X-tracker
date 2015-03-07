@@ -1,16 +1,11 @@
-package com.ncedu.x_tracker.fragments;
+package com.xtracker.android.fragments;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,12 +14,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.ncedu.x_tracker.MainActivity;
-import com.ncedu.x_tracker.R;
+import com.xtracker.android.R;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;

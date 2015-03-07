@@ -1,4 +1,4 @@
-package com.xtracker.jpa;
+package com.xtracker.backend.jpa;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

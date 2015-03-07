@@ -1,4 +1,4 @@
-package com.ncedu.x_tracker.rest;
+package com.xtracker.android.rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

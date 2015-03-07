@@ -1,10 +1,8 @@
-package com.ncedu.x_tracker;
+package com.xtracker.android;
 
-import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,15 +13,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.location.LocationServices;
-import com.ncedu.x_tracker.fragments.ScreenOne;
-import com.ncedu.x_tracker.fragments.ScreenThree;
-import com.ncedu.x_tracker.fragments.ScreenTwo;
+import com.xtracker.android.fragments.ScreenOne;
+import com.xtracker.android.fragments.ScreenThree;
+import com.xtracker.android.fragments.ScreenTwo;
 
 
 public class MainActivity extends ActionBarActivity {

@@ -1,7 +1,7 @@
-package com.xtracker.ejb;
+package com.xtracker.backend.ejb;
 
 
-import com.xtracker.jpa.User;
+import com.xtracker.backend.jpa.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
