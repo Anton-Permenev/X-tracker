@@ -1,6 +1,7 @@
 package com.xtracker.backend.jpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class User {
     @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 104857)
     private String email;
     @OneToMany(mappedBy = "user")
-    private List<Track> tracks;
+    private List<Track> tracks = new ArrayList<>();
 
     public long getUserId() {
         return userId;

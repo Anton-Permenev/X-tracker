@@ -13,20 +13,17 @@ public class Track {
     @Column(name = "track_id", nullable = false, insertable = true, updatable = true)
     private long trackId;
     @Basic
-    @Column(name = "user_id", nullable = true, insertable = true, updatable = true)
-    private Long userId;
-    @Basic
     @Column(name = "time_start", nullable = true, insertable = true, updatable = true)
     private Timestamp timeStart;
     @Basic
     @Column(name = "time_end", nullable = true, insertable = true, updatable = true)
     private Timestamp timeEnd;
     @OneToMany(mappedBy = "track")
-    private List<Jump> jumps;
-    @OneToMany(mappedBy = "track"/*, cascade = CascadeType.PERSIST*/)
+    private List<Jump> jumps = new ArrayList<>();
+    @OneToMany(mappedBy = "track", cascade = CascadeType.PERSIST)
     private List<Point> points = new ArrayList<>();
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public long getTrackId() {
@@ -35,14 +32,6 @@ public class Track {
 
     public void setTrackId(long trackId) {
         this.trackId = trackId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Timestamp getTimeStart() {
@@ -92,8 +81,5 @@ public class Track {
 
     public void setUser(User user) {
         this.user = user;
-        if (!user.getTracks().contains(this)) {
-            user.getTracks().add(this);
-        }
     }
 }

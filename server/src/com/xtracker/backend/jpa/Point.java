@@ -10,9 +10,6 @@ public class Point {
     @Column(name = "point_id", nullable = false, insertable = true, updatable = true)
     private long pointId;
     @Basic
-    @Column(name = "track_id", nullable = false, insertable = true, updatable = true)
-    private long trackId;
-    @Basic
     @Column(name = "acceleration", nullable = true, insertable = true, updatable = true, precision = 8)
     private Float acceleration;
     @Basic
@@ -22,7 +19,7 @@ public class Point {
     @Column(name = "lon", nullable = true, insertable = true, updatable = true, precision = 8)
     private Float lon;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "track_id")
+    @JoinColumn(name = "track_id")
     private Track track;
 
     public long getPointId() {
@@ -32,13 +29,13 @@ public class Point {
     public void setPointId(long pointId) {
         this.pointId = pointId;
     }
-    public long getTrackId() {
+    /*public long getTrackId() {
         return trackId;
     }
 
     public void setTrackId(long trackId) {
         this.trackId = trackId;
-    }
+    }*/
 
     public Float getAcceleration() {
         return acceleration;

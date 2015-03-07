@@ -10,13 +10,10 @@ public class Jump {
     @Column(name = "jump_id", nullable = false, insertable = true, updatable = true)
     private long jumpId;
     @Basic
-    @Column(name = "track_id", nullable = true, insertable = true, updatable = true)
-    private Long trackId;
-    @Basic
     @Column(name = "air_time", nullable = true, insertable = true, updatable = true)
     private Integer airTime;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "track_id", referencedColumnName = "track_id")
+    @JoinColumn(name = "track_id", referencedColumnName = "track_id")
     private Track track;
 
     public long getJumpId() {
@@ -25,14 +22,6 @@ public class Jump {
 
     public void setJumpId(long jumpId) {
         this.jumpId = jumpId;
-    }
-
-    public Long getTrackId() {
-        return trackId;
-    }
-
-    public void setTrackId(Long trackId) {
-        this.trackId = trackId;
     }
 
     public Integer getAirTime() {
