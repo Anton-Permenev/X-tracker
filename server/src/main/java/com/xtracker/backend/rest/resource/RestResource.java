@@ -10,18 +10,26 @@ import java.sql.Timestamp;
 import java.util.List;
 
 
-// /user/tracks/trackid
-
+// /user/tracks/user_id/track_id
+@Path("users/tracks")
 public class RestResource {
+
     @GET
-    @Path("users/{user_id}")
+    @Path("{user_id}")
     @Produces(MediaType.APPLICATION_XML)
     public List<Track> getTracksList(long user_id,Token access_token) {
 
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    public void newUser(String email,Token access_token){
+
+    }
+
     @GET
-    @Path("users/{user_id}/{track_id}")
+    @Path("{track_id}")
     @Produces(MediaType.APPLICATION_XML)
     public Track getTrack(long track_id,Token access_token) {
 
@@ -49,17 +57,7 @@ public class RestResource {
 
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.APPLICATION_XML)
-    public void newUser(String email,Token access_token){
 
-    }
 
-    @POST
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void uploadPhoto(long track_id, image,Token access_token){
-
-    }
+    
 }
