@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.postgresql:com.springsource.org.postgresql.jdbc4:8.3.604" type="repository">
+    <properties maven-id="org.postgresql:com.springsource.org.postgresql.jdbc4:8.3.604" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/com.springsource.org.postgresql.jdbc4-8.3.604.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/com.springsource.javax.transaction-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

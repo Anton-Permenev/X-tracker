@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="postgresql:postgresql:9.1-901.jdbc3" type="repository">
+    <properties maven-id="postgresql:postgresql:9.1-901.jdbc3" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/postgresql-9.1-901.jdbc3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
