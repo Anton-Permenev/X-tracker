@@ -12,6 +12,8 @@
       <element id="directory" name="lib">
         <element id="library" level="project" name="JPA 2.0-2.0" />
         <element id="library" level="project" name="Mojarra-2.2.1" />
+        <element id="library" level="project" name="ejb-3.2" />
+        <element id="library" level="project" name="postgresql-9.3-1100-jdbc41-sources" />
       </element>
     </root>
   </artifact>
