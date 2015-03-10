@@ -1,4 +1,4 @@
-package com.xtracker.ejb;
+package com.xtracker.backend.ejb;
 
 
 import com.xtracker.backend.jpa.User;

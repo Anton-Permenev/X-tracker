@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by ASUS on 05/03/2015.
  */
-public class TrackParcel {
+public class TrackParcer {
     @SerializedName("longitude")
     private Float longitude;
 
