@@ -15,6 +15,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.xtracker.android.R;
+import com.xtracker.android.objects.Point;
+import com.xtracker.android.objects.Track;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class ScreenOne extends Fragment implements
         LocationListener {
 
 
+    private Track currentTrack;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location mCurrentLocation;
@@ -88,6 +91,7 @@ public class ScreenOne extends Fragment implements
     @Override
     public void onConnected(Bundle bundle) {
         String mLatitude = null, mLongitude = null;
+        currentTrack = ;
         this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (this.mCurrentLocation != null) {
             mLatitude = String.valueOf(mCurrentLocation.getLatitude());
@@ -121,8 +125,7 @@ public class ScreenOne extends Fragment implements
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-        textView1.setText(mCurrentLocation.getLatitude() + " | " + mCurrentLocation.getLongitude());
+
     }
 
     private void updateUI() {

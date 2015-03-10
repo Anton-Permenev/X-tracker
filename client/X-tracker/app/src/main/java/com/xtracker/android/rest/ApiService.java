@@ -1,11 +1,16 @@
 package com.xtracker.android.rest;
 
+<<<<<<< HEAD
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+=======
+import com.xtracker.android.objects.Track;
+
+>>>>>>> origin/master
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -43,6 +48,7 @@ public interface ApiService {
 
     @POST("users/tracks/{user_id}/{track_id}")
     public void deleteTrack(long track_id,String access_token){
+
 
     }
 
