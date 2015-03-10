@@ -1,5 +1,7 @@
 package com.xtracker.android.rest;
 
+import com.xtracker.android.objects.Track;
+
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -10,11 +12,13 @@ import retrofit.http.POST;
 public interface ApiService {
 
     @GET("/app/tracks/getTrack")
-    public TrackParcel getTrack();
+    public TrackParcer getTrack();
+
+    public Track
 
     @FormUrlEncoded
     @POST("/app/tracks/getTrack")
-    public void sendTrack(TrackParcel trackParcel);
+    public void sendTrack(TrackParcer trackParcer);
 
 
 
