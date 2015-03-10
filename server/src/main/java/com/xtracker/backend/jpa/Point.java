@@ -20,7 +20,7 @@ public class Point {
     private Double lon;
     @Basic
     @Column(name = "speed", nullable = true, insertable = true, updatable = true, precision = 8)
-    private Double speed;
+    private Float speed;
     @ManyToOne
     @JoinColumn(name = "track_id")
     private Track track;
@@ -73,11 +73,11 @@ public class Point {
         this.track = track;
     }
 
-    public Double getSpeed() {
+    public Float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Double speed) {
+    public void setSpeed(Float speed) {
         this.speed = speed;
     }
 }

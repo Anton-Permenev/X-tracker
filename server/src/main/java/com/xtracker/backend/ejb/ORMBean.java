@@ -65,7 +65,7 @@ public class ORMBean {
      * Creates Point entity.
      * @return entity object
      */
-    public Point makePoint(double acceleration, double lat, double lon, double speed) {
+    public Point makePoint(double acceleration, double lat, double lon, float speed) {
         Point point = new Point();
         point.setAcceleration(acceleration);
         point.setLat(lat);
