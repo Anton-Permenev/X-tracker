@@ -73,5 +73,9 @@ public class Track {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void addPoint(Point point){
+        this.points.add(point);
+    }
 }
 

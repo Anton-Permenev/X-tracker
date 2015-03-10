@@ -140,6 +140,7 @@ public class ScreenOne extends Fragment implements
         point.setLon(mCurrentLocation.getLongitude());
         point.setSpeed(mCurrentLocation.getSpeed());
         point.setTrack(currentTrack);
+        currentTrack.addPoint(point);
         restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
     }
 
