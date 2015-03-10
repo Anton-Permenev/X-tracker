@@ -2,6 +2,7 @@ package com.xtracker.backend.jpa;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "points", schema = "public", catalog = "xtracker")
 public class Point {
@@ -65,6 +66,7 @@ public class Point {
         } else
             return false;
     }
+
     public Track getTrack() {
         return track;
     }
