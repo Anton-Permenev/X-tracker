@@ -3,9 +3,7 @@ package com.xtracker.backend.ejb;
 import com.xtracker.backend.jpa.Point;
 import com.xtracker.backend.jpa.Track;
 import com.xtracker.backend.jpa.User;
-import com.xtracker.ejb.AuthBean;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,11 +14,11 @@ import java.util.List;
 @Stateless(name = "orm")
 public class ORMBean {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "orm")
     EntityManager em;
 
-    @EJB
-    AuthBean authBean;
+   // @EJB
+    //AuthBean authBean;
 
 
     public ORMBean() {
