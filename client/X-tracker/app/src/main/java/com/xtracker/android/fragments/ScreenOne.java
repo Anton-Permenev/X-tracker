@@ -17,6 +17,8 @@ import com.google.android.gms.location.LocationServices;
 import com.xtracker.android.R;
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
+import com.xtracker.android.rest.ApiService;
+import com.xtracker.android.rest.ApiServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,8 @@ public class ScreenOne extends Fragment implements
         OnConnectionFailedListener,
         LocationListener {
 
-
+    String TOKEN_STRING;
+    ApiServiceImpl restService;
     private Track currentTrack;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -39,7 +42,7 @@ public class ScreenOne extends Fragment implements
     private View rootView = null;
     ImageButton button = null;
     private boolean mRequestingLocationUpdates;
-    private List<Location> track;
+    private boolean btnPressed = false;
 
     public ScreenOne() {
     }
@@ -51,8 +54,9 @@ public class ScreenOne extends Fragment implements
         rootView = inflater.inflate(R.layout.screen_one, container,
                 false);
 
-        //Establish track as an array of Locations
-        track = new ArrayList<>();
+
+        //Establish restService
+        restService = new ApiServiceImpl();
 
         //Set ImageButton clickable
         button = (ImageButton) rootView.findViewById(R.id.startCaptureBtn);
@@ -77,6 +81,7 @@ public class ScreenOne extends Fragment implements
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.startCaptureBtn) {
+            btnPressed = true;
             mRequestingLocationUpdates = true;
             mGoogleApiClient.connect();
             TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
@@ -87,20 +92,25 @@ public class ScreenOne extends Fragment implements
         }
     }
 
-
     @Override
     public void onConnected(Bundle bundle) {
+
+        if (btnPressed) {
+            this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (this.mCurrentLocation != null) {
+//                track.add(mCurrentLocation);
+            }
+            this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
+            if (mRequestingLocationUpdates) {
+                startLocationUpdates();
+            }
+        } else {
+
+        }
+
+
         String mLatitude = null, mLongitude = null;
-        currentTrack = ;
-        this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (this.mCurrentLocation != null) {
-            mLatitude = String.valueOf(mCurrentLocation.getLatitude());
-            mLongitude = String.valueOf(mCurrentLocation.getLongitude());
-            track.add(mCurrentLocation);
-        }
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
+//        currentTrack = ;
     }
 
     protected void startLocationUpdates() {
@@ -125,7 +135,12 @@ public class ScreenOne extends Fragment implements
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-
+        Point point = new Point();
+        point.setLat(mCurrentLocation.getLatitude());
+        point.setLon(mCurrentLocation.getLongitude());
+        point.setSpeed(mCurrentLocation.getSpeed());
+        point.setTrack(currentTrack);
+        restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
     }
 
     private void updateUI() {
