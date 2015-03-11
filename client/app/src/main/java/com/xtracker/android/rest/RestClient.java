@@ -6,9 +6,6 @@ import com.google.gson.GsonBuilder;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-/**
- * Created by ASUS on 05/03/2015.
- */
 public class RestClient {
 
     private static final String BASE_URL = "your base url";

@@ -2,10 +2,8 @@ package com.xtracker.android.rest;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by ASUS on 05/03/2015.
- */
-public class TrackParcer {
+public class TrackParser {
+
     @SerializedName("longitude")
     private Float longitude;
 
@@ -14,7 +12,4 @@ public class TrackParcer {
 
     @SerializedName("speed")
     private Float speed;
-
-
-
 }

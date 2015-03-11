@@ -13,10 +13,8 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 
-/**
- * Created by ASUS on 05/03/2015.
- */
 public interface ApiService {
+
     @GET("users/tracks/{user_id}")
     public List<Track> getTracksList(long user_id, String access_token);
 
@@ -37,6 +35,4 @@ public interface ApiService {
 
     @POST("users/tracks/{user_id}/{track_id}")
     public void deleteTrack(long track_id, String access_token);
-
-
 }
