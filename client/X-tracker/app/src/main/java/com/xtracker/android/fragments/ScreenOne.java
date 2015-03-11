@@ -90,6 +90,8 @@ public class ScreenOne extends Fragment implements
 
 
         }
+
+//        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
