@@ -6,4 +6,4 @@
 *.ear
 
 /server/out
-server/.idea/workspace.xml
+/server/.idea/workspace.xml
