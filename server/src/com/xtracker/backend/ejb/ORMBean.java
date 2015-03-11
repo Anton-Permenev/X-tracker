@@ -14,7 +14,7 @@ import java.util.List;
 @Stateless(name = "orm")
 public class ORMBean {
 
-    @PersistenceContext(unitName = "orm")
+    @PersistenceContext()
     EntityManager em;
 
    // @EJB

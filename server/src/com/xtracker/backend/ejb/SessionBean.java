@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 @Stateless(name = "ExampleBeanEJB")
 public class SessionBean {
 
-    @PersistenceContext(unitName = "session")
+    @PersistenceContext
     EntityManager em;
 
     public SessionBean() {

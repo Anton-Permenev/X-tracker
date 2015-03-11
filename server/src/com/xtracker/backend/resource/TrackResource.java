@@ -1,4 +1,4 @@
-package com.xtracker.backend.rest.resource;
+package com.xtracker.backend.resource;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
