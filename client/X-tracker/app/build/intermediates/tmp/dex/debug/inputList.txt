@@ -1,0 +1,8 @@
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\classes\debug
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-77862d92d1136d6ec70169890145850e3dbc00c2.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\retrofit-1.9.0-cc57dd1227e1b0bbdfb2ff552881f7597e61157e.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-a81191c61483ab7654a498abe1652843351f75bd.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\gson-2.3.1-f8d24ab588b320fd1a6a7f527b361782e2cf21a0.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\classes-f94675da371f6ea80bc6ab902b5b3621015cc923.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\classes-681b86129448ecb156ca6068a381f37e56328d62.jar
+D:\Development\X-tracker\client\X-tracker\app\build\intermediates\pre-dexed\debug\classes-3fb10abe1151ea61600d0454827ac0fadd25d4c1.jar

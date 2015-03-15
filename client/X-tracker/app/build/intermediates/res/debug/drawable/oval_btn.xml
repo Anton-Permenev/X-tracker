@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#fffeff2a"/>
+    <stroke android:width="0dp" android:color="#ff000000" />
+</shape>
+<!-- From: file:/D:/Development/X-tracker/client/X-tracker/app/src/main/res/drawable/oval_btn.xml -->

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Start"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="bottom"
+        android:layout_below="@+id/startCaptureBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="69dp" />
+
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/startCaptureBtn"
+        android:background="@drawable/oval_btn"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="89dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical" />
+
+</RelativeLayout><!-- From: file:/D:/Development/X-tracker/client/X-tracker/app/src/main/res/layout/screen_one.xml -->
