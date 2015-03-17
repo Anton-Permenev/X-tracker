@@ -19,13 +19,16 @@ import com.xtracker.android.rest.ApiServiceImpl;
 /**
  * Created by Ilya on 15.03.2015.
  */
-public class googleApiClient
-        implements GoogleApiClient.ConnectionCallbacks,
+public class googleApiClient implements
+        GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    private static final String REQUESTING_LOCATION_UPDATES_KEY = "RLUK";
+    private static final String LOCATION_KEY = "LK";
+    private static final String BTN_PRESSED_KEY = "BPK";
     private boolean mRequestingLocationUpdates;
-    private boolean btnPressed = false;
+    private Integer btnPressed = 0;
     private Location mCurrentLocation;
     String TOKEN_STRING;
     ApiServiceImpl restService;
@@ -51,13 +54,9 @@ public class googleApiClient
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public void basics() {
-
-    }
-
-    public void onClick(View v,View rootView) {
+    public void onClick(View v, View rootView) {
         if (v.getId() == R.id.startCaptureBtn) {
-            btnPressed = true;
+            btnPressed = (btnPressed + 1) % 2;
             mRequestingLocationUpdates = true;
             mGoogleApiClient.connect();
             TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
@@ -74,7 +73,7 @@ public class googleApiClient
 
     @Override
     public void onConnected(Bundle bundle) {
-        if (btnPressed) {
+        if (btnPressed > 0) {
             this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (this.mCurrentLocation != null) {
 //                track.add(mCurrentLocation);
@@ -82,6 +81,8 @@ public class googleApiClient
             this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
             if (mRequestingLocationUpdates) {
                 startLocationUpdates();
+            } else {
+                stopLocationUpdates();
             }
         } else {
 
@@ -113,4 +114,41 @@ public class googleApiClient
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
+
+    public void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
+        savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
+        savedInstanceState.putInt(BTN_PRESSED_KEY, btnPressed);
+//        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Update the value of mRequestingLocationUpdates from the Bundle, and
+            // make sure that the Start Updates and Stop Updates buttons are
+            // correctly enabled or disabled.
+            if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
+                mRequestingLocationUpdates = savedInstanceState.getBoolean(
+                        REQUESTING_LOCATION_UPDATES_KEY);
+                updateButtons(savedInstanceState);
+            }
+
+            // Update the value of mCurrentLocation from the Bundle and update the
+            // UI to show the correct latitude and longitude.
+            if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
+                // Since LOCATION_KEY was found in the Bundle, we can be sure that
+                // mCurrentLocationis not null.
+                mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
+            }
+        }
+    }
+
+    private void updateButtons(Bundle savedInstanceState) {
+        btnPressed = savedInstanceState.getInt(BTN_PRESSED_KEY);
+    }
+
 }

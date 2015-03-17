@@ -31,6 +31,7 @@ public class ScreenOne extends Fragment implements
 
         //Establish googleApiClient
         mGoogleClient = new googleApiClient(this);
+        mGoogleClient.updateValuesFromBundle(savedInstanceState);
 
         //Set ImageButton clickable
         button = (ImageButton) rootView.findViewById(R.id.startCaptureBtn);
@@ -43,5 +44,7 @@ public class ScreenOne extends Fragment implements
     public void onClick(View v) {
         mGoogleClient.onClick(v,rootView);
     }
+
+
 
 }
