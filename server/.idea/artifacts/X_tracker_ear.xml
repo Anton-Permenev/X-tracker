@@ -3,6 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/X_tracker_ear</output-path>
     <root id="archive" name="X-tracker_ear.ear">
       <element id="artifact" artifact-name="X-tracker:ear exploded" />
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="Jersey-2.2" />
+        <element id="library" level="project" name="org.apache.directory.studio:org.apache.commons.codec:1.8" />
+      </element>
     </root>
   </artifact>
 </component>
