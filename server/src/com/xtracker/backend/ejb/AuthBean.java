@@ -48,7 +48,6 @@ public class AuthBean {
         HttpResponse response = httpClient.execute(new HttpGet(GET_USER_INFO + accessToken));
         HttpEntity entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
-        //System.out.println(responseString);
         JSONObject json = new JSONObject(responseString);
         return json.getString("email");
     }
