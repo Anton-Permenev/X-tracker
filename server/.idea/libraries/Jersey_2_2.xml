@@ -9,7 +9,9 @@
       <root url="jar://$PROJECT_DIR$/lib/jersey-container-servlet-core.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jersey-server.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="https://jersey.java.net/apidocs/2.16/jersey/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>

@@ -88,7 +88,7 @@
       <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
     </table>
   </data-source>
-  <data-source name="PostgreSQL - xtracker@localhost" uuid="3e20ee88-53f9-4ca9-ae46-999c82fdfd91">
+  <data-source name="PostgreSQL - xtracker@localhost" uuid="faebb44d-eb38-4d05-89ab-9d4c33a48baf">
     <database-info product="PostgreSQL" version="9.4.1" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.3 JDBC4 (build 1100)">
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
@@ -1682,6 +1682,7 @@
       <column name="lat" sqlType="float8" precision="17" scale="17" nullable="true" jdbcType="8"/>
       <column name="lon" sqlType="float8" precision="17" scale="17" nullable="true" jdbcType="8"/>
       <column name="track_id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="speed" sqlType="float8" precision="17" scale="17" nullable="true" jdbcType="8"/>
       <primary-key name="points_pkey" columns="point_id"/>
       <foreign-key name="fk_points_track_id" columns="track_id" ref-table="tracks" ref-schema="public" ref-catalog="" ref-columns="track_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
@@ -1722,7 +1723,7 @@
     <table name="users" schema="public" catalog="xtracker" type="TABLE">
       <column name="user_id" sqlType="bigserial" precision="19" scale="0" nullable="false" jdbcType="-5" def="bmV4dHZhbCgndXNlcnNfdXNlcl9pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
       <column name="email" sqlType="varchar" precision="104857" scale="0" nullable="true" jdbcType="12"/>
-      <column name="token" sqlType="varchar" precision="104857" scale="0" nullable="true" jdbcType="12"/>
+      <column name="private_key" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="users_pkey" columns="user_id"/>
       <exported-key name="fk_tracks_user_id" table="tracks" schema="public" catalog="xtracker" columns="user_id"/>
     </table>

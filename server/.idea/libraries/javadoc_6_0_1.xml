@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javadoc-6.0.1">
+    <CLASSES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/javadoc-6.0.1.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

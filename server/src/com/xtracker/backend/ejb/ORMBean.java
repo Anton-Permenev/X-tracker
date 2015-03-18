@@ -6,6 +6,7 @@ import com.xtracker.backend.jpa.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -74,12 +75,38 @@ public class ORMBean {
         return point;
     }
 
-    public User registerUser(String email, String token) {
+    public User registerUser(String email, String privateKey) {
         User user = new User();
         user.setEmail(email);
-        user.setToken(token);
+        user.setPrivateKey(privateKey);
         em.persist(user);
         return user;
+    }
+
+    /**
+     * Updates a user's private key or create a new user if the one does not exists.
+     */
+    public void setPrivateKey(String email, String privateKey) {
+        try {
+            User user = getUser(email);
+            user.setPrivateKey(privateKey);
+            em.merge(user);
+        } catch (NoResultException e) {
+            registerUser(email, privateKey);
+        }
+    }
+
+    public User getUser(String email) throws NoResultException {
+        return (User) em.createQuery("select u from User u where u.email = :email").setParameter("email", email).getSingleResult();
+
+    }
+
+    public User getUser(long id) throws SQLException {
+        User user = em.find(User.class, id);
+        if (user == null)
+            throw new SQLException("A user with given id does not exist.");
+        return user;
+
     }
 
     private void saveTrack(Track track, Timestamp timeStart, Timestamp timeEnd){
@@ -89,13 +116,6 @@ public class ORMBean {
         em.persist(track);
     }
 
-    private User getUser(long id) throws SQLException {
-        User user = em.find(User.class, id);
-        if (user == null)
-            throw new SQLException("A user with given id does not exist.");
-        return user;
-
-    }
 
     private void detectJumps(Track track) {
     }

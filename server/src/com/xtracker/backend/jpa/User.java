@@ -13,11 +13,12 @@ public class User {
     @Column(name = "user_id", nullable = false, insertable = true, updatable = true)
     private long userId;
     @Basic
-    @Column(name = "token", nullable = true, insertable = true, updatable = true, length = 104857)
-    private String token;
-    @Basic
     @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 104857)
     private String email;
+    @Basic
+    @Column(name = "private_key", nullable = true, insertable = true, updatable = true, length = 104857)
+    private String privateKey;
+
     @OneToMany(mappedBy = "user")
     private List<Track> tracks = new ArrayList<>();
 
@@ -29,13 +30,6 @@ public class User {
         this.userId = userId;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getEmail() {
         return email;
@@ -60,5 +54,13 @@ public class User {
 
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String private_key) {
+        this.privateKey = private_key;
     }
 }

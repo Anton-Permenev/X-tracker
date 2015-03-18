@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="xtrackerUnit" transaction-type="JTA">
-
-        <jta-data-source>jdbc/xtracker</jta-data-source>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <class>com.xtracker.backend.jpa.Jump</class>
+        <class>com.xtracker.backend.jpa.Point</class>
+        <class>com.xtracker.backend.jpa.Track</class>
+        <class>com.xtracker.backend.jpa.User</class>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/xtracker"/>
+            <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="eclipselink.jdbc.user" value="postgres"/>
+            <property name="eclipselink.jdbc.password" value="root"/>
         </properties>
 
-    </persistence-unit>
 
+    </persistence-unit>
 </persistence>
