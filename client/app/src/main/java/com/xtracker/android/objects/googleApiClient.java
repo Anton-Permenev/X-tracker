@@ -34,12 +34,16 @@ public class googleApiClient implements
     String TOKEN_STRING;
     ApiServiceImpl restService;
     private Track currentTrack;
-    private View rootView = null;
+    private View rootView;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private TextView textView1;
 
-    public googleApiClient(ScreenOne fragment) {
+    public googleApiClient(ScreenOne fragment, View rootView) {
+
+        this.rootView = rootView;
+        this.currentTrack = new Track(Long.valueOf(1));
+
         //Establish restService
         restService = new ApiServiceImpl();
 
@@ -50,37 +54,39 @@ public class googleApiClient implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        mGoogleApiClient.connect();
+        mRequestingLocationUpdates = false;
+
+        this.textView1 = (TextView) rootView.findViewById(R.id.textView1);
+
         //Create a LocationRequest
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(500);
+        mLocationRequest.setFastestInterval(100);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }
 
-    public void onClick(View v, View rootView) {
+    public void onClick(View v) {
         if (v.getId() == R.id.startCaptureBtn) {
             btnPressed = (btnPressed + 1) % 2;
-            mRequestingLocationUpdates = true;
-            if (btnPressed == 0) {
-                mGoogleApiClient.connect();
+            if (btnPressed == 1) {
+                mRequestingLocationUpdates = true;
+                startLocationUpdates();
+                v.setActivated(true);
+                if (!(mGoogleApiClient.isConnected())) {
+                    mGoogleApiClient.connect();
+                }
             } else {
-                mGoogleApiClient.disconnect();
+                mRequestingLocationUpdates = false;
+                stopLocationUpdates();
+                v.setActivated(false);
+
             }
-            this.textView1 = (TextView) rootView.findViewById(R.id.textView1);
 
 //            When we will send DATA to server, setFasterInterval should be slower!!!
 
-            if (mRequestingLocationUpdates) {
-                startLocationUpdates();
-            } else {
-                stopLocationUpdates();
-            }
-
         }
-
-//        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-//        mGoogleApiClient.disconnect();
     }
 
 
@@ -93,10 +99,6 @@ public class googleApiClient implements
             }
             //this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
             //!!!! For testing
-            this.currentTrack = new Track(1);
-
-        } else {
-
         }
     }
 
@@ -107,15 +109,17 @@ public class googleApiClient implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        Point point = new Point();
-        point.setLat(mCurrentLocation.getLatitude());
-        point.setLon(mCurrentLocation.getLongitude());
-        point.setSpeed(mCurrentLocation.getSpeed());
-        point.setTrack(currentTrack);
-        currentTrack.addPoint(point);
-        restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
-        textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+        if (location != null) {
+            mCurrentLocation = location;
+            Point point = new Point();
+            point.setLat(mCurrentLocation.getLatitude());
+            point.setLon(mCurrentLocation.getLongitude());
+            point.setSpeed(mCurrentLocation.getSpeed());
+            point.setTrack(currentTrack);
+            currentTrack.addPoint(point);
+            //restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
+            textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+        }
     }
 
     @Override
