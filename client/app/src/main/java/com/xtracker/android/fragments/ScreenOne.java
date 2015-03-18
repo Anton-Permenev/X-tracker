@@ -30,19 +30,20 @@ public class ScreenOne extends Fragment implements
                 false);
 
         //Establish googleApiClient
-        mGoogleClient = new googleApiClient(this);
+        mGoogleClient = new googleApiClient(this, rootView);
         mGoogleClient.updateValuesFromBundle(savedInstanceState);
 
         //Set ImageButton clickable
         button = (ImageButton) rootView.findViewById(R.id.startCaptureBtn);
         button.setOnClickListener(this);
 
+
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        mGoogleClient.onClick(v,rootView);
+        mGoogleClient.onClick(v);
     }
 
 
