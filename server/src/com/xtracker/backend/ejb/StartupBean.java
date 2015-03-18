@@ -5,10 +5,11 @@ import com.xtracker.backend.jpa.Point;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import java.util.ArrayList;
 
-//@Singleton
+@Singleton
 @Startup
 public class StartupBean {
 
