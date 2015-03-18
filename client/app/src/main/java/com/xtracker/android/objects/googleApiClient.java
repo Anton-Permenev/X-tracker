@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,8 +34,10 @@ public class googleApiClient implements
     String TOKEN_STRING;
     ApiServiceImpl restService;
     private Track currentTrack;
+    private View rootView = null;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    private TextView textView1;
 
     public googleApiClient(ScreenOne fragment) {
         //Establish restService
@@ -52,17 +55,27 @@ public class googleApiClient implements
         mLocationRequest.setInterval(2000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
     }
 
     public void onClick(View v, View rootView) {
         if (v.getId() == R.id.startCaptureBtn) {
             btnPressed = (btnPressed + 1) % 2;
             mRequestingLocationUpdates = true;
-            mGoogleApiClient.connect();
-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+            if (btnPressed == 0) {
+                mGoogleApiClient.connect();
+            } else {
+                mGoogleApiClient.disconnect();
+            }
+            this.textView1 = (TextView) rootView.findViewById(R.id.textView1);
 
 //            When we will send DATA to server, setFasterInterval should be slower!!!
 
+            if (mRequestingLocationUpdates) {
+                startLocationUpdates();
+            } else {
+                stopLocationUpdates();
+            }
 
         }
 
@@ -78,12 +91,10 @@ public class googleApiClient implements
             if (this.mCurrentLocation != null) {
 //                track.add(mCurrentLocation);
             }
-            this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
-            if (mRequestingLocationUpdates) {
-                startLocationUpdates();
-            } else {
-                stopLocationUpdates();
-            }
+            //this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
+            //!!!! For testing
+            this.currentTrack = new Track(1);
+
         } else {
 
         }
@@ -104,6 +115,7 @@ public class googleApiClient implements
         point.setTrack(currentTrack);
         currentTrack.addPoint(point);
         restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
+        textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
     }
 
     @Override
@@ -113,13 +125,14 @@ public class googleApiClient implements
 
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
     }
 
     public void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
-    public void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
         savedInstanceState.putInt(BTN_PRESSED_KEY, btnPressed);

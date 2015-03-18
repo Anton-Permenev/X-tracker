@@ -17,6 +17,10 @@ public class Track {
     private List<Point> points = new ArrayList<>();
     private User user;
 
+    public Track(long trackId) {
+        this.trackId = trackId;
+    }
+
     public long getTrackId() {
         return trackId;
     }
