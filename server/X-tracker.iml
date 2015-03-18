@@ -13,7 +13,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="xtrackerUnit" value="8e4416b4-b74b-49de-850a-4096db844c4b" />
+          <factory-entry name="xtrackerUnit" value="faebb44d-eb38-4d05-89ab-9d4c33a48baf" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />
       </configuration>
@@ -48,5 +48,9 @@
     <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0" level="application_server_libraries" />
     <orderEntry type="library" name="Mojarra-2.2.1" level="project" />
     <orderEntry type="library" name="Jersey-2.2" level="project" />
+    <orderEntry type="library" name="org.apache.directory.studio:org.apache.commons.codec:1.8" level="project" />
+    <orderEntry type="library" name="org.apache.httpcomponents:httpclient:4.2.3" level="project" />
+    <orderEntry type="library" name="org.json:json:20141113" level="project" />
+    <orderEntry type="library" name="org.apache.directory.studio:org.apache.commons.io:2.4" level="project" />
   </component>
 </module>
