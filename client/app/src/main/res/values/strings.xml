@@ -17,5 +17,6 @@
     <string name="screen_two">Screen two</string>
     <string name="screen_three">Screen three</string>
     <string name="Start">Start!</string>
+    <string name="title_activity_login">Sign in</string>
 
 </resources>

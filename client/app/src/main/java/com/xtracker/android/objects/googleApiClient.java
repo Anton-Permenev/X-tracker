@@ -12,7 +12,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.xtracker.android.R;
 import com.xtracker.android.fragments.ScreenOne;
-import com.xtracker.android.rest.ApiServiceImpl;
+import com.xtracker.android.rest.ApiService;
+import com.xtracker.android.rest.RestClient;
 
 /**
  * Created by Ilya on 15.03.2015.
@@ -25,11 +26,11 @@ public class googleApiClient implements
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "RLUK";
     private static final String LOCATION_KEY = "LK";
     private static final String BTN_PRESSED_KEY = "BPK";
+    private final ApiService restService;
     private boolean mRequestingLocationUpdates;
     private Integer btnPressed = 0;
     private Location mCurrentLocation;
     String TOKEN_STRING;
-    ApiServiceImpl restService;
     private Track currentTrack;
     private View rootView;
     private GoogleApiClient mGoogleApiClient;
@@ -42,7 +43,7 @@ public class googleApiClient implements
         this.currentTrack = new Track(Long.valueOf(1));
 
         //Establish restService
-        restService = new ApiServiceImpl();
+        restService = new RestClient().getApiService();
 
         //Create an instance of the Google Play services API client
         mGoogleApiClient = new GoogleApiClient.Builder(fragment.getActivity())

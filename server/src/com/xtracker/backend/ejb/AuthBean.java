@@ -49,7 +49,10 @@ public class AuthBean {
         HttpEntity entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
         JSONObject json = new JSONObject(responseString);
-        return json.getString("email");
+        String email = "";
+        if (json.has("email"))
+            email = json.getString("email");
+        return email;
     }
 
     public String generateHmac(long userId, String data) throws NoSuchAlgorithmException, InvalidKeyException, SQLException, UnsupportedEncodingException {
@@ -57,10 +60,10 @@ public class AuthBean {
         Mac macSHA = Mac.getInstance("HmacSHA256");
         SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes("UTF-8"), "HmacSHA256");
         macSHA.init(secretKey);
-        System.out.println("for private key " + privateKey);
         byte[] raw = macSHA.doFinal(data.getBytes("UTF-8"));
         byte[] hex = new Hex().encode(raw);
 
         return new String(hex, "UTF-8");
     }
+
 }

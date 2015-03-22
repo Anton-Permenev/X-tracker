@@ -4,7 +4,7 @@
     <data-source name="PostgreSQL - xtracker@188.226.194.202" uuid="8e4416b4-b74b-49de-850a-4096db844c4b">
       <secret-storage>master_key</secret-storage>
       <user-name>xtracker</user-name>
-      <schema-pattern>xtracker.public</schema-pattern>
+      <schema-pattern>xtracker.pg_catalog xtracker.public</schema-pattern>
       <default-schemas>xtracker.pg_catalog xtracker.public</default-schemas>
     </data-source>
     <data-source name="PostgreSQL - xtracker@localhost" uuid="faebb44d-eb38-4d05-89ab-9d4c33a48baf">

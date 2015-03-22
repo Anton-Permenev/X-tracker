@@ -1,5 +1,6 @@
-package com.xtracker.android;
+package com.xtracker.android.activities;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,9 +16,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+import com.xtracker.android.R;
+import com.xtracker.android.Utils;
 import com.xtracker.android.fragments.ScreenOne;
 import com.xtracker.android.fragments.ScreenThree;
 import com.xtracker.android.fragments.ScreenTwo;
+import com.xtracker.android.objects.Point;
+import com.xtracker.android.objects.Track;
+import com.xtracker.android.rest.ApiService;
+import com.xtracker.android.rest.RestClient;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,6 +48,9 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private GoogleApiClient mGoogleApiClient;
+
+    private String privateKey;
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +99,50 @@ public class MainActivity extends ActionBarActivity {
         // Initialize the first fragment when the application first loads.
         if (savedInstanceState == null) {
             selectItem(0);
+        }
+
+        SharedPreferences sPref = getSharedPreferences("credentials", MODE_PRIVATE);
+        privateKey = sPref.getString("privateKey", "");
+        userId = sPref.getLong("userId", 0);
+
+        restRequestExample();
+    }
+
+    private void restRequestExample() {
+        //REST request example
+        Track track = new Track(1);
+        Point point = new Point();
+        point.setSpeed(0.2f);
+        ArrayList<Point> points = new ArrayList<Point>();
+        points.add(point);
+        track.setPoints(points);
+
+        Gson gson = new Gson();
+        String data = gson.toJson(track);
+        //TODO it's better to use a single instance of RestClient instead of creating a new one each time
+        ApiService apiService = new RestClient().getApiService();
+        try {
+            //generating HMAC hash using private key and data (empty for GET and json-encoded object for POST
+            String hmac = Utils.generateHmac(privateKey, data);
+            //pass object, user id and HMAC to request
+            apiService.addTrack(track, userId, hmac, new Callback<Long>() {
+
+                @Override
+                public void success(Long trackId, Response response) {
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
         }
     }
 

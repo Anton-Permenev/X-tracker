@@ -86,14 +86,16 @@ public class ORMBean {
     /**
      * Updates a user's private key or create a new user if the one does not exists.
      */
-    public void setPrivateKey(String email, String privateKey) {
+    public long setPrivateKey(String email, String privateKey) {
+        User user = null;
         try {
-            User user = getUser(email);
+            user = getUser(email);
             user.setPrivateKey(privateKey);
             em.merge(user);
         } catch (NoResultException e) {
-            registerUser(email, privateKey);
+            user = registerUser(email, privateKey);
         }
+        return user.getUserId();
     }
 
     public User getUser(String email) throws NoResultException {

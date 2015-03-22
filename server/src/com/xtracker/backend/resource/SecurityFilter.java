@@ -15,8 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Provider
@@ -29,21 +27,25 @@ public class SecurityFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
         String method = containerRequestContext.getMethod();
-        Map<String, String> params = method.equals("POST") ? getPostParams(containerRequestContext) : getGetParams(containerRequestContext);
+        String publicKey = "";
+        String hmac = "";
 
-        String publicKey = params.get("user_id");
-        String hmac = params.get("hmac");
+        if (method.equals("GET")) {
+            MultivaluedMap<String, String> params = containerRequestContext.getUriInfo().getQueryParameters();
+            publicKey = params.getFirst("user_id");
+            hmac = params.getFirst("hmac");
+        } else {
+            publicKey = containerRequestContext.getHeaderString("user_id");
+            hmac = containerRequestContext.getHeaderString("hmac");
+        }
 
         if (publicKey != null && hmac != null) {
-            params.remove("hmac");
-            params.remove("user_id");
-            String data = publicKey;
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                data += ";" + param.getValue();
-            }
+            String data = IOUtils.toString(containerRequestContext.getEntityStream(), "UTF-8");
+            if (data == null)
+                data = "";
             try {
                 if (!validate(publicKey, hmac, data)) {
-                   returnAuthError(containerRequestContext, "authentication error");
+                   returnAuthError(containerRequestContext, "authorization error");
                 }
             } catch (NoSuchAlgorithmException | NumberFormatException | InvalidKeyException e) {
                 returnAuthError(containerRequestContext, "server error");
@@ -58,26 +60,6 @@ public class SecurityFilter implements ContainerRequestFilter {
     private void returnAuthError(ContainerRequestContext context, String message) {
         context.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(message).build());
 
-    }
-
-    private Map<String, String> getGetParams(ContainerRequestContext context) {
-        MultivaluedMap<String, String> params = context.getUriInfo().getQueryParameters();
-        Map<String, String> map = new HashMap<>();
-        for (String key : params.keySet()) {
-            map.put(key, params.getFirst(key));
-        }
-        return map;
-    }
-
-    private Map<String, String> getPostParams(ContainerRequestContext context) throws IOException {
-        String entity = IOUtils.toString(context.getEntityStream(), "UTF-8");
-        String[] params = entity.split("&");
-        Map<String, String> map = new HashMap<>();
-        for (String param : params) {
-            String[] keyValuePair = param.split("=");
-            map.put(keyValuePair[0], keyValuePair[1]);
-        }
-        return map;
     }
 
     private boolean validate(String publicKey, String hmac, String data) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, SQLException, NumberFormatException {

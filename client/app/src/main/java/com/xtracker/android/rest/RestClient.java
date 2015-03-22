@@ -8,7 +8,7 @@ import retrofit.converter.GsonConverter;
 
 public class RestClient {
 
-    private static final String BASE_URL = "http://188.226.194.202:8080/X-trackerWeb/api/";
+    public static final String BASE_URL = "http://188.226.194.202:8080/X-trackerWeb/api";
     private ApiService apiService;
 
     public RestClient() {
