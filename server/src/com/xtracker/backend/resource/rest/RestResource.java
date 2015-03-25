@@ -1,4 +1,4 @@
-package com.xtracker.backend.resource;
+package com.xtracker.backend.resource.rest;
 
 import com.xtracker.backend.ejb.AuthBean;
 import com.xtracker.backend.ejb.ORMBean;
@@ -15,7 +15,7 @@ import java.util.List;
 
 // /user/tracks/user_id/track_id
 //"users/tracks/{user_id}/{track_id}"
-@Path("rest")
+@Path("/rest")
 public class RestResource {
 
     @EJB(beanName = "orm")
@@ -25,7 +25,7 @@ public class RestResource {
     AuthBean authBean;
 
     @GET
-    @Path("hello")
+    @Path("/hello")
     @Produces("application/json")
     public String hello(){
         return new String("Helloww");

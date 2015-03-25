@@ -1,4 +1,4 @@
-package com.xtracker.backend.resource;
+package com.xtracker.backend.resource.rest;
 
 import com.xtracker.backend.ejb.AuthBean;
 import com.xtracker.backend.resource.utils.Secured;
