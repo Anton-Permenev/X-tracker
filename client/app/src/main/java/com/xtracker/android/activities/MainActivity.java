@@ -116,16 +116,9 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<Point> points = new ArrayList<Point>();
         points.add(point);
         track.setPoints(points);
-
-        Gson gson = new Gson();
-        String data = gson.toJson(track);
-        //TODO it's better to use a single instance of RestClient instead of creating a new one each time
-        ApiService apiService = new RestClient().getApiService();
-        try {
-            //generating HMAC hash using private key and data (empty for GET and json-encoded object for POST
-            String hmac = Utils.generateHmac(privateKey, data);
-            //pass object, user id and HMAC to request
-            apiService.addTrack(track, userId, hmac, new Callback<Long>() {
+        
+        ApiService apiService = RestClient.getInstance().getApiService();
+            apiService.addTrack(track, new Callback<Long>() {
 
                 @Override
                 public void success(Long trackId, Response response) {
@@ -137,13 +130,18 @@ public class MainActivity extends ActionBarActivity {
 
                 }
             });
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        }
+/*
+        apiService.getTrack(3, new Callback<Track>() {
+            @Override
+            public void success(Track track, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });*/
     }
 
     public void addItem(View view) {

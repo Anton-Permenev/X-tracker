@@ -5,14 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.xtracker.android.rest.ApiService;
@@ -29,7 +25,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
+public class LoginActivity extends ActionBarActivity {
 
     private static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
     private static final int REQUEST_CODE_RECOVERABLE_ERROR = 1001;
@@ -43,7 +39,7 @@ public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        apiService = new RestClient().getApiService();
+        apiService = RestClient.getInstance().getApiService();
 
         if (isSignedIn())
             finishLogin();
@@ -52,6 +48,10 @@ public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
     }
 
     private void finishLogin() {
+        RestClient.getInstance().setKeys(
+                sharedPrefs.getLong("userId", 0),
+                sharedPrefs.getString("privateKey", ""));
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -130,15 +130,6 @@ public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
         });
     }
 
-    @Override
-    public void success(Keys keys, Response response) {
-        saveCredentials(keys);
-    }
-
-    @Override
-    public void failure(RetrofitError error) {
-        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-    }
 
 
     private class GetTokenTask extends AsyncTask<String, Void, String> {
@@ -163,7 +154,17 @@ public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
         @Override
         protected void onPostExecute(String s) {
             if (s != null) {
-                apiService.login(email, s, context);
+                apiService.login(email, s, new Callback<Keys>() {
+                    @Override
+                    public void success(Keys keys, Response response) {
+                        saveCredentials(keys);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }
@@ -173,8 +174,10 @@ public class LoginActivity extends ActionBarActivity implements Callback<Keys> {
         editor.putString("email", email);
         editor.putLong("userId", keys.getPublicKey());
         editor.putString("privateKey", keys.getPrivateKey());
-        if (editor.commit())
+
+        if (editor.commit()) {
             finishLogin();
+        }
     }
 
 

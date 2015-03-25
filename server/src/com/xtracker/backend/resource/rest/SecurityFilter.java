@@ -1,6 +1,7 @@
 package com.xtracker.backend.resource.rest;
 
 import com.xtracker.backend.ejb.AuthBean;
+import com.xtracker.backend.resource.utils.Secured;
 import org.apache.commons.io.IOUtils;
 
 import javax.ejb.EJB;
@@ -15,9 +16,11 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-
 @Provider
+@Secured
 public class SecurityFilter implements ContainerRequestFilter {
+
+    private int dff;
 
     @EJB
     AuthBean authBean;
@@ -59,6 +62,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         context.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(message).build());
 
     }
+
 
     private boolean validate(String publicKey, String hmac, String data) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, SQLException, NumberFormatException {
         String properHmac = authBean.generateHmac(Long.parseLong(publicKey), data);

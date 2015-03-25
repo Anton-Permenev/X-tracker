@@ -22,19 +22,19 @@ import retrofit.http.Query;
 
 public interface ApiService {
     @GET("/rest/hello")
-    public void hello(@Query("hmac") String hmac,Callback<String> callback);
+    public void hello(Callback<String> callback);
 
     @GET("/rest/login")
     public void login(@Query("email") String email, @Query("access_token") String access_token, Callback<Keys> callback);
 
     @GET("/rest/tracks")
-    public List<Track> getTracksList(@Query("user_id") long user_id, @Query("hmac") String hmac, Callback<List<Track>> callback);
+    public void getTracksList(Callback<List<Track>> callback);
 
     @GET("/rest/tracks/{track_id}")
-    public Track getTrack(@Path("track_id") long track_id, @Query("user_id") long user_id, @Query("hmac") String hmac, Callback<Track> callback);
+    public void getTrack(@Path("track_id") long track_id,  Callback<Track> callback);
 
     @POST("/rest/tracks")
-    public void addTrack(@Body Track track, @Header("user_id") long user_id, @Header("hmac") String hmac, Callback<Long> callback);
+    public void addTrack(@Body Track track, Callback<Long> callback);
 
     @DELETE("/rest/tracks/{track_id}")
     public void deleteTrack(@Path("track_id") long track_id, String access_token);
