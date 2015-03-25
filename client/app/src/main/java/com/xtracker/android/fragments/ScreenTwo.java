@@ -15,11 +15,14 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.xtracker.android.R;
+import com.xtracker.android.objects.Point;
+import com.xtracker.android.objects.Track;
 import com.xtracker.android.objects.googleApiClient;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
 
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -49,7 +52,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         helloOutput = (TextView) rootView.findViewById(R.id.textView);
 
-        restClient = new RestClient();
+        restClient = RestClient.getInstance();
         apiService = restClient.getApiService();
 
         return rootView;
@@ -63,11 +66,36 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
-                getHello();
+                //getHello();
+                restRequestExample();
                 break;
         }
     }
 
+    private void restRequestExample() {
+        //REST request example
+        Track track = new Track(1);
+        Point point = new Point();
+        point.setSpeed(0.2f);
+        ArrayList<Point> points = new ArrayList<Point>();
+        points.add(point);
+        track.setPoints(points);
+
+        ApiService apiService = RestClient.getInstance().getApiService();
+        apiService.addTrack(track, new Callback<Long>() {
+
+            @Override
+            public void success(Long trackId, Response response) {
+                helloOutput.setText(trackId.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                helloOutput.setText(error.toString()
+                );
+            }
+        });
+    }
 
     private void getHello() {
 
@@ -80,7 +108,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
             @Override
             public void failure(RetrofitError error) {
-            helloOutput.setText(error.getMessage());
+                helloOutput.setText(error.getMessage());
             }
         });
     }

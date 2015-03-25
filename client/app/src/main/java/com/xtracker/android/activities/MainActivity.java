@@ -105,31 +105,8 @@ public class MainActivity extends ActionBarActivity {
         privateKey = sPref.getString("privateKey", "");
         userId = sPref.getLong("userId", 0);
 
-        restRequestExample();
-    }
 
-    private void restRequestExample() {
-        //REST request example
-        Track track = new Track(1);
-        Point point = new Point();
-        point.setSpeed(0.2f);
-        ArrayList<Point> points = new ArrayList<Point>();
-        points.add(point);
-        track.setPoints(points);
-        
-        ApiService apiService = RestClient.getInstance().getApiService();
-            apiService.addTrack(track, new Callback<Long>() {
 
-                @Override
-                public void success(Long trackId, Response response) {
-
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                }
-            });
 /*
         apiService.getTrack(3, new Callback<Track>() {
             @Override

@@ -27,6 +27,7 @@ public class RestResource {
     @GET
     @Path("/hello")
     @Produces("application/json")
+    @Secured
     public String hello(){
         return new String("Helloww");
     }
