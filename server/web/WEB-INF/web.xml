@@ -25,6 +25,10 @@
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>com.xtracker.backend.resource.rest</param-value>
         </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+            <param-value>com.xtracker.backend.resource.rest.SecurityFilter</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

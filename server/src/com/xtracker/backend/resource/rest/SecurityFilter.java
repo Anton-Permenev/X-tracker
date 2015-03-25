@@ -1,7 +1,6 @@
 package com.xtracker.backend.resource.rest;
 
 import com.xtracker.backend.ejb.AuthBean;
-import com.xtracker.backend.resource.utils.Secured;
 import org.apache.commons.io.IOUtils;
 
 import javax.ejb.EJB;
@@ -18,7 +17,6 @@ import java.sql.SQLException;
 
 
 @Provider
-@Secured
 public class SecurityFilter implements ContainerRequestFilter {
 
     @EJB
@@ -45,7 +43,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                 data = "";
             try {
                 if (!validate(publicKey, hmac, data)) {
-                   returnAuthError(containerRequestContext, "authorization error");
+                    returnAuthError(containerRequestContext, "authorization error");
                 }
             } catch (NoSuchAlgorithmException | NumberFormatException | InvalidKeyException e) {
                 returnAuthError(containerRequestContext, "server error");
