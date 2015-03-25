@@ -24,6 +24,13 @@ public class RestResource {
     @EJB(beanName = "auth")
     AuthBean authBean;
 
+    @GET
+    @Path("hello")
+    @Produces("application/json")
+    public String hello(){
+        return new String("Helloww");
+    }
+
     /**
      * Login or register a user with given email and Google OAuth access token. If given email does not exist in the database
      * (but the token is valid), a new user will be created and persisted.
@@ -31,6 +38,8 @@ public class RestResource {
      * @param token valid Google OAuth access token
      * @return a new private key used for accessing secured REST methods
      */
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("login")

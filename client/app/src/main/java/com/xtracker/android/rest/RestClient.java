@@ -12,15 +12,15 @@ public class RestClient {
     private ApiService apiService;
 
     public RestClient() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
-                .create();
+        Gson gson = new GsonBuilder().create();
+
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(BASE_URL)
                 .setConverter(new GsonConverter(gson))
                 .build();
+
 
         apiService = restAdapter.create(ApiService.class);
     }

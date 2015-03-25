@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.ncedu.x_tracker"
+        applicationId "com.xtracker"
         minSdkVersion 18
         targetSdkVersion 21
         versionCode 1

@@ -9,6 +9,7 @@ import java.util.List;
 import com.xtracker.android.objects.Track;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.Field;
@@ -20,14 +21,17 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface ApiService {
+    @GET("/rest/hello")
+    public void hello(@Query("hmac") String hmac,Callback<String> callback);
+
     @GET("/rest/login")
     public void login(@Query("email") String email, @Query("access_token") String access_token, Callback<Keys> callback);
 
     @GET("/rest/tracks")
-    public void getTracksList(@Query("user_id") long user_id, @Query("hmac") String hmac, Callback<List<Track>> callback);
+    public List<Track> getTracksList(@Query("user_id") long user_id, @Query("hmac") String hmac, Callback<List<Track>> callback);
 
     @GET("/rest/tracks/{track_id}")
-    public void getTrack(@Path("track_id") long track_id, @Query("user_id") long user_id, @Query("hmac") String hmac, Callback<Track> callback);
+    public Track getTrack(@Path("track_id") long track_id, @Query("user_id") long user_id, @Query("hmac") String hmac, Callback<Track> callback);
 
     @POST("/rest/tracks")
     public void addTrack(@Body Track track, @Header("user_id") long user_id, @Header("hmac") String hmac, Callback<Long> callback);
