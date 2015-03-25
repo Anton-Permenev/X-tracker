@@ -77,7 +77,7 @@ public class RestResource {
     @GET
     @Path("tracks/{track_id}")
     @Produces("application/json")
-    public Track getTrack(long track_id) {
+    public Track getTrack(@PathParam("track_id") long track_id) {
         return null;
     }
 
@@ -88,7 +88,7 @@ public class RestResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Secured
     public void addTrack(Track track) {
-        System.out.println("track" + track.getTrackId());
+        ormBean.addTrack(track);
     }
 
     @DELETE
@@ -98,7 +98,6 @@ public class RestResource {
     public void deleteTrack(@PathParam("track_id")long track_id){
 
     }
-
 
 
 

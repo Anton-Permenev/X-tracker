@@ -11,7 +11,7 @@ public class Jump {
     private long jumpId;
     @Basic
     @Column(name = "air_time", nullable = true, insertable = true, updatable = true)
-    private Integer airTime;
+    private int airTime;
     @ManyToOne
     @JoinColumn(name = "track_id", referencedColumnName = "track_id")
     private Track track;

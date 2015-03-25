@@ -14,11 +14,10 @@ public class User {
     private long userId;
     @Basic
     @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 104857)
-    private String email;
+    private String email = "";
     @Basic
     @Column(name = "private_key", nullable = true, insertable = true, updatable = true, length = 104857)
-    private String privateKey;
-
+    private String privateKey = "";
     @OneToMany(mappedBy = "user")
     private List<Track> tracks = new ArrayList<>();
 

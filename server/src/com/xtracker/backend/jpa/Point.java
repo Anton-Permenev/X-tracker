@@ -12,16 +12,16 @@ public class Point {
     private long pointId;
     @Basic
     @Column(name = "acceleration", nullable = true, insertable = true, updatable = true, precision = 8)
-    private Double acceleration;
+    private double acceleration;
     @Basic
     @Column(name = "lat", nullable = true, insertable = true, updatable = true, precision = 8)
-    private Double lat;
+    private double lat;
     @Basic
     @Column(name = "lon", nullable = true, insertable = true, updatable = true, precision = 8)
-    private Double lon;
+    private double lon;
     @Basic
     @Column(name = "speed", nullable = true, insertable = true, updatable = true, precision = 8)
-    private Float speed;
+    private float speed;
     @ManyToOne
     @JoinColumn(name = "track_id")
     private Track track;

@@ -10,6 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -20,10 +21,10 @@ import java.sql.SQLException;
 @Secured
 public class SecurityFilter implements ContainerRequestFilter {
 
-    private int dff;
-
     @EJB
     AuthBean authBean;
+
+
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
@@ -40,10 +41,10 @@ public class SecurityFilter implements ContainerRequestFilter {
             hmac = containerRequestContext.getHeaderString("hmac");
         }
 
+        byte[] byteEntity = IOUtils.toByteArray(containerRequestContext.getEntityStream());
         if (publicKey != null && hmac != null) {
-            String data = IOUtils.toString(containerRequestContext.getEntityStream(), "UTF-8");
-            if (data == null)
-                data = "";
+            String data = IOUtils.toString(byteEntity, "UTF-8");
+            System.out.println(data);
             try {
                 if (!validate(publicKey, hmac, data)) {
                     returnAuthError(containerRequestContext, "authorization error");
@@ -56,6 +57,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         } else {
             returnAuthError(containerRequestContext, "no public key or hmac");
         }
+        containerRequestContext.setEntityStream(new ByteArrayInputStream(byteEntity));
     }
 
     private void returnAuthError(ContainerRequestContext context, String message) {

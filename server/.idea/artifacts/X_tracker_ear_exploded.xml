@@ -19,6 +19,7 @@
         <element id="library" level="project" name="org.apache.directory.studio:org.apache.commons.codec:1.8" />
         <element id="library" level="project" name="org.json:json:20141113" />
         <element id="library" level="project" name="postgresql:postgresql:9.2-1002.jdbc4" />
+        <element id="library" level="project" name="org.codehaus.jackson:jackson-jaxrs:1.9.0" />
       </element>
     </root>
   </artifact>

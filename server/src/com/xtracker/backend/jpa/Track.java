@@ -1,11 +1,13 @@
 package com.xtracker.backend.jpa;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@XmlRootElement
 @Table(name = "tracks", schema = "public", catalog = "xtracker")
 public class Track {
     @Id

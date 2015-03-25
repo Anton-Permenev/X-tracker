@@ -81,6 +81,7 @@ public class ORMBean {
         user.setPrivateKey(privateKey);
         em.persist(user);
         return user;
+
     }
 
     /**
@@ -123,4 +124,7 @@ public class ORMBean {
     }
 
 
+    public void addTrack(Track track) {
+        em.persist(track);
+    }
 }
