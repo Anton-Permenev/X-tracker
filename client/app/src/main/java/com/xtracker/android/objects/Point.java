@@ -6,10 +6,10 @@ package com.xtracker.android.objects;
 public class Point {
 
     private long pointId;
-    private Double acceleration;
+    private double acceleration;
     private float speed;
-    private Double lat;
-    private Double lon;
+    private double lat;
+    private double lon;
     private Track track;
 
     public float getSpeed() {
@@ -35,23 +35,23 @@ public class Point {
         this.trackId = trackId;
     }*/
 
-    public Double getAcceleration() {
+    public double getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(Double acceleration) {
+    public void setAcceleration(double acceleration) {
         this.acceleration = acceleration;
     }
 
-    public Double getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public Double getLon() {
+    public double getLon() {
         return lon;
     }
 

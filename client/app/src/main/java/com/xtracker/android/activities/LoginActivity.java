@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class LoginActivity extends ActionBarActivity {
         RestClient.getInstance().setKeys(
                 sharedPrefs.getLong("userId", 0),
                 sharedPrefs.getString("privateKey", ""));
+        Log.d("dbg", "private key: " + sharedPrefs.getString("privateKey", ""));
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

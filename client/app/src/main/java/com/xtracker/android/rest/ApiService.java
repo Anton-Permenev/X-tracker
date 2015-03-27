@@ -39,6 +39,8 @@ public interface ApiService {
     @DELETE("/rest/tracks/{track_id}")
     public void deleteTrack(@Path("track_id") long track_id, String access_token);
 
+    @POST("/rest/test")
+    public void test(@Body Callback<Void> callback);
 
     static class Keys {
         public String getPrivateKey() {
@@ -59,6 +61,17 @@ public interface ApiService {
 
         private String privateKey;
         private long publicKey;
+    }
 
+    static class Test {
+        private int a;
+
+        public int getA() {
+            return a;
+        }
+
+        public void setA(int a) {
+            this.a = a;
+        }
     }
 }

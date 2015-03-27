@@ -23,7 +23,7 @@ import retrofit.mime.TypedOutput;
 
 public class Filter extends OkClient {
     private long userId;
-    private String privateKey;
+    private String privateKey = "1";
 
     @Override
     public Response execute(Request request) throws IOException {

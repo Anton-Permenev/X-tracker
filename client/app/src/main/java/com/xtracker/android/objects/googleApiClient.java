@@ -40,7 +40,7 @@ public class googleApiClient implements
     public googleApiClient(ScreenOne fragment, View rootView) {
 
         this.rootView = rootView;
-        this.currentTrack = new Track(Long.valueOf(1));
+        this.currentTrack = new Track();
 
         //Establish restService
         restService = new RestClient().getApiService();

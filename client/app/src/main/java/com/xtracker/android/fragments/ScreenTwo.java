@@ -74,10 +74,10 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     private void restRequestExample() {
         //REST request example
-        Track track = new Track(1);
+        Track track = new Track();
         Point point = new Point();
-        point.setSpeed(0.2f);
-        ArrayList<Point> points = new ArrayList<Point>();
+        point.setSpeed(0.3f);
+        ArrayList<Point> points = new ArrayList<>();
         points.add(point);
         track.setPoints(points);
 
@@ -86,7 +86,8 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
             @Override
             public void success(Long trackId, Response response) {
-                helloOutput.setText(trackId.toString());
+                if (trackId != null)
+                    helloOutput.setText(trackId.toString());
             }
 
             @Override
