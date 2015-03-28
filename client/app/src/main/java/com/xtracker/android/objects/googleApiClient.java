@@ -114,16 +114,16 @@ public class googleApiClient implements
                 mRequestingLocationUpdates = false;
                 stopLocationUpdates();
                 v.setActivated(false);
+//
+//                point.setSpeed(0.3f);
+//                point.setLat((double) 2);
+//                point.setLon((double) 2);
+//                ArrayList<Point> points = new ArrayList<>();
+//                points.add(point);
+//                testTrack.setPoints(points);
 
-                point.setSpeed(0.3f);
-                point.setLat((double) 2);
-                point.setLon((double) 2);
-                ArrayList<Point> points = new ArrayList<>();
-                points.add(point);
-                testTrack.setPoints(points);
 
-
-                apiService.addTrack(testTrack, new Callback<Long>() {
+                apiService.addTrack(currentTrack, new Callback<Long>() {
 
                     @Override
                     public void success(Long trackId, Response response) {
@@ -132,7 +132,8 @@ public class googleApiClient implements
 
                     @Override
                     public void failure(RetrofitError error) {
-                        System.out.println("Fail");
+                        System.out.println(error);
+                        System.out.println(currentTrack.getPoints().toString());
                     }
                 });
                 //Here we should send mCurrentTrack to serv
@@ -169,7 +170,6 @@ public class googleApiClient implements
                 point.setLat(mCurrentLocation.getLatitude());
                 point.setLon(mCurrentLocation.getLongitude());
                 point.setSpeed(mCurrentLocation.getSpeed());
-                point.setTrack(currentTrack);
                 currentTrack.addPoint(point);
                 //restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
                 textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
