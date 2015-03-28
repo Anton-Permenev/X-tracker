@@ -16,6 +16,8 @@ import com.xtracker.android.fragments.ScreenOne;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
 
+import java.util.ArrayList;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -34,10 +36,13 @@ public class googleApiClient implements
     private final ApiService restService;
     private boolean mRequestingLocationUpdates;
     private Integer btnPressed = 0;
+    private  ApiService apiService = RestClient.getInstance().getApiService();
 
     public Location getmCurrentLocation() {
         return mCurrentLocation;
     }
+    private Track testTrack=new Track();
+    private Point point = new Point();
 
     private Location mCurrentLocation;
     String TOKEN_STRING;
@@ -109,8 +114,16 @@ public class googleApiClient implements
                 mRequestingLocationUpdates = false;
                 stopLocationUpdates();
                 v.setActivated(false);
-                ApiService apiService = RestClient.getInstance().getApiService();
-                apiService.addTrack(currentTrack, new Callback<Long>() {
+
+                point.setSpeed(0.3f);
+                point.setLat((double) 2);
+                point.setLon((double) 2);
+                ArrayList<Point> points = new ArrayList<>();
+                points.add(point);
+                testTrack.setPoints(points);
+
+
+                apiService.addTrack(testTrack, new Callback<Long>() {
 
                     @Override
                     public void success(Long trackId, Response response) {

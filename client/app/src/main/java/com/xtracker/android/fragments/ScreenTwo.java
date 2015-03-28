@@ -68,8 +68,8 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
-                startTrackActivity();
-                //getHello();
+                //startTrackActivity();
+                getHello();
                 //restRequestExample();
                 break;
         }

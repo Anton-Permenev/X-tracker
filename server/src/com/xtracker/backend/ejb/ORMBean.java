@@ -125,6 +125,8 @@ public class ORMBean {
 
 
     public void addTrack(Track track) {
+
         em.persist(track);
+        em.flush();
     }
 }
