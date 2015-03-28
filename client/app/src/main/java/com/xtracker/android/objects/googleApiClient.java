@@ -16,6 +16,10 @@ import com.xtracker.android.fragments.ScreenOne;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * Created by Ilya on 15.03.2015.
  */
@@ -105,6 +109,19 @@ public class googleApiClient implements
                 mRequestingLocationUpdates = false;
                 stopLocationUpdates();
                 v.setActivated(false);
+                ApiService apiService = RestClient.getInstance().getApiService();
+                apiService.addTrack(currentTrack, new Callback<Long>() {
+
+                    @Override
+                    public void success(Long trackId, Response response) {
+                        System.out.println("Success");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        System.out.println("Fail");
+                    }
+                });
                 //Here we should send mCurrentTrack to serv
             }
 
