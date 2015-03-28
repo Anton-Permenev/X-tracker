@@ -28,13 +28,14 @@ public class RestResource {
     @Path("/hello")
     @Produces("application/json")
     @Secured
-    public String hello(){
+    public String hello() {
         return new String("Helloww");
     }
 
     /**
      * Login or register a user with given email and Google OAuth access token. If given email does not exist in the database
      * (but the token is valid), a new user will be created and persisted.
+     *
      * @param email an email of a new or existing user complying with google account
      * @param token valid Google OAuth access token
      * @return a new private key used for accessing secured REST methods
@@ -44,7 +45,7 @@ public class RestResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("login")
-    public Keys login(@QueryParam("email") String email, @QueryParam("access_token") String token)  {
+    public Keys login(@QueryParam("email") String email, @QueryParam("access_token") String token) {
         if (email == null || token == null)
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("no email or token provided").build());
         try {
@@ -67,11 +68,12 @@ public class RestResource {
     }
 
     @GET
+
     @Path("tracks")
     @Produces("application/json")
     @Secured
-    public List<Track> getTracksList() {
-        return null;
+    public List<Track> getTracksList(@QueryParam("user_id") long user_id) {
+        return getTracksList(user_id);
     }
 
     @GET
@@ -95,11 +97,9 @@ public class RestResource {
     @Path("tracks/{track_id}")
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
-    public void deleteTrack(@PathParam("track_id")long track_id){
-
+    public void deleteTrack(@PathParam("track_id") long track_id) {
+        deleteTrack(track_id);
     }
-
-
 
 
 }
