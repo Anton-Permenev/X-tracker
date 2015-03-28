@@ -78,7 +78,7 @@ public class RestResource {
     @Path("tracks/{track_id}")
     @Produces("application/json")
     public Track getTrack(@PathParam("track_id") long track_id) {
-        return null;
+        return getTrack(track_id);
     }
 
 

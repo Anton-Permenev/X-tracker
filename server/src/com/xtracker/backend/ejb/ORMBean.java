@@ -125,8 +125,10 @@ public class ORMBean {
 
 
     public void addTrack(Track track) {
-
+        for (Point point : track.getPoints()) {
+            point.setTrack(track);
+        }
         em.persist(track);
-        em.flush();
+        detectJumps(track);
     }
 }
