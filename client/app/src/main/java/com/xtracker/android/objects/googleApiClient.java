@@ -170,7 +170,6 @@ public class googleApiClient implements
                 point.setLat(mCurrentLocation.getLatitude());
                 point.setLon(mCurrentLocation.getLongitude());
                 point.setSpeed(mCurrentLocation.getSpeed());
-                point.setTrack(currentTrack);
                 currentTrack.addPoint(point);
                 //restService.updateTrack(currentTrack.getTrackId(), TOKEN_STRING);
                 textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
