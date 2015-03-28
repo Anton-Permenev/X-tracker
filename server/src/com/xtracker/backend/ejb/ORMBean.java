@@ -28,17 +28,13 @@ public class ORMBean {
 
     /**
      * Creates and persists Track entity and its Points.
-     * @param points a list containing points associated with this track
-     * @see #makePoint
      */
-    public void addTrack(List<Point> points, Timestamp timeStart, Timestamp timeEnd) {
-        Track track = new Track();
-
+    public void addTrack(Track track) {
+        List<Point> points = track.getPoints();
         for (Point point : points) {
             point.setTrack(track);
-            track.getPoints().add(point);
         }
-        saveTrack(track, timeStart, timeEnd);
+        em.persist(track);
         detectJumps(track);
     }
 
@@ -124,11 +120,4 @@ public class ORMBean {
     }
 
 
-    public void addTrack(Track track) {
-        for (Point point : track.getPoints()) {
-            point.setTrack(track);
-        }
-        em.persist(track);
-        detectJumps(track);
-    }
 }
