@@ -1,5 +1,6 @@
 package com.xtracker.android.objects;
 
+import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,11 @@ public class googleApiClient implements
     private final ApiService restService;
     private boolean mRequestingLocationUpdates;
     private Integer btnPressed = 0;
+
+    public Location getmCurrentLocation() {
+        return mCurrentLocation;
+    }
+
     private Location mCurrentLocation;
     String TOKEN_STRING;
     private Track currentTrack;
@@ -36,6 +42,26 @@ public class googleApiClient implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private TextView textView1;
+
+    public googleApiClient(Activity activity) {
+        //Establish restService
+        restService = new RestClient().getApiService();
+
+        //Create an instance of the Google Play services API client
+        mGoogleApiClient = new GoogleApiClient.Builder(activity)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        mGoogleApiClient.connect();
+
+        //Create a LocationRequest
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(500);
+        mLocationRequest.setFastestInterval(100);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
 
     public googleApiClient(ScreenOne fragment, View rootView) {
 
@@ -79,7 +105,7 @@ public class googleApiClient implements
                 mRequestingLocationUpdates = false;
                 stopLocationUpdates();
                 v.setActivated(false);
-
+                //Here we should send mCurrentTrack to serv
             }
 
 //            When we will send DATA to server, setFasterInterval should be slower!!!
@@ -90,14 +116,13 @@ public class googleApiClient implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        if (btnPressed > 0) {
-            this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (this.mCurrentLocation != null) {
+        this.mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (this.mCurrentLocation != null) {
 //                track.add(mCurrentLocation);
-            }
-            //this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
-            //!!!! For testing
         }
+        //this.currentTrack = restService.getTrack(Long.valueOf(null), TOKEN_STRING);
+        //!!!! For testing
+
     }
 
     @Override

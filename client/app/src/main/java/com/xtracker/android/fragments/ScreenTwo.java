@@ -2,6 +2,7 @@ package com.xtracker.android.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.xtracker.android.R;
+import com.xtracker.android.activities.TrackActivity;
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.objects.googleApiClient;
@@ -66,10 +68,16 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
+                startTrackActivity();
                 //getHello();
-                restRequestExample();
+                //restRequestExample();
                 break;
         }
+    }
+
+    private void startTrackActivity() {
+        Intent intent = new Intent(this.getActivity() , TrackActivity.class);
+        startActivity(intent);
     }
 
     private void restRequestExample() {
