@@ -60,6 +60,7 @@ public class Filter extends OkClient {
             Log.d("Retrofit", url);
         }
 
+        Log.d("dbg", data);
         Request req = new Request(method, url, headers, body);
         return super.execute(req);
     }

@@ -3,10 +3,14 @@ package com.xtracker.backend.resource.rest;
 import com.xtracker.backend.ejb.AuthBean;
 import com.xtracker.backend.ejb.ORMBean;
 import com.xtracker.backend.jpa.Track;
+import com.xtracker.backend.resource.errors.ErrorMessage;
+import com.xtracker.backend.resource.errors.RestException;
 import com.xtracker.backend.resource.pojo.Keys;
 import com.xtracker.backend.resource.utils.Secured;
+import org.hibernate.validator.constraints.Email;
 
 import javax.ejb.EJB;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,6 +21,8 @@ import java.util.List;
 //"users/tracks/{user_id}/{track_id}"
 @Path("/rest")
 public class RestResource {
+
+    String email = "";
 
     @EJB(beanName = "orm")
     ORMBean ormBean;
@@ -41,34 +47,27 @@ public class RestResource {
      * @return a new private key used for accessing secured REST methods
      */
 
-
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/json")
     @Path("login")
-    public Keys login(@QueryParam("email") String email, @QueryParam("access_token") String token) {
-        if (email == null || token == null)
-            throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("no email or token provided").build());
-        try {
-            String properEmail = authBean.fetchEmail(token);
-            String privateKey;
-            String publicKey;
-            if (properEmail.equals(email)) {
-                privateKey = authBean.generatePrivateKey();
-                publicKey = String.valueOf(ormBean.setPrivateKey(email, privateKey));
-            } else {
-                throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("this token is not valid").build());
-            }
-            Keys keys = new Keys();
-            keys.setPrivateKey(privateKey);
-            keys.setPublicKey(publicKey);
-            return keys;
-        } catch (Exception e) {
-            throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("internal server error").build());
+    public Keys login(@NotNull(message = "No email provided.") @Email(message = "Please provide valid email address.") @QueryParam("email") String email,
+                      @NotNull(message = "No access token provided.") @QueryParam("access_token") String token) throws Exception {
+        String properEmail = authBean.fetchEmail(token);
+        String privateKey;
+        String publicKey;
+        if (properEmail != null && properEmail.equals(email)) {
+            privateKey = authBean.generatePrivateKey();
+            publicKey = String.valueOf(ormBean.setPrivateKey(email, privateKey));
+        } else {
+            throw new RestException(ErrorMessage.TOKEN_INVALID, Response.Status.UNAUTHORIZED);
         }
+        Keys keys = new Keys();
+        keys.setPrivateKey(privateKey);
+        keys.setPublicKey(publicKey);
+        return keys;
     }
 
     @GET
-
     @Path("tracks")
     @Produces("application/json")
     @Secured

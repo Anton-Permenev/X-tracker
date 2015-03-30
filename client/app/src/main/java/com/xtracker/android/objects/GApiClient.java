@@ -25,7 +25,7 @@ import retrofit.client.Response;
 /**
  * Created by Ilya on 15.03.2015.
  */
-public class googleApiClient implements
+public class GApiClient implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -52,7 +52,7 @@ public class googleApiClient implements
     private LocationRequest mLocationRequest;
     private TextView textView1;
 
-    public googleApiClient(Activity activity) {
+    public GApiClient(Activity activity) {
         //Establish restService
         restService = new RestClient().getApiService();
 
@@ -72,7 +72,7 @@ public class googleApiClient implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public googleApiClient(ScreenOne fragment, View rootView) {
+    public GApiClient(ScreenOne fragment, View rootView) {
 
         this.rootView = rootView;
         this.currentTrack = new Track();

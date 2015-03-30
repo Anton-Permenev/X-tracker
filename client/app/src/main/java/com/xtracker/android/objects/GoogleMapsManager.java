@@ -2,7 +2,6 @@ package com.xtracker.android.objects;
 
 import android.app.FragmentManager;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,7 +16,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
 
     private final FragmentManager fragmentManager;
     private MapFragment mMap;
-    private googleApiClient mApiClient;
+    private GApiClient mApiClient;
 
     public GoogleMapsManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -26,7 +25,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         fragment.getMapAsync(this);
 
         mMap = fragment;
-        mApiClient = new googleApiClient(mMap.getActivity());
+        mApiClient = new GApiClient(mMap.getActivity());
     }
 
     @Override

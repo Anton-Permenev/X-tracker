@@ -1,6 +1,5 @@
 package com.xtracker.android.fragments;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.xtracker.android.R;
-import com.xtracker.android.objects.googleApiClient;
+import com.xtracker.android.objects.GApiClient;
 
 public class ScreenOne extends Fragment implements
         View.OnClickListener {
@@ -17,7 +16,7 @@ public class ScreenOne extends Fragment implements
 
     private View rootView = null;
     ImageButton button = null;
-    googleApiClient mGoogleClient;
+    GApiClient mGoogleClient;
 
     public ScreenOne() {
     }
@@ -30,7 +29,7 @@ public class ScreenOne extends Fragment implements
                 false);
 
         //Establish googleApiClient
-        mGoogleClient = new googleApiClient(this, rootView);
+        mGoogleClient = new GApiClient(this, rootView);
         mGoogleClient.updateValuesFromBundle(savedInstanceState);
 
         //Set ImageButton clickable
