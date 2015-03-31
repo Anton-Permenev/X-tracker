@@ -12,7 +12,6 @@ public class ParamsExceptionMapper implements ExceptionMapper<ConstraintViolatio
     public Response toResponse(ConstraintViolationException e) {
         String entity = "";
         for (ConstraintViolation<?> cv : e.getConstraintViolations()) {
-            System.out.println(cv.getMessage());
             entity += cv.getMessage() + "\n";
         }
         int status = Response.Status.BAD_REQUEST.getStatusCode();

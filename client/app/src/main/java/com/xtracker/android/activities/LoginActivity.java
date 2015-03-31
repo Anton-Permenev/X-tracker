@@ -164,6 +164,7 @@ public class LoginActivity extends ActionBarActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
+
                         Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });

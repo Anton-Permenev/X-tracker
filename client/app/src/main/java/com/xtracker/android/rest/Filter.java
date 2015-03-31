@@ -1,7 +1,10 @@
 package com.xtracker.android.rest;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.xtracker.android.R;
 import com.xtracker.android.Utils;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -24,6 +27,10 @@ import retrofit.mime.TypedOutput;
 public class Filter extends OkClient {
     private long userId;
     private String privateKey = "1";
+    private Context context;
+
+    public Filter() {
+    }
 
     @Override
     public Response execute(Request request) throws IOException {
@@ -42,25 +49,19 @@ public class Filter extends OkClient {
         String hmac = "";
         try {
             hmac = Utils.generateHmac(privateKey, data);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            //Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show();
         }
 
         if (method.equals("POST")) {
             headers.add(new Header("user_id", String.valueOf(userId)));
             headers.add(new Header("hmac", hmac));
-            Log.d("Retrofit", "hmac: " + hmac);
         } else if (method.equals("GET")){
             URL u = new URL(url);
-
             url += u.getQuery() == null ? "?" : "&";
             url += "user_id=" + userId + "&hmac=" + hmac;
-            Log.d("Retrofit", url);
         }
 
-        Log.d("dbg", data);
         Request req = new Request(method, url, headers, body);
         return super.execute(req);
     }

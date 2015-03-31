@@ -1,6 +1,8 @@
 package com.xtracker.android.objects;
 
-public class Jump {
+import java.io.Serializable;
+
+public class Jump  implements Serializable {
     private long jumpId;
     private Integer airTime;
     private Track track;

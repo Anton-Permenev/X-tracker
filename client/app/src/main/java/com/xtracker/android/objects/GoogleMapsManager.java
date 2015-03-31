@@ -25,7 +25,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         fragment.getMapAsync(this);
 
         mMap = fragment;
-        mApiClient = new GApiClient(mMap.getActivity());
+        mApiClient = new GApiClient(mMap.getActivity(), null);
     }
 
     @Override

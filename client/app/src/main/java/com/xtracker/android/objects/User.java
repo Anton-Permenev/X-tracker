@@ -1,12 +1,13 @@
 package com.xtracker.android.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Ilya on 09.03.2015.
  */
-public class User {
+public class User  implements Serializable {
 
     private long userId;
     private String token;

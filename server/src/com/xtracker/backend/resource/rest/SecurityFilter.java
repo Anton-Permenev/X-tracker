@@ -44,7 +44,6 @@ public class SecurityFilter implements ContainerRequestFilter {
         byte[] byteEntity = IOUtils.toByteArray(containerRequestContext.getEntityStream());
         if (publicKey != null && hmac != null) {
             String data = IOUtils.toString(byteEntity, "UTF-8");
-            System.out.println(data);
             try {
                 if (!validate(publicKey, hmac, data)) {
                     returnAuthError(containerRequestContext, "authorization error");

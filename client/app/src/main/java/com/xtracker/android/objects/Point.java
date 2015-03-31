@@ -1,9 +1,11 @@
 package com.xtracker.android.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by Ilya on 09.03.2015.
  */
-public class Point {
+public class Point implements Serializable {
 
     private long pointId;
     private double acceleration;

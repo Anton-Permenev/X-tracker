@@ -13,27 +13,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.xtracker.android.R;
-import com.xtracker.android.Utils;
 import com.xtracker.android.adapters.DrawerAdapter;
-import com.xtracker.android.fragments.ScreenOne;
+import com.xtracker.android.fragments.HomeFragment;
 import com.xtracker.android.fragments.ScreenThree;
 import com.xtracker.android.fragments.ScreenTwo;
-import com.xtracker.android.objects.Point;
-import com.xtracker.android.objects.Track;
-import com.xtracker.android.rest.ApiService;
-import com.xtracker.android.rest.RestClient;
-
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -127,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new ScreenOne();
+                fragment = new HomeFragment();
                 break;
             case 1:
                 fragment = new ScreenTwo();

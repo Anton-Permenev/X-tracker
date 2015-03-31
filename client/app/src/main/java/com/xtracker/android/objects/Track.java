@@ -1,5 +1,11 @@
 package com.xtracker.android.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +13,7 @@ import java.util.List;
 /**
  * Created by Ilya on 09.03.2015.
  */
-public class Track {
+public class Track implements Serializable{
     private long trackId;
 
     private Timestamp timeStart;
@@ -77,5 +83,7 @@ public class Track {
     public void addPoint(Point point){
         this.points.add(point);
     }
+
+
 }
 

@@ -29,5 +29,6 @@
     <!-- <integer name="google_play_services_version">21</integer> -->
 
     <string name="title_activity_track">TrackActivity</string>
+    <string name="internal_error">Internal error</string>
 
 </resources>
