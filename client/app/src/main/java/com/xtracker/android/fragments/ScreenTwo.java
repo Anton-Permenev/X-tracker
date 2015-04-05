@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import com.xtracker.android.R;
 import com.xtracker.android.activities.TrackActivity;
+import com.xtracker.android.objects.GApiClient;
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -30,6 +32,12 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     private TextView helloOutput;
     private RestClient restClient;
     private ApiService apiService;
+
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
+    }
+
+    private List<Track> tracks;
 
 
     public ScreenTwo() {
@@ -49,6 +57,18 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         restClient = RestClient.getInstance();
         apiService = restClient.getApiService();
 
+        apiService.getTracksList(new Callback<List<Track>>() {
+            @Override
+            public void success(List<Track> tracks, Response response) {
+                setTracks(tracks);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println("Smth wrong");
+            }
+        });
+
         return rootView;
     }
 
@@ -60,7 +80,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
-                //startTrackActivity();
+                startTrackActivity();
                 getHello();
                 //restRequestExample();
                 break;

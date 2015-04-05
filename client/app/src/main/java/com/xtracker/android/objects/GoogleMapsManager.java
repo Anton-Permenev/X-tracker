@@ -6,8 +6,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.xtracker.android.R;
+import com.xtracker.android.rest.ApiService;
+import com.xtracker.android.rest.RestClient;
 
 /**
  * Created by Ilya on 28.03.2015.
@@ -17,6 +20,8 @@ public class GoogleMapsManager implements OnMapReadyCallback {
     private final FragmentManager fragmentManager;
     private MapFragment mMap;
     private GApiClient mApiClient;
+    private LatLngBounds AREA;
+    private ApiService apiService = RestClient.getInstance().getApiService();
 
     public GoogleMapsManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -25,7 +30,8 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         fragment.getMapAsync(this);
 
         mMap = fragment;
-        mApiClient = new GApiClient(mMap.getActivity(), null);
+//        mApiClient = new GApiClient(mMap.getActivity(), null);
+
     }
 
     @Override
@@ -36,6 +42,8 @@ public class GoogleMapsManager implements OnMapReadyCallback {
                     .title("Hello world"));
             googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         }
+        googleMap.setMyLocationEnabled(true);
+//        AREA = new LatLngBounds();
     }
 
     public void workMethod() {

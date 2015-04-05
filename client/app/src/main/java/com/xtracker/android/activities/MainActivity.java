@@ -22,6 +22,7 @@ import com.xtracker.android.adapters.DrawerAdapter;
 import com.xtracker.android.fragments.HomeFragment;
 import com.xtracker.android.fragments.ScreenThree;
 import com.xtracker.android.fragments.ScreenTwo;
+import com.xtracker.android.objects.GApiClient;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -42,6 +43,14 @@ public class MainActivity extends ActionBarActivity {
 
     private String privateKey;
     private long userId;
+
+    public GoogleApiClient getApiClient(){
+        return this.mGoogleApiClient;
+    }
+
+    public void setmGoogleApiClient(GoogleApiClient client){
+        this.mGoogleApiClient = client;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

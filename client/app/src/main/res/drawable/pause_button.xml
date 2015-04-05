@@ -5,7 +5,7 @@
             <solid android:color="@color/track_button_paused" />
         </shape>
     </item>
-    <item android:drawable="@drawable/pause">
-    </item>
+    <!--<item android:drawable="@drawable/pause">-->
+    <!--</item>-->
 </layer-list>
 

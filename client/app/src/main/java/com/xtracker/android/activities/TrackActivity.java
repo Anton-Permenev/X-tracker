@@ -1,21 +1,31 @@
 package com.xtracker.android.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.xtracker.android.R;
 import com.xtracker.android.objects.GoogleMapsManager;
+import com.xtracker.android.objects.Track;
+
+import java.util.List;
 
 public class TrackActivity extends ActionBarActivity {
+
+    private List<Track> tracks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
-
+        Intent intent = this.getIntent();
+        tracks = (List<Track>) intent.getParcelableExtra("TRACKS_LIST");
         GoogleMapsManager mapsManager = new GoogleMapsManager(getFragmentManager());
+
 
     }
 
