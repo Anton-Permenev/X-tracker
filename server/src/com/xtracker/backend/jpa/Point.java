@@ -22,6 +22,10 @@ public class Point {
     @Basic
     @Column(name = "speed", nullable = true, insertable = true, updatable = true, precision = 8)
     private float speed;
+    @Basic
+    @Column(name = "height", nullable = true, insertable = true, updatable = true)
+    private double height;
+
     @ManyToOne
     @JoinColumn(name = "track_id")
     private Track track;

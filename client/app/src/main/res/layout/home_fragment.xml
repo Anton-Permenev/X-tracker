@@ -5,37 +5,118 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_marginTop="89dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
-
+        android:layout_marginTop="89dp"
+        android:id="@+id/buttons">
         <ImageButton
+            android:id="@+id/startCaptureBtn"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:id="@+id/startCaptureBtn"
-            android:background="@drawable/track_button_selector"
-            android:adjustViewBounds="true"
-            android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal|top"
+            android:adjustViewBounds="true"
+            android:background="@drawable/track_button_selector"
             android:nestedScrollingEnabled="false" />
+
         <ImageButton
+            android:id="@+id/pauseButton"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:id="@+id/pauseButton"
-            android:background="@drawable/pause_button_selector"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:adjustViewBounds="true"
+            android:background="@drawable/pause_button_selector"
             android:nestedScrollingEnabled="false" />
-        </FrameLayout>
+    </FrameLayout>
 
 
-    <TextView
-        android:id="@+id/textView1"
+    <FrameLayout
+        android:id="@+id/idleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+<!--
+        <android.support.v7.widget.RecyclerView
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>-->
+    </FrameLayout>
+    <RelativeLayout
+        android:id="@+id/trackingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/Start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="00:00"
+            android:id="@+id/currentTime"
+            android:layout_below="@+id/textView1"
+            android:layout_alignLeft="@+id/currentDistance"
+            android:layout_alignStart="@+id/currentDistance"
+            android:layout_marginTop="28dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0m"
+            android:id="@+id/currentDistance"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="102dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/addTrackLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/trackTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:hint="@string/track_title_hint" />
+
+        <ImageView
+            android:id="@+id/trackImage"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_camera" />
+
+        <EditText
+            android:id="@+id/trackDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="10"
+            android:hint="@string/track_description_hint"
+            android:inputType="textMultiLine" />
+    </LinearLayout>
+
+    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Start"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

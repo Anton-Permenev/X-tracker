@@ -1,6 +1,7 @@
 package com.xtracker.backend.jpa;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,10 @@ public class User {
     @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 104857)
     private String email = "";
     @Basic
+    @Column(name="name")
+    private String name = "";
+    @Basic
+    @XmlTransient
     @Column(name = "private_key", nullable = true, insertable = true, updatable = true, length = 104857)
     private String privateKey = "";
     @OneToMany(mappedBy = "user")

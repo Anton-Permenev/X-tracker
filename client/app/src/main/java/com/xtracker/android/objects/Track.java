@@ -23,6 +23,9 @@ public class Track implements Serializable{
     private List<Point> points = new ArrayList<>();
     private User user;
 
+    private String title;
+    private String description;
+
     public long getTrackId() {
         return trackId;
     }
@@ -84,6 +87,20 @@ public class Track implements Serializable{
         this.points.add(point);
     }
 
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
 

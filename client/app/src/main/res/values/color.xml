@@ -6,5 +6,9 @@
     <item name="track_button_inactive" type="color">#4CAF50</item>
     <item name="track_button_paused" type="color">#607D8B</item>
 
+    <item name="primary" type="color">#2196F3</item>
+    <item name="accent" type="color">#E64A19</item>
+    <item name="primaryDark" type="color">#1976D2</item>
+
 
 </resources>

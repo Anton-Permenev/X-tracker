@@ -12,14 +12,20 @@ import java.util.List;
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "track_id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "track_id")
     private long trackId;
     @Basic
-    @Column(name = "time_start", nullable = true, insertable = true, updatable = true)
+    @Column(name = "time_start")
     private Timestamp timeStart;
     @Basic
-    @Column(name = "time_end", nullable = true, insertable = true, updatable = true)
+    @Column(name = "time_end")
     private Timestamp timeEnd;
+    @Basic
+    @Column(name="title")
+    private String title;
+    @Basic
+    @Column(name="description")
+    private String description;
     @OneToMany(mappedBy = "track")
     private List<Jump> jumps = new ArrayList<>();
     @OneToMany(mappedBy = "track", cascade = CascadeType.PERSIST)
@@ -83,5 +89,21 @@ public class Track {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -24,8 +24,6 @@ public class SecurityFilter implements ContainerRequestFilter {
     @EJB
     AuthBean authBean;
 
-
-
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
         String method = containerRequestContext.getMethod();

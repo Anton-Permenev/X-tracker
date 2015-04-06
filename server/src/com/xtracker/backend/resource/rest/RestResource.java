@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -88,7 +89,8 @@ public class RestResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     @Secured
-    public void addTrack(Track track) {
+    public void addTrack(@NotNull Track track, @HeaderParam("user_id") String userId) throws SQLException {
+        track.setUser(ormBean.getUser(Integer.valueOf(userId)));
         ormBean.addTrack(track);
     }
 

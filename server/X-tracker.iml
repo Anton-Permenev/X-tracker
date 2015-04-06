@@ -13,7 +13,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="xtrackerUnit" value="faebb44d-eb38-4d05-89ab-9d4c33a48baf" />
+          <factory-entry name="xtrackerUnit" value="8e4416b4-b74b-49de-850a-4096db844c4b" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />
       </configuration>

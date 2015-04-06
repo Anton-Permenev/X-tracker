@@ -1,7 +1,6 @@
 package com.xtracker.android.objects;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +11,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.xtracker.android.R;
-import com.xtracker.android.fragments.HomeFragment;
-import com.xtracker.android.rest.ApiService;
-import com.xtracker.android.rest.RestClient;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.xtracker.android.callbacks.OnTrackCreated;
 
 /**
  * Created by Ilya on 15.03.2015.
@@ -30,15 +22,14 @@ public class GApiClient implements
         LocationListener {
     private boolean mRequestingLocationUpdates;
     private boolean tracking  = false;
-    private ApiService apiService = RestClient.getInstance().getApiService();
     private boolean paused = false;
 
     public static final String REQUESTING_LOCATION_UPDATES_KEY = "RLUK";
     public static final String LOCATION_KEY = "LK";
     public static final String TRACKING_KEY = "TK";
     public static final String PAUSED_KEY = "PK";
-    private static final String CURRENT_TRACK_KEY = "CTK";
-
+    public static final String CURRENT_TRACK_KEY = "CTK";
+    private OnTrackCreated onTrackCreated;
 
     public Location getmCurrentLocation() {
         return mCurrentLocation;
@@ -218,18 +209,7 @@ public class GApiClient implements
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
 
-            apiService.addTrack(currentTrack, new Callback<Long>() {
-
-                @Override
-                public void success(Long trackId, Response response) {
-                    System.out.println("Success");
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    System.out.println(currentTrack.getPoints().toString());
-                }
-            });
+            onTrackCreated.trackPrepared(currentTrack);
         }
         tracking = !tracking;
     }
@@ -249,5 +229,9 @@ public class GApiClient implements
 
     public void destroy() {
         mGoogleApiClient.disconnect();
+    }
+
+    public void setTrackCallback(OnTrackCreated onTrackCreated) {
+        this.onTrackCreated = onTrackCreated;
     }
 }

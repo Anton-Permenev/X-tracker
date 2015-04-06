@@ -12,6 +12,7 @@ public class Point implements Serializable {
     private float speed;
     private double lat;
     private double lon;
+    private double height;
     private Track track;
 
     public float getSpeed() {
@@ -76,6 +77,14 @@ public class Point implements Serializable {
 
     public void setTrack(Track track) {
         this.track = track;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 }
 

@@ -31,4 +31,11 @@
     <string name="title_activity_track">TrackActivity</string>
     <string name="internal_error">Internal error</string>
 
+    <string name="track_title_hint">Track title</string>
+    <string name="track_description_hint">Add description</string>
+    <string name="action_button_add">Add</string>
+    <string name="setTitleError">Set track title</string>
+    <string name="track_added">The track has been added</string>
+    <string name="pick_image">Select or take a new picture</string>
+
 </resources>
