@@ -34,14 +34,13 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     private Button button;
     private TextView helloOutput;
     private ApiService apiService;
+    private List<Track> mTracks;
 
     public void setTracks(List<Track> tracks) {
-        this.tracks = tracks;
+        this.mTracks = tracks;
     }
 
-    private List<Track> tracks;
-
-    private ArrayList tracksArray;
+    private ArrayList<Long> tracksArray;
 
 
     public ScreenTwo() {
@@ -63,17 +62,30 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         //Initialize tracksArray
         tracksArray = new ArrayList<Long>();
 
+        getTracks();
+
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         //Create an adapter for ListView
-        ArrayAdapter<String> tracksAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, tracksArray);
+
+        ArrayAdapter tracksAdapter = new ArrayAdapter<Long>(this.getActivity(),
+                android.R.layout.simple_list_item_1, tracksArray);
         //bing adapter to ListView
         listView.setAdapter(tracksAdapter);
         listView.setOnItemClickListener(mMessageClickedHandler);
 
+        return rootView;
+    }
+
+    private void getTracks() {
         apiService.getTracksList(new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
                 setTracks(tracks);
+                if (tracks != null) {
+                    helloOutput.setText(String.valueOf(tracks.size()));
+                } else {
+                    helloOutput.setText("Hehe");
+                }
                 for (Track t : tracks) {
                     updateTracksArray(t.getTrackId());
                 }
@@ -81,12 +93,10 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("ERROR $$$$$$$$$$$$$$" + error.toString());
+                System.out.println(error.toString());
                 updateTracksArray(3);
             }
         });
-
-        return rootView;
     }
 
     private void updateTracksArray(long trackId) {
@@ -157,7 +167,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == R.id.listView) {
                 TextView idText = (TextView) view;
-                startTrackActivity(Long.getLong(String.valueOf(idText.getText())));
+                startTrackActivity(Long.valueOf(String.valueOf(idText.getText())));
             }
         }
     };
