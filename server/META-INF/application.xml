@@ -13,4 +13,5 @@
     <module id="X-tracker-EJB">
         <ejb>ejb.jar</ejb>
     </module>
+
 </application>
