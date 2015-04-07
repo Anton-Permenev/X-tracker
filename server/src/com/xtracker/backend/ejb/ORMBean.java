@@ -56,8 +56,6 @@ public class ORMBean {
     public List<Track> getTracks(long userId) throws SQLException {
         return getUser(userId).getTracks();
     }
-
-
     /**
      * Creates Point entity.
      * @return entity object
@@ -101,9 +99,11 @@ public class ORMBean {
     }
 
     public User getUser(long id) throws SQLException {
+
         User user = em.find(User.class, id);
         if (user == null)
             throw new SQLException("A user with given id does not exist.");
+        em.refresh(user);
         return user;
 
     }
