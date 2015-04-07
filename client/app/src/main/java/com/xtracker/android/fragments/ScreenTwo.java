@@ -33,7 +33,6 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     private View rootView;
     private Button button;
     private TextView helloOutput;
-    private RestClient restClient;
     private ApiService apiService;
 
     public void setTracks(List<Track> tracks) {
@@ -59,12 +58,17 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         helloOutput = (TextView) rootView.findViewById(R.id.textView);
 
-        restClient = RestClient.getInstance();
-        apiService = restClient.getApiService();
+        apiService = RestClient.getInstance().getApiService();
 
         //Initialize tracksArray
         tracksArray = new ArrayList<Long>();
 
+        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        //Create an adapter for ListView
+        ArrayAdapter<String> tracksAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, tracksArray);
+        //bing adapter to ListView
+        listView.setAdapter(tracksAdapter);
+        listView.setOnItemClickListener(mMessageClickedHandler);
 
         apiService.getTracksList(new Callback<List<Track>>() {
             @Override
@@ -77,19 +81,10 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("Smth wrong");
+                System.out.println("ERROR $$$$$$$$$$$$$$" + error.toString());
                 updateTracksArray(3);
             }
         });
-
-        //Create an adapter for ListView
-        ArrayAdapter<String> tracksAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, tracksArray);
-        //bing adapter to ListView
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        if ((listView != null) && (tracksAdapter != null)) {
-            listView.setAdapter(tracksAdapter);
-            listView.setOnItemClickListener(mMessageClickedHandler);
-        }
 
         return rootView;
     }

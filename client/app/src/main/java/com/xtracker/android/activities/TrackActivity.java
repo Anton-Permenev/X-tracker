@@ -13,12 +13,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.xtracker.android.R;
 import com.xtracker.android.objects.GoogleMapsManager;
 import com.xtracker.android.objects.Track;
+import com.xtracker.android.rest.ApiService;
+import com.xtracker.android.rest.RestClient;
 
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class TrackActivity extends ActionBarActivity {
 
     private long trackId;
+    private ApiService apiService;
+    GoogleMapsManager mapsManager;
+    Track track;
+
+
+    public void setTrack(Track track) {
+        this.track = track;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +40,23 @@ public class TrackActivity extends ActionBarActivity {
         setContentView(R.layout.activity_track);
         Intent intent = this.getIntent();
         trackId = intent.getLongExtra("TRACK_ID", 1);
-        GoogleMapsManager mapsManager = new GoogleMapsManager(getFragmentManager());
+        apiService = RestClient.getInstance().getApiService();
+        mapsManager = new GoogleMapsManager(getFragmentManager(), track);
 
-        TextView editText = (TextView) findViewById(R.id.textView2);
+        final TextView editText = (TextView) findViewById(R.id.textView2);
         editText.setText(String.valueOf(trackId));
 
+        apiService.getTrack(trackId, new Callback<Track>() {
+            @Override
+            public void success(Track track, Response response) {
+                setTrack(track);
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                editText.setText(error.getMessage());
+            }
+        });
     }
 
 
