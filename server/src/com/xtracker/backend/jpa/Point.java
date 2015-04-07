@@ -1,5 +1,7 @@
 package com.xtracker.backend.jpa;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.*;
 
 
@@ -25,7 +27,7 @@ public class Point {
     @Basic
     @Column(name = "height", nullable = true, insertable = true, updatable = true)
     private double height;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "track_id")
     private Track track;

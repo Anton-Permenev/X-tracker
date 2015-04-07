@@ -1,5 +1,7 @@
 package com.xtracker.backend.jpa;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class User {
     @XmlTransient
     @Column(name = "private_key", nullable = true, insertable = true, updatable = true, length = 104857)
     private String privateKey = "";
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Track> tracks = new ArrayList<>();
 

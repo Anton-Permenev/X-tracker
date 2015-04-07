@@ -73,7 +73,14 @@ public class RestResource {
     @Produces("application/json")
     @Secured
     public List<Track> getTracksList(@QueryParam("user_id") long user_id) throws SQLException {
-        return ormBean.getTracks(user_id);
+        List<Track> tracks = ormBean.getTracks(user_id);
+
+        for (Track track  : tracks) {
+            track.setPoints(null);
+            track.setJumps(null);
+            track.setUser(null);
+        }
+        return tracks;
     }
 
     @GET

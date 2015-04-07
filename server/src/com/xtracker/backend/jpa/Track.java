@@ -1,5 +1,8 @@
 package com.xtracker.backend.jpa;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
@@ -16,20 +19,23 @@ public class Track {
     private long trackId;
     @Basic
     @Column(name = "time_start")
-    private Timestamp timeStart;
+    private Timestamp timeStart = new Timestamp(System.currentTimeMillis());
     @Basic
     @Column(name = "time_end")
-    private Timestamp timeEnd;
+    private Timestamp timeEnd = new Timestamp(System.currentTimeMillis());
     @Basic
     @Column(name="title")
-    private String title;
+    private String title = "";
     @Basic
     @Column(name="description")
-    private String description;
+    private String description = "";
+    @JsonManagedReference
     @OneToMany(mappedBy = "track")
     private List<Jump> jumps = new ArrayList<>();
+    @JsonManagedReference
     @OneToMany(mappedBy = "track", cascade = CascadeType.PERSIST)
     private List<Point> points = new ArrayList<>();
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;

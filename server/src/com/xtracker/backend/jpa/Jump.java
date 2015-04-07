@@ -1,5 +1,7 @@
 package com.xtracker.backend.jpa;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,8 @@ public class Jump {
     @Basic
     @Column(name = "air_time", nullable = true, insertable = true, updatable = true)
     private int airTime;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "track_id", referencedColumnName = "track_id")
     private Track track;
