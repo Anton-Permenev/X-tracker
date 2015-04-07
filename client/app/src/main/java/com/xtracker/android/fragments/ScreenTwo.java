@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xtracker.android.R;
@@ -39,6 +42,8 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     private List<Track> tracks;
 
+    private ArrayList tracksArray;
+
 
     public ScreenTwo() {
     }
@@ -57,38 +62,56 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         restClient = RestClient.getInstance();
         apiService = restClient.getApiService();
 
+        //Initialize tracksArray
+        tracksArray = new ArrayList<Long>();
+
+
         apiService.getTracksList(new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
                 setTracks(tracks);
+                for (Track t : tracks) {
+                    updateTracksArray(t.getTrackId());
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
                 System.out.println("Smth wrong");
+                updateTracksArray(3);
             }
         });
+
+        //Create an adapter for ListView
+        ArrayAdapter<String> tracksAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, tracksArray);
+        //bing adapter to ListView
+        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        if ((listView != null) && (tracksAdapter != null)) {
+            listView.setAdapter(tracksAdapter);
+            listView.setOnItemClickListener(mMessageClickedHandler);
+        }
 
         return rootView;
     }
 
-    public void OnClick(View v) {
-
+    private void updateTracksArray(long trackId) {
+        this.tracksArray.add(trackId);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
-                startTrackActivity();
-                getHello();
+                startTrackActivity(0);
+//                getHello();
                 //restRequestExample();
                 break;
         }
     }
 
-    private void startTrackActivity() {
-        Intent intent = new Intent(this.getActivity() , TrackActivity.class);
+    private void startTrackActivity(long trackId) {
+        Intent intent = new Intent(this.getActivity(), TrackActivity.class);
+        intent.putExtra("TRACK_ID", trackId);
         startActivity(intent);
     }
 
@@ -133,4 +156,15 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+    private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getId() == R.id.listView) {
+                TextView idText = (TextView) view;
+                startTrackActivity(Long.getLong(String.valueOf(idText.getText())));
+            }
+        }
+    };
+
 }

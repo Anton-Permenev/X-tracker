@@ -36,12 +36,12 @@ public class GoogleMapsManager implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if (mApiClient.getmCurrentLocation() != null) {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(mApiClient.getmCurrentLocation().getLatitude(), mApiClient.getmCurrentLocation().getLatitude()))
-                    .title("Hello world"));
-            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        }
+//        if (mApiClient.getmCurrentLocation() != null) {
+//            googleMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(mApiClient.getmCurrentLocation().getLatitude(), mApiClient.getmCurrentLocation().getLatitude()))
+//                    .title("Hello world"));
+//            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+//        }
         googleMap.setMyLocationEnabled(true);
 //        AREA = new LatLngBounds();
     }

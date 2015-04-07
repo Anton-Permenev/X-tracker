@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -16,15 +18,18 @@ import java.util.List;
 
 public class TrackActivity extends ActionBarActivity {
 
-    private List<Track> tracks;
+    private long trackId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
         Intent intent = this.getIntent();
-        tracks = (List<Track>) intent.getParcelableExtra("TRACKS_LIST");
+        trackId = intent.getLongExtra("TRACK_ID", 1);
         GoogleMapsManager mapsManager = new GoogleMapsManager(getFragmentManager());
+
+        TextView editText = (TextView) findViewById(R.id.textView2);
+        editText.setText(String.valueOf(trackId));
 
 
     }
