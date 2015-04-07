@@ -72,15 +72,15 @@ public class RestResource {
     @Path("tracks")
     @Produces("application/json")
     @Secured
-    public List<Track> getTracksList(@QueryParam("user_id") long user_id) {
-        return getTracksList(user_id);
+    public List<Track> getTracksList(@QueryParam("user_id") long user_id) throws SQLException {
+        return ormBean.getTracks(user_id);
     }
 
     @GET
     @Path("tracks/{track_id}")
     @Produces("application/json")
-    public Track getTrack(@PathParam("track_id") long track_id) {
-        return getTrack(track_id);
+    public Track getTrack(@PathParam("track_id") long track_id) throws SQLException {
+        return ormBean.getTrack(track_id);
     }
 
 
