@@ -39,7 +39,7 @@ public class ORMBean {
     }
 
     public void editTrack(long trackId, Timestamp timeStart, Timestamp timeEnd) throws SQLException {
-        saveTrack(getTrack(trackId), timeStart, timeEnd);
+        //saveTrack(getTrack(trackId), timeStart, timeEnd);
     }
 
     public void deleteTrack(long trackId) throws SQLException {
@@ -109,8 +109,8 @@ public class ORMBean {
     }
 
     private void saveTrack(Track track, Timestamp timeStart, Timestamp timeEnd){
-        track.setTimeStart(timeStart);
-        track.setTimeEnd(timeEnd);
+        //track.setTimeStart(timeStart);
+        //track.setTimeEnd(timeEnd);
         //track.setUser(authBean.getUser());
         em.persist(track);
     }
