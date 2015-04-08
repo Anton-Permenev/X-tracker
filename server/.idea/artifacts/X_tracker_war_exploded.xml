@@ -10,7 +10,6 @@
           <element id="library" level="project" name="Mojarra-2.2.1" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="server-war/web/Web" />
     </root>
   </artifact>
 </component>
