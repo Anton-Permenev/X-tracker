@@ -6,32 +6,23 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <h:outputStylesheet name="css/bootstrap.min.css"/>
-    <h:outputStylesheet name="css/bootstrap-theme.min.css"/>
+    <h:outputStylesheet name="dist/css/AdminLTE.min.css"/>
+    <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+    <h:outputStylesheet name="dist/css/skins/skin-blue.min.css"/>
 </h:head>
-<h:body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
+<h:body styleClass="skin-blue fixed">
+    <div class="wrapper">
+        <div class="main-header">
+            <a href="index.xhtml" class="logo"><b>X-tracker</b></a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">X-tracker</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
+                </a>
+            </nav>
         </div>
+
     </div>
+
 
 </h:body>
 </html>
