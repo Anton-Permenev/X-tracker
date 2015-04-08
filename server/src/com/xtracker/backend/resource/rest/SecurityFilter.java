@@ -38,7 +38,6 @@ public class SecurityFilter implements ContainerRequestFilter {
             publicKey = containerRequestContext.getHeaderString("user_id");
             hmac = containerRequestContext.getHeaderString("hmac");
         }
-
         byte[] byteEntity = IOUtils.toByteArray(containerRequestContext.getEntityStream());
         if (publicKey != null && hmac != null) {
             String data = IOUtils.toString(byteEntity, "UTF-8");
@@ -59,9 +58,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 
     private void returnAuthError(ContainerRequestContext context, String message) {
         context.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(message).build());
-
     }
-
 
     private boolean validate(String publicKey, String hmac, String data) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, SQLException, NumberFormatException {
         String properHmac = authBean.generateHmac(Long.parseLong(publicKey), data);

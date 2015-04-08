@@ -16,23 +16,16 @@ import java.util.List;
 public class Track implements Serializable {
 
     private long trackId;
-    private Timestamp timeStart;
-    private Timestamp timeEnd;
+
+    private String timeStart;
+
+    private String timeEnd;
     private List<Jump> jumps = new ArrayList<>();
     private List<Point> points = new ArrayList<>();
     private User user;
 
     private String title;
     private String description;
-
-    public Track(long trackId, Timestamp timeStart, Timestamp timeEnd, User user, String title, String description) {
-        this.trackId = trackId;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.user = user;
-        this.title = title;
-        this.description = description;
-    }
 
     public Track() {
     }
@@ -45,19 +38,19 @@ public class Track implements Serializable {
         this.trackId = trackId;
     }
 
-    public Timestamp getTimeStart() {
+    public String getTimeStart() {
         return timeStart;
     }
 
-    public void setTimeStart(Timestamp timeStart) {
+    public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
     }
 
-    public Timestamp getTimeEnd() {
+    public String getTimeEnd() {
         return timeEnd;
     }
 
-    public void setTimeEnd(Timestamp timeEnd) {
+    public void setTimeEnd(String timeEnd) {
         this.timeEnd = timeEnd;
     }
 

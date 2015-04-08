@@ -5,7 +5,6 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +18,10 @@ public class Track {
     private long trackId;
     @Basic
     @Column(name = "time_start")
-    private Timestamp timeStart = new Timestamp(System.currentTimeMillis());
+    private String timeStart = "";
     @Basic
     @Column(name = "time_end")
-    private Timestamp timeEnd = new Timestamp(System.currentTimeMillis());
+    private String timeEnd = "";
     @Basic
     @Column(name="title")
     private String title = "";
@@ -48,19 +47,19 @@ public class Track {
         this.trackId = trackId;
     }
 
-    public Timestamp getTimeStart() {
+    public String getTimeStart() {
         return timeStart;
     }
 
-    public void setTimeStart(Timestamp timeStart) {
+    public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
     }
 
-    public Timestamp getTimeEnd() {
+    public String getTimeEnd() {
         return timeEnd;
     }
 
-    public void setTimeEnd(Timestamp timeEnd) {
+    public void setTimeEnd(String timeEnd) {
         this.timeEnd = timeEnd;
     }
 
