@@ -3,6 +3,8 @@ package com.xtracker.android.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.DateFormat;
+
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -24,7 +26,6 @@ public class RestClient {
                 .setEndpoint(BASE_URL)
                 .setConverter(new GsonConverter(gson))
                 .build();
-
 
         apiService = restAdapter.create(ApiService.class);
     }

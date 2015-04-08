@@ -3,6 +3,8 @@ package com.xtracker.android.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.xtracker.android.R;
 import com.xtracker.android.activities.TrackActivity;
+import com.xtracker.android.adapters.TracksListAdapter;
 import com.xtracker.android.objects.GApiClient;
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
@@ -34,13 +37,9 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     private Button button;
     private TextView helloOutput;
     private ApiService apiService;
-    private List<Track> mTracks;
-
-    public void setTracks(List<Track> tracks) {
-        this.mTracks = tracks;
-    }
-
+    private ArrayList<Track> mTracks;
     private ArrayList<Long> tracksArray;
+    private LinearLayoutManager mLayoutManager;
 
 
     public ScreenTwo() {
@@ -61,17 +60,22 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         //Initialize tracksArray
         tracksArray = new ArrayList<Long>();
+        mTracks = new ArrayList<Track>();
 
         getTracks();
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        RecyclerView resView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         //Create an adapter for ListView
 
-        ArrayAdapter tracksAdapter = new ArrayAdapter<Long>(this.getActivity(),
+//        ArrayAdapter tracksAdapter = new ArrayAdapter<Long>(this.getActivity(),
                 android.R.layout.simple_list_item_1, tracksArray);
+        resView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this.getActivity());
+        resView.setLayoutManager(mLayoutManager);
         //bing adapter to ListView
-        listView.setAdapter(tracksAdapter);
-        listView.setOnItemClickListener(mMessageClickedHandler);
+        resView.setAdapter(new TracksListAdapter(mTracks));
+//        resView.setOnItemClickListener(mMessageClickedHandler);
+//        resView.setOnClickListener((View.OnClickListener) mMessageClickedHandler);
 
         return rootView;
     }
@@ -80,15 +84,8 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         apiService.getTracksList(new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
+                helloOutput.setText(String.valueOf(tracks.size()));
                 setTracks(tracks);
-                if (tracks != null) {
-                    helloOutput.setText(String.valueOf(tracks.size()));
-                } else {
-                    helloOutput.setText("Hehe");
-                }
-                for (Track t : tracks) {
-                    updateTracksArray(t.getTrackId());
-                }
             }
 
             @Override
@@ -97,6 +94,11 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
                 updateTracksArray(3);
             }
         });
+    }
+
+
+    public void setTracks(List<Track> tracks) {
+        this.mTracks.addAll(tracks);
     }
 
     private void updateTracksArray(long trackId) {
@@ -165,7 +167,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (parent.getId() == R.id.listView) {
+            if (parent.getId() == R.id.recyclerView) {
                 TextView idText = (TextView) view;
                 startTrackActivity(Long.valueOf(String.valueOf(idText.getText())));
             }

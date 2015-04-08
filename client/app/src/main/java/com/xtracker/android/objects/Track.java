@@ -13,11 +13,10 @@ import java.util.List;
 /**
  * Created by Ilya on 09.03.2015.
  */
-public class Track implements Serializable{
+public class Track implements Serializable {
+
     private long trackId;
-
     private Timestamp timeStart;
-
     private Timestamp timeEnd;
     private List<Jump> jumps = new ArrayList<>();
     private List<Point> points = new ArrayList<>();
@@ -25,6 +24,18 @@ public class Track implements Serializable{
 
     private String title;
     private String description;
+
+    public Track(long trackId, Timestamp timeStart, Timestamp timeEnd, User user, String title, String description) {
+        this.trackId = trackId;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+    }
+
+    public Track() {
+    }
 
     public long getTrackId() {
         return trackId;
@@ -83,7 +94,7 @@ public class Track implements Serializable{
         this.user = user;
     }
 
-    public void addPoint(Point point){
+    public void addPoint(Point point) {
         this.points.add(point);
     }
 
