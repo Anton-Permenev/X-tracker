@@ -1,5 +1,7 @@
 package com.xtracker.android.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xtracker.android.R;
+import com.xtracker.android.activities.TrackActivity;
 import com.xtracker.android.objects.Track;
 
 import java.util.ArrayList;
@@ -15,13 +18,18 @@ import java.util.ArrayList;
 public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.ViewHolder> {
 
     private ArrayList<Track> tracks;
+    private Context context;
+    OnItemClickListener mItemClickListener;
 
-    public TracksListAdapter(ArrayList<Track> tracks) {
+
+    public TracksListAdapter(Context context, ArrayList<Track> tracks) {
         this.tracks = tracks;
+        this.context = context;
     }
 
+
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tracks_list_item, viewGroup, false);
         return new ViewHolder(v);
     }
@@ -30,6 +38,7 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Track track = tracks.get(i);
         viewHolder.title.setText(track.getTitle());
+
     }
 
     @Override
@@ -37,7 +46,13 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
         return tracks.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        Track track = tracks.get(position);
+        return (int) track.getTrackId();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title;
         ImageView image;
@@ -50,6 +65,22 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
             this.length = (TextView) v.findViewById(R.id.trackLength);
             this.date = (TextView) v.findViewById(R.id.trackDate);
             this.image = (ImageView) v.findViewById(R.id.trackImage);
+            v.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null){
+                mItemClickListener.onItemClick(v, getPosition());
+            }
+        }
+    }
+
+    public interface OnItemClickListener{
+        public void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener){
+        this.mItemClickListener = mItemClickListener;
     }
 }
