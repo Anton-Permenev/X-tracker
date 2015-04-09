@@ -18,8 +18,16 @@ public class DrawerAdapter extends BaseAdapter {
 
     private final LayoutInflater lInflater;
     private final ArrayList<Object> items;
+    private final int selectedColor;
+    private final int normalTextColor;
+
+    private int mSelectedItem;
+    private TextView title;
+    private ImageView image;
+    private Context context;
 
     public DrawerAdapter(Context context) {
+        this.context = context;
         String[] drawerItems = context.getResources().getStringArray(R.array.drawer_items);
         TypedArray drawerIcons = context.getResources().obtainTypedArray(R.array.drawer_icons);
 
@@ -34,6 +42,9 @@ public class DrawerAdapter extends BaseAdapter {
 
         lInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        selectedColor = context.getResources().getColor(R.color.primary);
+        normalTextColor = context.getResources().getColor(R.color.textNormal);
     }
 
     @Override
@@ -60,9 +71,24 @@ public class DrawerAdapter extends BaseAdapter {
 
         Item item = (Item) getItem(position);
 
+        title = (TextView) view.findViewById(R.id.drawer_item_text);
         ((TextView) view.findViewById(R.id.drawer_item_text)).setText(item.text);
+        image = (ImageView) view.findViewById(R.id.drawer_item_icon);
         ((ImageView) view.findViewById(R.id.drawer_item_icon)).setImageResource(item.iconId);
+
+        if (position == mSelectedItem) {
+            title.setTextColor(selectedColor);
+            image.setColorFilter(selectedColor);
+        } else {
+            title.setTextColor(normalTextColor);
+            image.setColorFilter(null);
+        }
         return view;
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.mSelectedItem = selectedItem;
+        notifyDataSetChanged();
     }
 
     class Item {

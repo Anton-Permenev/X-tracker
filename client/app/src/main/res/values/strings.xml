@@ -10,11 +10,13 @@
     <string-array name="drawer_items">
         <item>Home</item>
         <item>Tracks</item>
+        <item>Profile</item>
         <item>Settings</item>
     </string-array>
     <string-array name="drawer_icons">
         <item>@drawable/ic_home</item>
         <item>@drawable/ic_view_list</item>
+        <item>@drawable/ic_account_circle</item>
         <item>@drawable/ic_settings</item>
     </string-array>
 
@@ -37,5 +39,8 @@
     <string name="setTitleError">Set track title</string>
     <string name="track_added">The track has been added</string>
     <string name="pick_image">Select or take a new picture</string>
+    <string name="chooseImage">Photo</string>
+    <string name="takePicture">Take a picture</string>
+    <string name="chooseFromGallery">Choose from gallery</string>
 
 </resources>

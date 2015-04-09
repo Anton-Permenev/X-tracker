@@ -12,14 +12,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.xtracker.android.R;
 import com.xtracker.android.adapters.DrawerAdapter;
 import com.xtracker.android.fragments.HomeFragment;
+import com.xtracker.android.fragments.ProfileFragment;
 import com.xtracker.android.fragments.ScreenThree;
 import com.xtracker.android.fragments.ScreenTwo;
 import com.xtracker.android.objects.GApiClient;
@@ -43,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
 
     private String privateKey;
     private long userId;
+    private DrawerAdapter mDrawerAdapter;
 
     public GoogleApiClient getApiClient(){
         return this.mGoogleApiClient;
@@ -76,7 +80,8 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         mDrawerList = (ListView) findViewById(R.id.navigation_drawer);
-        mDrawerList.setAdapter(new DrawerAdapter(this));
+        mDrawerAdapter = new DrawerAdapter(this);
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -89,6 +94,8 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
                 mDrawerLayout.closeDrawers();
+
+                mDrawerAdapter.setSelectedItem(position);
             }
         });
     }
@@ -107,6 +114,9 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new ScreenTwo();
                 break;
             case 2:
+                fragment = new ProfileFragment();
+                break;
+            case 3:
                 fragment = new ScreenThree();
                 break;
             default:
@@ -119,8 +129,6 @@ public class MainActivity extends ActionBarActivity {
             fragmentManager.beginTransaction()
                     .replace(R.id.content, fragment).commit();
 
-            // Highlight the selected item, update the title, and close the drawer
-            mDrawerList.setItemChecked(position, true);
             //setTitle(mScreenTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {

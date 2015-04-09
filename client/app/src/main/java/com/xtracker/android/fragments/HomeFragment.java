@@ -1,8 +1,10 @@
 package com.xtracker.android.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +33,9 @@ import com.xtracker.android.objects.GApiClient;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
+
+import java.io.File;
+import java.io.IOException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -63,8 +68,12 @@ public class HomeFragment extends Fragment implements
     private static final String TRACK_DESCRIPTION_KEY = "TDK";
     private static final String PREPARED_TRACK_KEY = "PTK";
     private static final String TRACK_IMAGE_KEY = "TIK";
+    private static final String PICTURE_FILE_KEY = "PFK";
+
     private ImageView trackImage;
-    private static final int CHOOSE_PICTURE = 0;
+    private static final int SELECT_PICTURE = 0;
+    private static final int TAKE_PICTURE = 1;
+    private File mCurrentPhotoFile;
 
     private enum State {
         IDLE, TRACKING, LOADING, ADD
@@ -111,6 +120,7 @@ public class HomeFragment extends Fragment implements
             updateButtonsState(savedInstanceState);
             currentState = (State) savedInstanceState.getSerializable(CURRENT_STATE_KEY);
             preparedTrack = (Track) savedInstanceState.getSerializable(PREPARED_TRACK_KEY);
+            mCurrentPhotoFile = (File) savedInstanceState.getSerializable(PICTURE_FILE_KEY);
             if (currentState == State.ADD) {
                 trackTitle.setText(savedInstanceState.getString(TRACK_TITLE_KEY));
                 trackDescription.setText(savedInstanceState.getString(TRACK_DESCRIPTION_KEY));
@@ -146,6 +156,7 @@ public class HomeFragment extends Fragment implements
         outState.putString(TRACK_TITLE_KEY, trackTitle.getText().toString());
         outState.putString(TRACK_DESCRIPTION_KEY, trackDescription.getText().toString());
         outState.putParcelable(TRACK_IMAGE_KEY, ((BitmapDrawable) trackImage.getDrawable()).getBitmap());
+        outState.putSerializable(PICTURE_FILE_KEY, mCurrentPhotoFile);
         super.onSaveInstanceState(outState);
     }
 
@@ -164,16 +175,51 @@ public class HomeFragment extends Fragment implements
                 v.setActivated(!v.isActivated());
                 break;
             case R.id.trackImage:
-                Intent pickIntent = new Intent();
-                pickIntent.setType("image/*");
-                pickIntent.setAction(Intent.ACTION_GET_CONTENT);
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                Intent chooserIntent = Intent.createChooser(pickIntent, getResources().getString(R.string.pick_image));
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {takePictureIntent});
-                startActivityForResult(chooserIntent, CHOOSE_PICTURE);
+                chooseImage();
                 break;
         }
+    }
+
+    private void chooseImage() {
+
+        final AlertDialog.Builder imageDialog = new AlertDialog.Builder(this.getActivity());
+        imageDialog.setTitle(R.string.chooseImage);
+        final CharSequence[] itemsTitles = {getResources().getString(R.string.takePicture), getResources().getString(R.string.chooseFromGallery)};
+
+        imageDialog.setItems(itemsTitles, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent;
+                if (which == 1) {
+                    intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.chooseFromGallery)), SELECT_PICTURE);
+                } else if (which == 0) {
+                    intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        mCurrentPhotoFile = null;
+                        try {
+                            mCurrentPhotoFile = Utils.createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            ex.printStackTrace();
+                            Toast.makeText(getActivity(), R.string.internal_error, Toast.LENGTH_SHORT).show();
+                        }
+                        // Continue only if the File was successfully created
+                        if (mCurrentPhotoFile != null) {
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(mCurrentPhotoFile));
+                            startActivityForResult(intent, TAKE_PICTURE);
+                            System.out.println(mCurrentPhotoFile.getAbsolutePath());
+                        }
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+        imageDialog.show();
     }
 
     @Override
@@ -214,6 +260,8 @@ public class HomeFragment extends Fragment implements
 
                     preparedTrack.setTitle(title);
                     preparedTrack.setDescription(description);
+                    if (mCurrentPhotoFile != null)
+                        System.out.println("image to pass " + mCurrentPhotoFile.getAbsolutePath());
                     apiService.addTrack(preparedTrack, new Callback<Long>() {
 
                         @Override
@@ -245,6 +293,23 @@ public class HomeFragment extends Fragment implements
     private void resetTracking() {
         preparedTrack = null;
         setState(State.IDLE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == TAKE_PICTURE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap bitmap = Utils.fetchImage(mCurrentPhotoFile);
+                if (bitmap != null)
+                    trackImage.setImageBitmap(bitmap);
+            }
+        } else if (requestCode == SELECT_PICTURE) {
+            if (resultCode == Activity.RESULT_OK) {
+                trackImage.setImageURI(data.getData());
+                mCurrentPhotoFile = new File(data.getData().getPath());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setState(State state) {
@@ -283,13 +348,4 @@ public class HomeFragment extends Fragment implements
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CHOOSE_PICTURE) {
-            if (resultCode == Activity.RESULT_OK) {
-                trackImage.setImageURI(data.getData());
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 }

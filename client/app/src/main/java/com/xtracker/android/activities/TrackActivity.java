@@ -41,7 +41,6 @@ public class TrackActivity extends ActionBarActivity {
         Intent intent = this.getIntent();
         trackId = intent.getLongExtra("TRACK_ID", 1);
         apiService = RestClient.getInstance().getApiService();
-        mapsManager = new GoogleMapsManager(getFragmentManager(), track);
 
         final TextView editText = (TextView) findViewById(R.id.textView2);
         editText.setText(String.valueOf(trackId));
@@ -50,6 +49,7 @@ public class TrackActivity extends ActionBarActivity {
             @Override
             public void success(Track track, Response response) {
                 setTrack(track);
+                mapsManager = new GoogleMapsManager(getFragmentManager(), track);
             }
 
             @Override

@@ -34,13 +34,12 @@ import retrofit.client.Response;
 public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     private View rootView;
-    private Button button;
     private TextView helloOutput;
     private ApiService apiService;
     private ArrayList<Track> mTracks;
     private ArrayList<Long> tracksArray;
     private LinearLayoutManager mLayoutManager;
-
+    private TracksListAdapter mAdapter;
 
     public ScreenTwo() {
     }
@@ -51,15 +50,12 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         rootView = inflater.inflate(R.layout.screen_two, container,
                 false);
-        button = (Button) rootView.findViewById(R.id.button);
-        button.setOnClickListener(this);
 
         helloOutput = (TextView) rootView.findViewById(R.id.textView);
 
         apiService = RestClient.getInstance().getApiService();
 
         //Initialize tracksArray
-        tracksArray = new ArrayList<Long>();
         mTracks = new ArrayList<Track>();
 
         getTracks();
@@ -67,13 +63,12 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         RecyclerView resView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         //Create an adapter for ListView
 
-//        ArrayAdapter tracksAdapter = new ArrayAdapter<Long>(this.getActivity(),
-                android.R.layout.simple_list_item_1, tracksArray);
         resView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         resView.setLayoutManager(mLayoutManager);
         //bing adapter to ListView
-        resView.setAdapter(new TracksListAdapter(mTracks));
+        mAdapter = new TracksListAdapter(getActivity(), mTracks);
+        resView.setAdapter(mAdapter);
 //        resView.setOnItemClickListener(mMessageClickedHandler);
 //        resView.setOnClickListener((View.OnClickListener) mMessageClickedHandler);
 
@@ -86,6 +81,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
             public void success(List<Track> tracks, Response response) {
                 helloOutput.setText(String.valueOf(tracks.size()));
                 setTracks(tracks);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -107,13 +103,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button:
-                startTrackActivity(0);
-//                getHello();
-                //restRequestExample();
-                break;
-        }
+
     }
 
     private void startTrackActivity(long trackId) {
@@ -122,47 +112,6 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
-    private void restRequestExample() {
-        //REST request example
-        Track track = new Track();
-        Point point = new Point();
-        point.setSpeed(0.3f);
-        ArrayList<Point> points = new ArrayList<>();
-        points.add(point);
-        track.setPoints(points);
-
-        ApiService apiService = RestClient.getInstance().getApiService();
-        apiService.addTrack(track, new Callback<Long>() {
-
-            @Override
-            public void success(Long trackId, Response response) {
-                if (trackId != null)
-                    helloOutput.setText(trackId.toString());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                helloOutput.setText(error.toString()
-                );
-            }
-        });
-    }
-
-    private void getHello() {
-
-        helloOutput.setText("vse ok");
-        apiService.hello(new Callback<String>() {
-            @Override
-            public void success(String s, Response response) {
-                helloOutput.setText(s);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                helloOutput.setText(error.getMessage());
-            }
-        });
-    }
 
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         @Override

@@ -36,7 +36,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (track != null) {
-            Point point = track.getPoints().get(1);
+            Point point = track.getPoints().get(0);
             googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(point.getLat(), point.getLon()))
                     .title("Hello world"));

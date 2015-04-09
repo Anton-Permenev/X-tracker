@@ -10,5 +10,8 @@
     <item name="accent" type="color">#E64A19</item>
     <item name="primaryDark" type="color">#1976D2</item>
 
+    <item name="textNormal" type="color">#de000000</item>
+    <item name="itemSelected" type="color">#ffdbdbdb</item>
+
 
 </resources>
