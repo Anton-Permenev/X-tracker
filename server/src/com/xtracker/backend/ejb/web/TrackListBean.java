@@ -3,17 +3,17 @@ package com.xtracker.backend.ejb.web;
 import com.xtracker.backend.ejb.ORMBean;
 import com.xtracker.backend.jpa.Track;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import java.sql.Timestamp;
+import java.sql.SQLException;
 import java.util.List;
 
 @ManagedBean
 @SessionScoped
 public class TrackListBean {
 
-    @ManagedProperty(value = "#{ormBean}")
+    @EJB
     private ORMBean ormBean;
 
     public void setOrmBean(ORMBean ormBean) {
@@ -21,36 +21,8 @@ public class TrackListBean {
     }
 
     private List<Track> trackList;
-    private Track selected;
 
-    private long id;
-    private String title;
-    private Timestamp timeEnd;
-    private Timestamp timeStart;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Track getSelected() {
-        return selected;
-    }
-
-    public void setSelected(Track selected) {
-        this.selected = selected;
-    }
+    private long userId;
 
     public List<Track> getTrackList() {
         return trackList;
@@ -60,19 +32,12 @@ public class TrackListBean {
         this.trackList = trackList;
     }
 
-    public Timestamp getTimeEnd() {
-        return timeEnd;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setTimeEnd(Timestamp timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public Timestamp getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(Timestamp timeStart) {
-        this.timeStart = timeStart;
+    public void setUserId(long userId) throws SQLException {
+        this.userId = userId;
+        trackList=ormBean.getTracks(userId);
     }
 }
