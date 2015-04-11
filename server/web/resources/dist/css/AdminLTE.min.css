@@ -130,8 +130,8 @@ body {
     padding: 15px;
     margin-right: auto;
     margin-left: auto;
-    padding-left: 15px;
-    padding-right: 15px
+    padding-left: 0px;
+    padding-right: 0px
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -494,7 +494,7 @@ a:hover, a:active, a:focus {
 }
 
 .sidebar-menu > li > a {
-    padding: 12px 5px 12px 15px;
+    padding: 2px 0px 2px 0px;
     display: block
 }
 
