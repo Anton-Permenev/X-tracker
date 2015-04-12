@@ -2,6 +2,7 @@ package com.xtracker.backend.resource.rest;
 
 import com.xtracker.backend.ejb.AuthBean;
 import com.xtracker.backend.ejb.ORMBean;
+import com.xtracker.backend.jpa.Point;
 import com.xtracker.backend.jpa.Track;
 import com.xtracker.backend.resource.errors.ErrorMessage;
 import com.xtracker.backend.resource.errors.RestException;
@@ -75,7 +76,7 @@ public class RestResource {
     public List<Track> getTracksList(@QueryParam("user_id") long user_id) throws SQLException {
         List<Track> tracks = ormBean.getTracks(user_id);
 
-        for (Track track  : tracks) {
+        for (Track track : tracks) {
             track.setPoints(null);
             track.setJumps(null);
             track.setUser(null);
@@ -87,7 +88,13 @@ public class RestResource {
     @Path("tracks/{track_id}")
     @Produces("application/json")
     public Track getTrack(@PathParam("track_id") long track_id) throws SQLException {
-        return ormBean.getTrack(track_id);
+        Track track = ormBean.getTrack(track_id);
+        System.out.println(track.getTrackId());
+        for (Point p : track.getPoints()){
+            p.setTrack(null);
+        }
+        track.setUser(null);
+        return track;
     }
 
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,8 +52,8 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         rootView = inflater.inflate(R.layout.screen_two, container,
                 false);
-        button = (Button) rootView.findViewById(R.id.button);
-        button.setOnClickListener(this);
+//        button = (Button) rootView.findViewById(R.id.button);
+//        button.setOnClickListener(this);
 
         helloOutput = (TextView) rootView.findViewById(R.id.textView);
 
@@ -66,16 +67,22 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         RecyclerView resView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         //Create an adapter for ListView
-
-//        ArrayAdapter tracksAdapter = new ArrayAdapter<Long>(this.getActivity(),
-                android.R.layout.simple_list_item_1, tracksArray);
         resView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         resView.setLayoutManager(mLayoutManager);
-        //bing adapter to ListView
-        resView.setAdapter(new TracksListAdapter(mTracks));
-//        resView.setOnItemClickListener(mMessageClickedHandler);
-//        resView.setOnClickListener((View.OnClickListener) mMessageClickedHandler);
+        TracksListAdapter mAdapter = new TracksListAdapter(this.getActivity(), mTracks);
+        mAdapter.SetOnItemClickListener(new TracksListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), TrackActivity.class);
+                intent.putExtra("TRACK_ID", mTracks.get(position).getTrackId());
+                System.out.println("POSITION " + mTracks.get(position).getTrackId());
+                startActivity(intent);
+            }
+        });
+        resView.setAdapter(mAdapter);
+
+        resView.setOnClickListener(mOnClickListener);
 
         return rootView;
     }
@@ -107,13 +114,13 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button:
-                startTrackActivity(0);
-//                getHello();
-                //restRequestExample();
-                break;
-        }
+//        switch (v.getId()) {
+////            case R.id.button:
+////                startTrackActivity(0);
+//////                getHello();
+////                //restRequestExample();
+//                break;
+//        }
     }
 
     private void startTrackActivity(long trackId) {
@@ -171,6 +178,13 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
                 TextView idText = (TextView) view;
                 startTrackActivity(Long.valueOf(String.valueOf(idText.getText())));
             }
+        }
+    };
+
+    private RecyclerView.OnClickListener mOnClickListener = new RecyclerView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
         }
     };
 

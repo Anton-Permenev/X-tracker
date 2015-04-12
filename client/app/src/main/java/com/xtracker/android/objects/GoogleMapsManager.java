@@ -36,14 +36,14 @@ public class GoogleMapsManager implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (track != null) {
-            Point point = track.getPoints().get(1);
+            Point point = track.getPoints().get(0);
             googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(point.getLat(), point.getLon()))
                     .title("Hello world"));
             googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-            LatLngBounds myBounds = new LatLngBounds(new LatLng(point.getLat() - 100, point.getLon() - 100),
-                    new LatLng(point.getLat() + 100, point.getLon() + 100));
+            LatLngBounds myBounds = new LatLngBounds(new LatLng(point.getLat() - 10, point.getLon() - 10),
+                    new LatLng(point.getLat() + 10, point.getLon() + 10));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(myBounds, 0));
 
             googleMap.setMyLocationEnabled(true);
