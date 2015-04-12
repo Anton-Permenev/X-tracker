@@ -39,7 +39,9 @@
         android:layout_width="300dp"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:divider="@null"
+        android:listSelector="@drawable/drawer_list_background">
 
     </ListView>
 </android.support.v4.widget.DrawerLayout>
