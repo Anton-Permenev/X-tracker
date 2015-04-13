@@ -1571,8 +1571,8 @@
     </table>
     <table name="tracks" schema="public" catalog="xtracker" type="TABLE">
       <column name="track_id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndHJhY2tzX3RyYWNrX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
-      <column name="time_end" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
-      <column name="time_start" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="time_end" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
+      <column name="time_start" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="user_id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
       <column name="title" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="description" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>

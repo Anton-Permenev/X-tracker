@@ -19,7 +19,6 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
 
     private ArrayList<Track> tracks;
     private Context context;
-    OnItemClickListener mItemClickListener;
 
 
     public TracksListAdapter(Context context, ArrayList<Track> tracks) {
@@ -49,7 +48,7 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
     @Override
     public int getItemViewType(int position) {
         Track track = tracks.get(position);
-        return (int) track.getTrackId();
+        return track.getTrackId().intValue();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,17 +69,11 @@ public class TracksListAdapter extends RecyclerView.Adapter<TracksListAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null){
-                mItemClickListener.onItemClick(v, getPosition());
-            }
+            long trackId = tracks.get(getAdapterPosition()).getTrackId();
+            Intent intent = new Intent(context, TrackActivity.class);
+            intent.putExtra("TRACK_ID", trackId);
+            context.startActivity(intent);
         }
     }
 
-    public interface OnItemClickListener{
-        public void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener){
-        this.mItemClickListener = mItemClickListener;
-    }
 }

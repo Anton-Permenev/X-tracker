@@ -42,5 +42,7 @@
     <string name="chooseImage">Photo</string>
     <string name="takePicture">Take a picture</string>
     <string name="chooseFromGallery">Choose from gallery</string>
+    <string name="network_error">Network error</string>
+    <string name="track_not_cached">This track was deleted from the local storage. Check your internet connection.</string>
 
 </resources>

@@ -178,9 +178,10 @@ public class HomeFragment extends Fragment implements
 
     @Override
     public void trackPrepared(Track track) {
-        if (track.getPoints().size() == 0)
+        if (track.getPoints().size() == 0) {
+            setState(State.IDLE);
             return;
-
+        }
         preparedTrack = track;
         setState(State.ADD);
     }

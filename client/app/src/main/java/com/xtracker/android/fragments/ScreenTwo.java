@@ -13,11 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xtracker.android.R;
+import com.xtracker.android.Utils;
 import com.xtracker.android.activities.TrackActivity;
 import com.xtracker.android.adapters.TracksListAdapter;
+import com.xtracker.android.caching.CacheManager;
+import com.xtracker.android.caching.DaoMaster;
 import com.xtracker.android.objects.GApiClient;
 import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
@@ -35,13 +40,15 @@ import retrofit.client.Response;
 public class ScreenTwo extends Fragment implements View.OnClickListener {
 
     private View rootView;
-    private Button button;
     private TextView helloOutput;
     private ApiService apiService;
     private ArrayList<Track> mTracks;
     private ArrayList<Long> tracksArray;
     private LinearLayoutManager mLayoutManager;
+    private TracksListAdapter mAdapter;
 
+    private CacheManager cacheManager = CacheManager.getInstance();
+    private ProgressBar progressBar;
 
     public ScreenTwo() {
     }
@@ -52,8 +59,6 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
 
         rootView = inflater.inflate(R.layout.screen_two, container,
                 false);
-//        button = (Button) rootView.findViewById(R.id.button);
-//        button.setOnClickListener(this);
 
         helloOutput = (TextView) rootView.findViewById(R.id.textView);
 
@@ -63,28 +68,32 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         tracksArray = new ArrayList<Long>();
         mTracks = new ArrayList<Track>();
 
-        getTracks();
+
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         RecyclerView resView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         //Create an adapter for ListView
+
         resView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         resView.setLayoutManager(mLayoutManager);
-        TracksListAdapter mAdapter = new TracksListAdapter(this.getActivity(), mTracks);
-        mAdapter.SetOnItemClickListener(new TracksListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), TrackActivity.class);
-                intent.putExtra("TRACK_ID", mTracks.get(position).getTrackId());
-                System.out.println("POSITION " + mTracks.get(position).getTrackId());
-                startActivity(intent);
-            }
-        });
+        //bing adapter to ListView
+        mAdapter = new TracksListAdapter(getActivity(), mTracks);
         resView.setAdapter(mAdapter);
+//        resView.setOnItemClickListener(mMessageClickedHandler);
+//        resView.setOnClickListener((View.OnClickListener) mMessageClickedHandler);
 
-        resView.setOnClickListener(mOnClickListener);
+        progressBar.setVisibility(View.VISIBLE);
+        if (Utils.isNetworkConnected(getActivity()))
+            getTracks();
+        else
+            loadTracksFromCache();
 
         return rootView;
+    }
+
+    private void loadTracksFromCache() {
+        setTracks(cacheManager.getTracksList());
     }
 
     private void getTracks() {
@@ -92,20 +101,26 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
             @Override
             public void success(List<Track> tracks, Response response) {
                 helloOutput.setText(String.valueOf(tracks.size()));
-                setTracks(tracks);
+                if (tracks.size() != 0) {
+                    setTracks(tracks);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
-                updateTracksArray(3);
+                if (error.getKind() == RetrofitError.Kind.NETWORK)
+                    Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                //updateTracksArray(3);
             }
         });
     }
 
 
     public void setTracks(List<Track> tracks) {
+        progressBar.setVisibility(View.GONE);
         this.mTracks.addAll(tracks);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void updateTracksArray(long trackId) {
@@ -136,7 +151,7 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
         point.setSpeed(0.3f);
         ArrayList<Point> points = new ArrayList<>();
         points.add(point);
-        track.setPoints(points);
+        //track.setPoints(points);
 
         ApiService apiService = RestClient.getInstance().getApiService();
         apiService.addTrack(track, new Callback<Long>() {
@@ -178,13 +193,6 @@ public class ScreenTwo extends Fragment implements View.OnClickListener {
                 TextView idText = (TextView) view;
                 startTrackActivity(Long.valueOf(String.valueOf(idText.getText())));
             }
-        }
-    };
-
-    private RecyclerView.OnClickListener mOnClickListener = new RecyclerView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
         }
     };
 

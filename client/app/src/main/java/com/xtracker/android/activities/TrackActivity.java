@@ -7,11 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.xtracker.android.R;
+import com.xtracker.android.Utils;
+import com.xtracker.android.caching.CacheManager;
 import com.xtracker.android.objects.GoogleMapsManager;
+import com.xtracker.android.objects.Point;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
@@ -28,6 +32,7 @@ public class TrackActivity extends ActionBarActivity {
     private ApiService apiService;
     GoogleMapsManager mapsManager;
     Track track;
+    private CacheManager cacheManager = CacheManager.getInstance();
 
 
     public void setTrack(Track track) {
@@ -41,21 +46,33 @@ public class TrackActivity extends ActionBarActivity {
         Intent intent = this.getIntent();
         trackId = intent.getLongExtra("TRACK_ID", 1);
         apiService = RestClient.getInstance().getApiService();
+
         final TextView editText = (TextView) findViewById(R.id.textView2);
         editText.setText(String.valueOf(trackId));
 
-        apiService.getTrack(trackId, new Callback<Track>() {
-            @Override
-            public void success(Track track, Response response) {
-                mapsManager = new GoogleMapsManager(getFragmentManager(), track);
-                setTrack(track);
-            }
+        if (Utils.isNetworkConnected(this)) {
+            apiService.getTrack(trackId, new Callback<Track>() {
+                @Override
+                public void success(Track track, Response response) {
+                    setTrack(track);
+                    mapsManager = new GoogleMapsManager(getFragmentManager(), track);
+                    cacheManager.saveTrack(track);
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                editText.setText(error.getMessage());
+                @Override
+                public void failure(RetrofitError error) {
+                    editText.setText(error.getMessage());
+                }
+            });
+        } else {
+            Track track = cacheManager.getTrack(trackId);
+            if (track != null) {
+                setTrack(track);
+            } else {
+                Toast.makeText(this, R.string.track_not_cached, Toast.LENGTH_SHORT).show();
+                finish();
             }
-        });
+        }
     }
 
 
