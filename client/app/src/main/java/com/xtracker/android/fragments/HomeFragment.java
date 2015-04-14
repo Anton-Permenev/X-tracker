@@ -2,10 +2,9 @@ package com.xtracker.android.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -26,7 +25,7 @@ import android.widget.Toast;
 
 import com.xtracker.android.R;
 import com.xtracker.android.Utils;
-import com.xtracker.android.callbacks.OnTrackCreated;
+import com.xtracker.android.callbacks.OnTracking;
 import com.xtracker.android.objects.GApiClient;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.rest.ApiService;
@@ -37,34 +36,53 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class HomeFragment extends Fragment implements
-        View.OnClickListener, OnTrackCreated {
+        View.OnClickListener, OnTracking {
 
     private View rootView = null;
-
-    private ApiService apiService = RestClient.getInstance().getApiService();
-
-    GApiClient mGoogleClient;
     private ImageButton pauseButton;
     private ImageButton trackButton;
-    private Track preparedTrack;
+    private ProgressBar progressBar;
     private EditText trackTitle;
     private EditText trackDescription;
     private ActionBar toolbar;
+    private ImageView trackImage;
     private View trackingLayout;
     private View addTrackLayout;
     private View idleLayout;
-
-    private State currentState = State.IDLE;
-    private ProgressBar progressBar;
     private View buttons;
+    private TextView timeText;
+
+    private ApiService apiService = RestClient.getInstance().getApiService();
+    GApiClient mGoogleClient;
+
+    private Track preparedTrack;
+    private State currentState = State.IDLE;
+
+    private long millisPassed = 0;
 
     private static final String CURRENT_STATE_KEY = "CSK";
     private static final String TRACK_TITLE_KEY = "TTK";
     private static final String TRACK_DESCRIPTION_KEY = "TDK";
     private static final String PREPARED_TRACK_KEY = "PTK";
     private static final String TRACK_IMAGE_KEY = "TIK";
-    private ImageView trackImage;
+    private static final String MILLIS_PASSED_KEY = "MPK";
     private static final int CHOOSE_PICTURE = 0;
+
+    private final int TIMER_INTERVAL = 100;
+
+    private CountDownTimer countDownTimer = new CountDownTimer(30000, TIMER_INTERVAL) {
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            timeText.setText(Utils.getTimeTextFromMillis(millisPassed));
+            millisPassed += TIMER_INTERVAL;
+        }
+
+        @Override
+        public void onFinish() {
+            start();
+        }
+    };
 
     private enum State {
         IDLE, TRACKING, LOADING, ADD
@@ -88,6 +106,7 @@ public class HomeFragment extends Fragment implements
         pauseButton = (ImageButton) rootView.findViewById(R.id.pauseButton);
         pauseButton.setVisibility(View.GONE);
         trackButton = (ImageButton) rootView.findViewById(R.id.startCaptureBtn);
+        timeText = (TextView) rootView.findViewById(R.id.currentTime);
 
         trackingLayout = rootView.findViewById(R.id.trackingLayout);
         addTrackLayout = rootView.findViewById(R.id.addTrackLayout);
@@ -115,6 +134,11 @@ public class HomeFragment extends Fragment implements
                 trackTitle.setText(savedInstanceState.getString(TRACK_TITLE_KEY));
                 trackDescription.setText(savedInstanceState.getString(TRACK_DESCRIPTION_KEY));
                 trackImage.setImageBitmap((android.graphics.Bitmap) savedInstanceState.getParcelable(TRACK_IMAGE_KEY));
+            } else if (currentState == State.TRACKING) {
+                millisPassed = savedInstanceState.getLong(MILLIS_PASSED_KEY);
+                timeText.setText(Utils.getTimeTextFromMillis(millisPassed));
+                if (!mGoogleClient.isPaused())
+                    startTimer();
             }
         }
 
@@ -131,7 +155,6 @@ public class HomeFragment extends Fragment implements
         trackButton.setActivated(tracking);
     }
 
-
     @Override
     public void onDestroy() {
         mGoogleClient.destroy();
@@ -146,6 +169,7 @@ public class HomeFragment extends Fragment implements
         outState.putString(TRACK_TITLE_KEY, trackTitle.getText().toString());
         outState.putString(TRACK_DESCRIPTION_KEY, trackDescription.getText().toString());
         outState.putParcelable(TRACK_IMAGE_KEY, ((BitmapDrawable) trackImage.getDrawable()).getBitmap());
+        outState.putLong(MILLIS_PASSED_KEY, millisPassed);
         super.onSaveInstanceState(outState);
     }
 
@@ -153,7 +177,12 @@ public class HomeFragment extends Fragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startCaptureBtn:
-                setState(State.TRACKING);
+                if (currentState == State.IDLE) {
+                    startTimer();
+                    setState(State.TRACKING);
+                } else {
+                    countDownTimer.cancel();
+                }
                 mGoogleClient.startStopTracking();
                 v.setActivated(!v.isActivated());
                 pauseButton.setVisibility(v.isActivated() ? View.VISIBLE : View.GONE);
@@ -161,6 +190,12 @@ public class HomeFragment extends Fragment implements
                 break;
             case R.id.pauseButton:
                 mGoogleClient.pauseResumeTracking();
+                    if (mGoogleClient.isPaused()) {
+                        countDownTimer.cancel();
+                    } else {
+                        startTimer();
+                    }
+
                 v.setActivated(!v.isActivated());
                 break;
             case R.id.trackImage:
@@ -176,14 +211,26 @@ public class HomeFragment extends Fragment implements
         }
     }
 
+    private void startTimer() {
+        countDownTimer.cancel();
+        countDownTimer.start();
+    }
+
     @Override
     public void trackPrepared(Track track) {
         if (track.getPoints().size() == 0) {
             setState(State.IDLE);
-            return;
+        } else {
+            preparedTrack = track;
+            preparedTrack.setDuration(millisPassed);
+            setState(State.ADD);
         }
-        preparedTrack = track;
-        setState(State.ADD);
+        millisPassed = 0;
+    }
+
+    @Override
+    public void pointAdded() {
+
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
@@ -219,7 +266,6 @@ public class HomeFragment extends Fragment implements
 
                         @Override
                         public void success(Long trackId, Response response) {
-                            System.out.println("Success");
                             mode.finish();
                             resetTracking();
                             Toast.makeText(getActivity(), R.string.track_added, Toast.LENGTH_SHORT).show();
@@ -227,6 +273,8 @@ public class HomeFragment extends Fragment implements
 
                         @Override
                         public void failure(RetrofitError error) {
+                            mode.finish();
+                            resetTracking();
                             Toast.makeText(getActivity(), R.string.internal_error, Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -275,6 +323,7 @@ public class HomeFragment extends Fragment implements
                 break;
             case ADD:
                 view = addTrackLayout;
+                countDownTimer.cancel();
                 toolbar.startActionMode(mActionModeCallback);
                 trackTitle.requestFocus();
                 Utils.showKeyboard(this.getActivity(), trackTitle);

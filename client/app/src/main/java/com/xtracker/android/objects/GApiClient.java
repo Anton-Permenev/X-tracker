@@ -11,7 +11,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.xtracker.android.callbacks.OnTrackCreated;
+import com.xtracker.android.callbacks.OnTracking;
+
+import java.sql.Timestamp;
 
 /**
  * Created by Ilya on 15.03.2015.
@@ -29,7 +31,7 @@ public class GApiClient implements
     public static final String TRACKING_KEY = "TK";
     public static final String PAUSED_KEY = "PK";
     public static final String CURRENT_TRACK_KEY = "CTK";
-    private OnTrackCreated onTrackCreated;
+    private OnTracking onTracking;
 
     public Location getmCurrentLocation() {
         return mCurrentLocation;
@@ -200,6 +202,7 @@ public class GApiClient implements
     public void startStopTracking() {
         if (!tracking) {
             currentTrack = new Track();
+            currentTrack.setTimeStart(new Timestamp(System.currentTimeMillis()).toString());
             mRequestingLocationUpdates = true;
             startLocationUpdates();
             if (!(mGoogleApiClient.isConnected())) {
@@ -209,12 +212,13 @@ public class GApiClient implements
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
 
-            onTrackCreated.trackPrepared(currentTrack);
+            onTracking.trackPrepared(currentTrack);
         }
         tracking = !tracking;
+        paused = false;
     }
 
-    public void pauseResumeTracking() {
+    public boolean pauseResumeTracking() {
         if (tracking) {
             if (paused) {
                 mRequestingLocationUpdates = true;
@@ -225,13 +229,18 @@ public class GApiClient implements
             }
             paused = !paused;
         }
+        return paused;
     }
 
     public void destroy() {
         mGoogleApiClient.disconnect();
     }
 
-    public void setTrackCallback(OnTrackCreated onTrackCreated) {
-        this.onTrackCreated = onTrackCreated;
+    public void setTrackCallback(OnTracking onTracking) {
+        this.onTracking = onTracking;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 }

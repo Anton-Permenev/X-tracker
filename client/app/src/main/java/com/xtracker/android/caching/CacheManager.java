@@ -40,6 +40,7 @@ public class CacheManager {
         trackDao.insertOrReplace(track);
         List<Point> points = track.getPoints();
         for (Point point : points) {
+            point.setTrackId(track.getTrackId());
             daoSession.insertOrReplace(point);
         }
     }

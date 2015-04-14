@@ -20,8 +20,8 @@ public class Track {
     @Column(name = "time_start")
     private String timeStart = "";
     @Basic
-    @Column(name = "time_end")
-    private String timeEnd = "";
+    @Column(name = "duration")
+    private long duration;
     @Basic
     @Column(name="title")
     private String title = "";
@@ -55,12 +55,12 @@ public class Track {
         this.timeStart = timeStart;
     }
 
-    public String getTimeEnd() {
-        return timeEnd;
+    public long getDuration() {
+        return duration;
     }
 
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     @Override

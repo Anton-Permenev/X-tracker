@@ -45,8 +45,7 @@
     <RelativeLayout
         android:id="@+id/trackingLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView1"
@@ -62,10 +61,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="00:00"
             android:id="@+id/currentTime"
-            android:layout_below="@+id/textView1"
-            android:layout_alignLeft="@+id/currentDistance"
-            android:layout_alignStart="@+id/currentDistance"
-            android:layout_marginTop="28dp" />
+            android:layout_marginTop="28dp"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"

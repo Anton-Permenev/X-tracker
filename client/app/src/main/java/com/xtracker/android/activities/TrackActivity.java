@@ -37,6 +37,10 @@ public class TrackActivity extends ActionBarActivity {
 
     public void setTrack(Track track) {
         this.track = track;
+        for (Point point : track.getPoints()) {
+            System.out.println(point.getLat());
+
+        }
     }
 
     @Override
@@ -54,6 +58,7 @@ public class TrackActivity extends ActionBarActivity {
             apiService.getTrack(trackId, new Callback<Track>() {
                 @Override
                 public void success(Track track, Response response) {
+
                     setTrack(track);
                     mapsManager = new GoogleMapsManager(getFragmentManager(), track);
                     cacheManager.saveTrack(track);
