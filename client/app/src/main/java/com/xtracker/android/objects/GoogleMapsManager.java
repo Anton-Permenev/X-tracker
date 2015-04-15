@@ -48,14 +48,8 @@ public class GoogleMapsManager implements OnMapReadyCallback {
 
     private void drawTrack(Track track, GoogleMap googleMap) {
         Point point = track.getPoints().get(0);
-        Polyline polylineFast = googleMap.addPolyline(new PolylineOptions()
+        Polyline polyline = googleMap.addPolyline(new PolylineOptions()
                 .color(Color.RED)
-                .geodesic(true));
-        Polyline polylineSlow = googleMap.addPolyline(new PolylineOptions()
-                .color(Color.GREEN)
-                .geodesic(true));
-        Polyline polylineMiddle = googleMap.addPolyline(new PolylineOptions()
-                .color(Color.MAGENTA)
                 .geodesic(true));
 
         //Fill the polyline list
