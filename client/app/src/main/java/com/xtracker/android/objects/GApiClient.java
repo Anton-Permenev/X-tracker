@@ -1,7 +1,9 @@
 package com.xtracker.android.objects;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -44,8 +46,15 @@ public class GApiClient implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private TextView textView1;
+    private LocationManager locManager;
 
     public GApiClient(Activity context, TextView textView1) {
+
+        locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+
+
+
         this.textView1 = textView1;
         //Create an instance of the Google Play services API client
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -58,8 +67,8 @@ public class GApiClient implements
 
         //Create a LocationRequest
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(500);
-        mLocationRequest.setFastestInterval(100);
+        mLocationRequest.setInterval(50);
+        mLocationRequest.setFastestInterval(10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -144,7 +153,7 @@ public class GApiClient implements
         }
     }
 
-    private static final int HALF_MINUTES = 1000 * 30;
+    private static final int HALF_MINUTES = 100 * 30;
 
 
     protected boolean isBetterLocation(Location location, Location currentBestLocation) {
