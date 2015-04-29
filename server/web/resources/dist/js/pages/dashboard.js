@@ -1,21 +1,26 @@
-/*
- * Author: Abdullah A Almsaeed
- * Date: 4 Jan 2014
- * Description:
- *      This is a demo file used only for the main dashboard (index.html)
- **/
 function loadMap() {
-    var latlng = new google.maps.LatLng(4.3695030, 101.1224120);
+    var latlng = new google.maps.LatLng(55.9278956, 37.5238322);
     var myOptions = {
-        zoom: 4,
+        zoom: 5,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
+}
 
-    var marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-        title: "my hometown, Malim Nawar!"
-    });
+function loadTrack(POINTS) {
+    var latlng = new google.maps.LatLng(55.9278956, 37.5238322);
+    var myOptions = {
+        zoom: 17,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP};
+    var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
+    var flightPath = new google.maps.Polyline({
+            path: POINTS,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+    })
+    flightPath.setMap(map);
+
 }

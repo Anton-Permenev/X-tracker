@@ -3,10 +3,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-    <managed-bean>
+     <managed-bean>
         <managed-bean-name>trackListBean</managed-bean-name>
         <managed-bean-class>com.xtracker.backend.ejb.web.TrackListBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-  
+    <managed-bean>
+        <managed-bean-name>trackInfoBean</managed-bean-name>
+        <managed-bean-class>com.xtracker.backend.ejb.web.TrackInfoBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>
