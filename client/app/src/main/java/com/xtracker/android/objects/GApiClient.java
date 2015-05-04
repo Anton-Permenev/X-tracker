@@ -47,11 +47,11 @@ public class GApiClient implements
     private LocationRequest mLocationRequest;
     private TextView textView1;
     private LocationManager locManager;
+    Activity myActivity;
 
     public GApiClient(Activity context, TextView textView1) {
 
         locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
 
 
 
@@ -67,8 +67,8 @@ public class GApiClient implements
 
         //Create a LocationRequest
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(50);
-        mLocationRequest.setFastestInterval(10);
+        mLocationRequest.setInterval(1);
+        mLocationRequest.setFastestInterval(1);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -94,17 +94,19 @@ public class GApiClient implements
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            if (isBetterLocation(location, mCurrentLocation)) {
+//            if (isBetterLocation(location, mCurrentLocation)) {
                 mCurrentLocation = location;
                 Point point = new Point();
                 point.setLat(mCurrentLocation.getLatitude());
                 point.setLon(mCurrentLocation.getLongitude());
                 point.setSpeed(mCurrentLocation.getSpeed());
+                point.setHeight(mCurrentLocation.getAltitude());
+                System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
                 currentTrack.addPoint(point);
                 System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
                 if (textView1 != null)
                     textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
-            }
+//            }
         }
     }
 
@@ -114,6 +116,7 @@ public class GApiClient implements
     }
 
     protected void startLocationUpdates() {
+        //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10,200, (android.location.LocationListener) this);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
     }
@@ -153,60 +156,60 @@ public class GApiClient implements
         }
     }
 
-    private static final int HALF_MINUTES = 100 * 30;
+    private static final int HALF_MINUTES = 20;
 
 
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
-            // A new location is always better than no location
-            return true;
-        }
-
-        // Check whether the new location fix is newer or older
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > HALF_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -HALF_MINUTES;
-        boolean isNewer = timeDelta > 0;
-
-        // If it's been more than two minutes since the current location, use the new location
-        // because the user has likely moved
-        if (isSignificantlyNewer) {
-            return true;
-            // If the new location is more than two minutes older, it must be worse
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-
-        // Check whether the new location fix is more or less accurate
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks whether two providers are the same
-     */
-    private boolean isSameProvider(String provider1, String provider2) {
-        if (provider1 == null) {
-            return provider2 == null;
-        }
-        return provider1.equals(provider2);
-    }
+//    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+//        if (currentBestLocation == null) {
+//            // A new location is always better than no location
+//            return true;
+//        }
+//
+//        // Check whether the new location fix is newer or older
+//        long timeDelta = location.getTime() - currentBestLocation.getTime();
+//        boolean isSignificantlyNewer = timeDelta > HALF_MINUTES;
+//        boolean isSignificantlyOlder = timeDelta < -HALF_MINUTES;
+//        boolean isNewer = timeDelta > 0;
+//
+//        // If it's been more than two minutes since the current location, use the new location
+//        // because the user has likely moved
+//        if (isSignificantlyNewer) {
+//            return true;
+//            // If the new location is more than two minutes older, it must be worse
+//        } else if (isSignificantlyOlder) {
+//            return false;
+//        }
+//
+//        // Check whether the new location fix is more or less accurate
+//        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+//        boolean isLessAccurate = accuracyDelta > 0;
+//        boolean isMoreAccurate = accuracyDelta < 0;
+//        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+//
+//        // Check if the old and new location are from the same provider
+//        boolean isFromSameProvider = isSameProvider(location.getProvider(),
+//                currentBestLocation.getProvider());
+//
+//        // Determine location quality using a combination of timeliness and accuracy
+//        if (isMoreAccurate) {
+//            return true;
+//        } else if (isNewer && !isLessAccurate) {
+//            return true;
+//        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+//            return true;
+//        }
+//        return false;
+////    }
+//
+//    /**
+//     * Checks whether two providers are the same
+//     */
+//    private boolean isSameProvider(String provider1, String provider2) {
+//        if (provider1 == null) {
+//            return provider2 == null;
+//        }
+//        return provider1.equals(provider2);
+//    }
 
     public void startStopTracking() {
         if (!tracking) {

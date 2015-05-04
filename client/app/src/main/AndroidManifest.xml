@@ -3,6 +3,7 @@
     package="com.xtracker.android" >
 
     <!-- Permission for Locations -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Permissions for Google Maps -->
     <uses-permission android:name="android.permission.INTERNET" />
