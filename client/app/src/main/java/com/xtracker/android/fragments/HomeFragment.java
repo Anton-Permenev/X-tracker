@@ -54,8 +54,8 @@ public class HomeFragment extends Fragment implements
     private TextView timeText;
 
     private ApiService apiService = RestClient.getInstance().getApiService();
-    //GApiClient mGoogleClient;
-    LocationClient mGoogleClient;
+    GApiClient mGoogleClient;
+    //LocationClient mGoogleClient;
 
     private Track preparedTrack;
     private State currentState = State.IDLE;
@@ -101,10 +101,10 @@ public class HomeFragment extends Fragment implements
                 false);
         TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
         //Establish googleApiClient
-        //mGoogleClient = new GApiClient(this.getActivity(), textView1);
-        mGoogleClient = new LocationClient(this.getActivity());
+        mGoogleClient = new GApiClient(this.getActivity(), textView1);
+        //mGoogleClient = new LocationClient(this.getActivity());
         mGoogleClient.updateValuesFromBundle(savedInstanceState);
-        //mGoogleClient.setTrackCallback(this);
+        mGoogleClient.setTrackCallback(this);
 
         pauseButton = (ImageButton) rootView.findViewById(R.id.pauseButton);
         pauseButton.setVisibility(View.GONE);
