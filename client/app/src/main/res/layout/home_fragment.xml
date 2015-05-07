@@ -9,6 +9,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="89dp"
         android:id="@+id/buttons">
+
         <ImageButton
             android:id="@+id/startCaptureBtn"
             android:layout_width="200dp"
@@ -26,6 +27,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/pause_button_selector"
             android:nestedScrollingEnabled="false" />
+
     </FrameLayout>
 
 

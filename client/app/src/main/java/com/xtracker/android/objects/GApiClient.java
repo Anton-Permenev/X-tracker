@@ -65,15 +65,17 @@ public class GApiClient implements
 
         mGoogleApiClient.connect();
 
-        //Create a LocationRequest
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1);
-        mLocationRequest.setFastestInterval(1);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     @Override
     public void onConnected(Bundle bundle) {
+
+        //Create a LocationRequest
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         if (tracking && !paused)
             startLocationUpdates();
 

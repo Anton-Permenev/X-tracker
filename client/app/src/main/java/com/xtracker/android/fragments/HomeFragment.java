@@ -2,6 +2,7 @@ package com.xtracker.android.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -27,7 +28,7 @@ import com.xtracker.android.R;
 import com.xtracker.android.Utils;
 import com.xtracker.android.callbacks.OnTracking;
 import com.xtracker.android.objects.GApiClient;
-import com.xtracker.android.objects.LocationClient;
+import com.xtracker.android.objects.LocationHelper;
 import com.xtracker.android.objects.Track;
 import com.xtracker.android.rest.ApiService;
 import com.xtracker.android.rest.RestClient;
@@ -54,8 +55,8 @@ public class HomeFragment extends Fragment implements
     private TextView timeText;
 
     private ApiService apiService = RestClient.getInstance().getApiService();
-    GApiClient mGoogleClient;
-    //LocationClient mGoogleClient;
+    //GApiClient mGoogleClient;
+    LocationHelper mCheckClient;
 
     private Track preparedTrack;
     private State currentState = State.IDLE;
@@ -101,10 +102,10 @@ public class HomeFragment extends Fragment implements
                 false);
         TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
         //Establish googleApiClient
-        mGoogleClient = new GApiClient(this.getActivity(), textView1);
-        //mGoogleClient = new LocationClient(this.getActivity());
-        mGoogleClient.updateValuesFromBundle(savedInstanceState);
-        mGoogleClient.setTrackCallback(this);
+        //mGoogleClient = new GApiClient(this.getActivity(), textView1);
+        mCheckClient = new LocationHelper(this.getActivity());
+        mCheckClient.updateValuesFromBundle(savedInstanceState);
+        mCheckClient.setTrackCallback(this);
 
         pauseButton = (ImageButton) rootView.findViewById(R.id.pauseButton);
         pauseButton.setVisibility(View.GONE);
@@ -136,11 +137,11 @@ public class HomeFragment extends Fragment implements
             if (currentState == State.ADD) {
                 trackTitle.setText(savedInstanceState.getString(TRACK_TITLE_KEY));
                 trackDescription.setText(savedInstanceState.getString(TRACK_DESCRIPTION_KEY));
-                trackImage.setImageBitmap((android.graphics.Bitmap) savedInstanceState.getParcelable(TRACK_IMAGE_KEY));
+                trackImage.setImageBitmap((Bitmap) savedInstanceState.getParcelable(TRACK_IMAGE_KEY));
             } else if (currentState == State.TRACKING) {
                 millisPassed = savedInstanceState.getLong(MILLIS_PASSED_KEY);
                 timeText.setText(Utils.getTimeTextFromMillis(millisPassed));
-                if (!mGoogleClient.isPaused())
+                if (!mCheckClient.isPaused())
                     startTimer();
             }
         }
@@ -160,13 +161,13 @@ public class HomeFragment extends Fragment implements
 
     @Override
     public void onDestroy() {
-        mGoogleClient.destroy();
+        mCheckClient.destroy();
         super.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        mGoogleClient.saveState(outState);
+        mCheckClient.saveState(outState);
         outState.putSerializable(CURRENT_STATE_KEY, currentState);
         outState.putSerializable(PREPARED_TRACK_KEY, preparedTrack);
         outState.putString(TRACK_TITLE_KEY, trackTitle.getText().toString());
@@ -186,18 +187,26 @@ public class HomeFragment extends Fragment implements
                 } else {
                     countDownTimer.cancel();
                 }
-                mGoogleClient.startStopTracking();
+//                mGoogleClient.startStopTracking();
+                System.out.println("Launched");
+                mCheckClient.startStopTracking();
                 v.setActivated(!v.isActivated());
                 pauseButton.setVisibility(v.isActivated() ? View.VISIBLE : View.GONE);
                 pauseButton.setActivated(false);
                 break;
             case R.id.pauseButton:
-                mGoogleClient.pauseResumeTracking();
-                    if (mGoogleClient.isPaused()) {
-                        countDownTimer.cancel();
-                    } else {
-                        startTimer();
-                    }
+//                mGoogleClient.pauseResumeTracking();
+                mCheckClient.pauseResumeTracking();
+//                    if (mGoogleClient.isPaused()) {
+//                        countDownTimer.cancel();
+//                    } else {
+//                        startTimer();
+//                    }
+                if (mCheckClient.isPaused()) {
+                    countDownTimer.cancel();
+                } else {
+                    startTimer();
+                }
 
                 v.setActivated(!v.isActivated());
                 break;
@@ -211,6 +220,7 @@ public class HomeFragment extends Fragment implements
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {takePictureIntent});
                 startActivityForResult(chooserIntent, CHOOSE_PICTURE);
                 break;
+
         }
     }
 

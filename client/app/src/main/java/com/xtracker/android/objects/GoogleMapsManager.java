@@ -2,6 +2,7 @@ package com.xtracker.android.objects;
 
 import android.app.FragmentManager;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,6 +52,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         Polyline polyline = googleMap.addPolyline(new PolylineOptions()
                 .color(Color.RED)
                 .geodesic(true));
+
 
         //Fill the polyline list
         List<LatLng> listOfPoints = new ArrayList<>();

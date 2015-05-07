@@ -2,36 +2,40 @@ package com.xtracker.android.objects;
 
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.xtracker.android.callbacks.OnTracking;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.util.Date;
 
 /**
  * Created by Ilya on 04.05.2015.
  */
 
-public class LocationClient implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private LocationManager mLocationManager;
+    private static final String TAG = LocationHelper.class.getSimpleName();
+
+    /**
+     * For location
+     */
+
+    private final LocationManager mLocationManager;
+    private Location mCurrentLocation;
+    private LocationListener _listener;
+
+    /****/
+
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private Location mCurrentLocation;
     private String mLastUpdateTime;
+    private OnTracking onTracking;
 
 
     /**
@@ -50,13 +54,31 @@ public class LocationClient implements
 
     /****/
 
+    private class GpsProviderListener implements LocationListener {
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(0);
-        mLocationRequest.setFastestInterval(0);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        @Override
+        public void onLocationChanged(Location location) {
+
+            System.out.println("Location is changed " + location.getAltitude());
+            mCurrentLocation = location;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            System.out.println("GPS is available now");
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            System.out.println("GPS is not available now");
+        }
     }
+
 
     protected synchronized void buildGoogleApiClient(Context context) {
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -66,30 +88,12 @@ public class LocationClient implements
                 .build();
     }
 
-    public LocationClient() {
-        createLocationRequest();
-    }
-
-    public LocationClient(Context context) {
-        this.mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        createLocationRequest();
-        buildGoogleApiClient(context);
-        mGoogleApiClient.connect();
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
-        if (mRequestingLocationUpdates) {
+        if (tracking && !paused)
             startLocationUpdates();
-        }
-    }
 
-    private void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-    }
-
-    private void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        this.mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     @Override
@@ -99,43 +103,66 @@ public class LocationClient implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        mRequestingLocationUpdates = false;
+        stopLocationUpdates();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-//        if (location != null) {
-//            mCurrentLocation = location;
-//            Point point = new Point();
-//            point.setLat(mCurrentLocation.getLatitude());
-//            point.setLon(mCurrentLocation.getLongitude());
-//            point.setSpeed(mCurrentLocation.getSpeed());
-//            point.setHeight(mCurrentLocation.getAltitude());
-//            System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
-//            currentTrack.addPoint(point);
-//            System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
-//        }
-        if (location != null) {
-            if (isBetterLocation(location, mCurrentLocation)) {
-                mCurrentLocation = location;
-                System.out.println("Location changed");
-                Point point = new Point();
-                point.setLat(mCurrentLocation.getLatitude());
-                point.setLon(mCurrentLocation.getLongitude());
-                point.setSpeed(mCurrentLocation.getSpeed());
-                point.setHeight(mCurrentLocation.getAltitude());
-                System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
-                currentTrack.addPoint(point);
-                System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            } else {
-                System.out.println("bad");}
-        }
+    public LocationHelper(Context context) {
+        this.mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        _listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                System.out.println("Loc is changed");
+                if (location != null) {
+//            if (isBetterLocation(location, mCurrentLocation)) {
+                    mCurrentLocation = location;
+                    Point point = new Point();
+                    point.setLat(mCurrentLocation.getLatitude());
+                    point.setLon(mCurrentLocation.getLongitude());
+                    point.setSpeed(mCurrentLocation.getSpeed());
+                    point.setHeight(mCurrentLocation.getAltitude());
+                    System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
+                    currentTrack.addPoint(point);
+                    System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()) + " | " + String.valueOf(mCurrentLocation.getAltitude()));
+//            }
+                }
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                System.out.println("Status is changed");
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                System.out.println("GPS enabled");
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                System.out.println("GPS disabled");
+            }
+        };
+
+        mCurrentLocation = null;
+        buildGoogleApiClient(context);
+    }
+
+    public void launch() {
+        mGoogleApiClient.connect();
+        System.out.println("Connected");
+    }
+
+    private void stopLocationUpdates() {
+        mLocationManager.removeUpdates(_listener);
+    }
+
+    private void startLocationUpdates() {
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 0, _listener);
+        mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
     }
 
     private static final int HALF_MINUTES = 1;
-
 
     protected boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
@@ -225,6 +252,16 @@ public class LocationClient implements
         if (!tracking) {
             currentTrack = new Track();
             mRequestingLocationUpdates = true;
+            mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if (mCurrentLocation != null) {
+                Point point = new Point();
+                point.setLat(mCurrentLocation.getLatitude());
+                point.setLon(mCurrentLocation.getLongitude());
+                point.setSpeed(mCurrentLocation.getSpeed());
+                point.setHeight(mCurrentLocation.getAltitude());
+                System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
+                currentTrack.addPoint(point);
+            }
             startLocationUpdates();
             if (!(mGoogleApiClient.isConnected())) {
                 mGoogleApiClient.connect();
@@ -253,6 +290,10 @@ public class LocationClient implements
             paused = !paused;
         }
         return paused;
+    }
+
+    public void setTrackCallback(OnTracking onTracking) {
+        this.onTracking = onTracking;
     }
 
     public void destroy() {
