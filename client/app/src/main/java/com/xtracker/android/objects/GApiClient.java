@@ -25,7 +25,7 @@ public class GApiClient implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     private boolean mRequestingLocationUpdates;
-    private boolean tracking  = false;
+    private boolean tracking = false;
     private boolean paused = false;
 
     public static final String REQUESTING_LOCATION_UPDATES_KEY = "RLUK";
@@ -34,6 +34,7 @@ public class GApiClient implements
     public static final String PAUSED_KEY = "PK";
     public static final String CURRENT_TRACK_KEY = "CTK";
     private OnTracking onTracking;
+    private LocationManager mLocationManager;
 
     public Location getmCurrentLocation() {
         return mCurrentLocation;
@@ -51,9 +52,7 @@ public class GApiClient implements
 
     public GApiClient(Activity context, TextView textView1) {
 
-        locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         this.textView1 = textView1;
         //Create an instance of the Google Play services API client
@@ -95,19 +94,53 @@ public class GApiClient implements
 
     @Override
     public void onLocationChanged(Location location) {
+
         if (location != null) {
+
 //            if (isBetterLocation(location, mCurrentLocation)) {
-                mCurrentLocation = location;
-                Point point = new Point();
-                point.setLat(mCurrentLocation.getLatitude());
-                point.setLon(mCurrentLocation.getLongitude());
-                point.setSpeed(mCurrentLocation.getSpeed());
-                point.setHeight(mCurrentLocation.getAltitude());
-                System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
-                currentTrack.addPoint(point);
-                System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
-                if (textView1 != null)
-                    textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+            mCurrentLocation = location;
+            Point point = new Point();
+            point.setLat(mCurrentLocation.getLatitude());
+            point.setLon(mCurrentLocation.getLongitude());
+            point.setSpeed(mCurrentLocation.getSpeed());
+            point.setHeight(mCurrentLocation.getAltitude());
+            System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
+            currentTrack.addPoint(point);
+            System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+            if (textView1 != null)
+                textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+            stopLocationUpdates();
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 0, new android.location.LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    mCurrentLocation = location;
+                    Point point = new Point();
+                    point.setLat(mCurrentLocation.getLatitude());
+                    point.setLon(mCurrentLocation.getLongitude());
+                    point.setSpeed(mCurrentLocation.getSpeed());
+                    point.setHeight(mCurrentLocation.getAltitude());
+                    System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
+                    currentTrack.addPoint(point);
+                    System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+                    if (textView1 != null)
+                        textView1.setText(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()));
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
 //            }
         }
     }

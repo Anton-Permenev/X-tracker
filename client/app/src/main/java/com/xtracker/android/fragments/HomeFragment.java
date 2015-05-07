@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment implements
         TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
         //Establish googleApiClient
         //mGoogleClient = new GApiClient(this.getActivity(), textView1);
-        mCheckClient = new LocationHelper(this.getActivity());
+        mCheckClient = new LocationHelper(this.getActivity(), textView1);
         mCheckClient.updateValuesFromBundle(savedInstanceState);
         mCheckClient.setTrackCallback(this);
 

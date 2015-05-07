@@ -1,10 +1,15 @@
 package com.xtracker.android.objects;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -17,7 +22,7 @@ import com.xtracker.android.callbacks.OnTracking;
  * Created by Ilya on 04.05.2015.
  */
 
-public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class LocationHelper extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final String TAG = LocationHelper.class.getSimpleName();
 
@@ -26,8 +31,9 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
      */
 
     private final LocationManager mLocationManager;
-    private Location mCurrentLocation;
+    private Location mCurrentLocation = null;
     private LocationListener _listener;
+    private TextView checkView;
 
     /****/
 
@@ -52,33 +58,12 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
     public static final String PAUSED_KEY = "PK";
     public static final String CURRENT_TRACK_KEY = "CTK";
 
-    /****/
-
-    private class GpsProviderListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-
-            System.out.println("Location is changed " + location.getAltitude());
-            mCurrentLocation = location;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            System.out.println("GPS is available now");
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            System.out.println("GPS is not available now");
-        }
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
+    /****/
 
     protected synchronized void buildGoogleApiClient(Context context) {
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -90,10 +75,16 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onConnected(Bundle bundle) {
-        if (tracking && !paused)
-            startLocationUpdates();
 
-        this.mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mCurrentLocation == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        } else {
+            if (tracking && !paused)
+                startLocationUpdates();
+        }
+
+
     }
 
     @Override
@@ -103,18 +94,23 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        mRequestingLocationUpdates = false;
-        stopLocationUpdates();
+
     }
 
-    public LocationHelper(Context context) {
+    public LocationHelper(Context context, TextView textView1) {
+
+        checkView = textView1;
+        mLocationRequest = new LocationRequest().setInterval(0).setFastestInterval(0);
+
         this.mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         _listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 System.out.println("Loc is changed");
+
                 if (location != null) {
-//            if (isBetterLocation(location, mCurrentLocation)) {
+            if (isBetterLocation(location, mCurrentLocation)) {
+                    checkView.setText("+ " + String.valueOf(location.getLatitude()));
                     mCurrentLocation = location;
                     Point point = new Point();
                     point.setLat(mCurrentLocation.getLatitude());
@@ -124,7 +120,7 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
                     System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
                     currentTrack.addPoint(point);
                     System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()) + " | " + String.valueOf(mCurrentLocation.getAltitude()));
-//            }
+            }
                 }
             }
 
@@ -143,14 +139,9 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
                 System.out.println("GPS disabled");
             }
         };
-
-        mCurrentLocation = null;
         buildGoogleApiClient(context);
-    }
 
-    public void launch() {
         mGoogleApiClient.connect();
-        System.out.println("Connected");
     }
 
     private void stopLocationUpdates() {
@@ -159,7 +150,6 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
 
     private void startLocationUpdates() {
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 0, _listener);
-        mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
     }
 
     private static final int HALF_MINUTES = 1;
@@ -252,23 +242,21 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
         if (!tracking) {
             currentTrack = new Track();
             mRequestingLocationUpdates = true;
-            mCurrentLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mCurrentLocation != null) {
-                Point point = new Point();
-                point.setLat(mCurrentLocation.getLatitude());
-                point.setLon(mCurrentLocation.getLongitude());
-                point.setSpeed(mCurrentLocation.getSpeed());
-                point.setHeight(mCurrentLocation.getAltitude());
-                System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
-                currentTrack.addPoint(point);
-            }
-            startLocationUpdates();
-            if (!(mGoogleApiClient.isConnected())) {
-                mGoogleApiClient.connect();
+                startLocationUpdates();
+                if (!(mGoogleApiClient.isConnected())) {
+                    mGoogleApiClient.connect();
+                }
+            } else {
+                if (!(mGoogleApiClient.isConnected())) {
+                    mGoogleApiClient.connect();
+                }
             }
         } else {
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
+            onTracking.trackPrepared(currentTrack);
         }
         tracking = !tracking;
         paused = false;
@@ -297,6 +285,17 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks, Goog
     }
 
     public void destroy() {
+        stopLocationUpdates();
         mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        System.out.println("Changed");
+        checkView.setText("Get it!");
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+
+        if (tracking && !paused)
+            startLocationUpdates();
     }
 }
