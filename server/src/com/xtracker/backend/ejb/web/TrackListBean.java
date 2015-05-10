@@ -2,11 +2,11 @@ package com.xtracker.backend.ejb.web;
 
 import com.xtracker.backend.ejb.ORMBean;
 import com.xtracker.backend.jpa.Track;
+import com.xtracker.backend.jpa.User;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import java.sql.SQLException;
 import java.util.List;
 
 @ManagedBean
@@ -22,22 +22,29 @@ public class TrackListBean {
 
     private List<Track> trackList;
 
-    private long userId;
+    private User user;
+    private String email;
 
     public List<Track> getTrackList() {
+        trackList=user.getTracks();
         return trackList;
     }
 
-    public void setTrackList(List<Track> trackList) {
-        this.trackList = trackList;
+
+    public String getEmail() {
+        return email;
     }
 
-    public long getUserId() {
-        return userId;
+    public void setEmail(String email) {
+        this.email = email;
+        user=ormBean.getUser(email);
     }
 
-    public void setUserId(long userId) throws SQLException {
-        this.userId = userId;
-        trackList=ormBean.getTracks(userId);
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

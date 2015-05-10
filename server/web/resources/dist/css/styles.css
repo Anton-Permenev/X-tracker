@@ -1,0 +1,29 @@
+#customBtn {
+     display: inline-block;
+     margin-top: 10px;
+     background-image: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_base_32dp.png");
+     color: white;
+     width: 175px;
+     border-radius: 5px;
+ }
+
+#customBtn:hover {
+    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_hover_32dp.png") ;
+    cursor : hand;
+}
+#customBtn:active
+{
+    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_press_32dp.png") ;
+    cursor : hand;
+}
+
+span.label {
+    font-weight: bold;
+}
+
+span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 40px;
+    padding-right: 40px;
+}

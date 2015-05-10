@@ -51,10 +51,15 @@ public class TrackInfoBean {
     }
 
     public String getPointsAsJson() {
-        for(Point point:pointList ){
-            point.setTrack(null);
+        if (track != null) {
+            for (Point point : pointList) {
+                point.setTrack(null);
+            }
+            return new Gson().toJson(pointList);
+        } else {
+            return null;
         }
-        return new Gson().toJson(pointList);
+
     }
 
     public void setPointList(List<Point> pointList) {
