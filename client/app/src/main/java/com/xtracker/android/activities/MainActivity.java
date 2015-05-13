@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        cacheManager.initialize(this);
+        //cacheManager.initialize(this);
         initializeDrawer();
         loadUserInfo();
 

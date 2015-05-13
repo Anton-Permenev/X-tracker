@@ -16,6 +16,7 @@ public class Point implements Serializable{
     private Double lon;
     private Double height;
     private Long trackId;
+    private Long ordinal;
 
     public Point() {
     }
@@ -24,7 +25,7 @@ public class Point implements Serializable{
         this.pointId = pointId;
     }
 
-    public Point(Long pointId, Double acceleration, Float speed, Double lat, Double lon, Double height, Long trackId) {
+    public Point(Long pointId, Double acceleration, Float speed, Double lat, Double lon, Double height, Long trackId, Long ordinal) {
         this.pointId = pointId;
         this.acceleration = acceleration;
         this.speed = speed;
@@ -32,6 +33,7 @@ public class Point implements Serializable{
         this.lon = lon;
         this.height = height;
         this.trackId = trackId;
+        this.ordinal = ordinal;
     }
 
     public Long getPointId() {
@@ -90,4 +92,11 @@ public class Point implements Serializable{
         this.trackId = trackId;
     }
 
+    public Long getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(Long ordinal) {
+        this.ordinal = ordinal;
+    }
 }

@@ -121,7 +121,8 @@ public class PointDao extends AbstractDao<Point, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // lat
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // lon
             cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // height
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // trackId
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // trackId
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // trackId
         );
         return entity;
     }

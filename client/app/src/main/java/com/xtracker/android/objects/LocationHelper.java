@@ -256,6 +256,9 @@ public class LocationHelper extends Service implements GoogleApiClient.Connectio
         } else {
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
+            for (long i = 0; i < currentTrack.getPoints().size(); i++) {
+                currentTrack.getPoints().get((int)i).setOrdinal(i);
+            }
             onTracking.trackPrepared(currentTrack);
         }
         tracking = !tracking;

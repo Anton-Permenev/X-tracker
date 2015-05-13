@@ -61,7 +61,7 @@ public class TrackActivity extends ActionBarActivity {
 
                     setTrack(track);
                     mapsManager = new GoogleMapsManager(getFragmentManager(), track);
-                    cacheManager.saveTrack(track);
+                    //cacheManager.saveTrack(track);
                 }
 
                 @Override

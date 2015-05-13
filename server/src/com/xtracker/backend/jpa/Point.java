@@ -27,6 +27,9 @@ public class Point {
     @Basic
     @Column(name = "height", nullable = true, insertable = true, updatable = true)
     private double height;
+    @Basic
+    @Column(name = "ordinal", nullable = true, insertable = true, updatable = true)
+    private long ordinal;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "track_id")
@@ -87,5 +90,13 @@ public class Point {
 
     public void setSpeed(Float speed) {
         this.speed = speed;
+    }
+
+    public long getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(long ordinal) {
+        this.ordinal = ordinal;
     }
 }
