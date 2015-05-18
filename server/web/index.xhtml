@@ -25,6 +25,9 @@
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
 </h:head>
 <h:body styleClass="skin-blue fixed" onload="loadMap()">
+    <h:inputHidden id="email-hidden" value="#{trackListBean.email}"/>
+    <h:inputHidden id="track-hidden" value="#{trackInfoBean.trackId}"/>
+
     <div class="wrapper">
         <header class="main-header">
             <a href="index.xhtml" class="logo"><b>X-tracker</b></a>
@@ -47,7 +50,6 @@
                     </span>
                     <span id="user-name-label"> email
                     </span>
-                    <h:inputHidden id="email-hidden" value="#{trackListBean.email}"/>
                 </div>
             </nav>
         </header>
@@ -92,18 +94,18 @@
     </div>
 
     <script type="text/javascript">
-        if (!1) {
+        function loadTrack(id) {
 
-        }
-        else {
+            var trackIdHidden = document.getElementById('track-hidden');
+            trackIdHidden.value = id;
             var points = [];
             points.concat(#{trackInfoBean.pointsAsJson});
+            console.log(points);
             var POINTS = [];
             for (var i = 0; points.length > i; i++) {
                 POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
             }
-            ;
-            loadTrack(POINTS);
+            loadPoints(POINTS);
         }
     </script>
 

@@ -8,8 +8,10 @@ import com.xtracker.backend.jpa.Track;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 
 @ManagedBean
@@ -21,7 +23,7 @@ public class TrackInfoBean {
 
     @EJB
     private ORMBean ormBean;
-
+    FacesContext fc = FacesContext.getCurrentInstance();
     public void setOrmBean(ORMBean ormBean) {
         this.ormBean = ormBean;
     }
@@ -52,11 +54,13 @@ public class TrackInfoBean {
 
     public String getPointsAsJson() {
         if (track != null) {
+            pointList=track.getPoints();
             for (Point point : pointList) {
                 point.setTrack(null);
             }
             return new Gson().toJson(pointList);
         } else {
+            System.out.println("track is null");
             return null;
         }
 
@@ -64,5 +68,13 @@ public class TrackInfoBean {
 
     public void setPointList(List<Point> pointList) {
         this.pointList = pointList;
+    }
+
+    public void setTrackIdHidden() throws SQLException {
+        System.out.println("setTrackIdHidden is running");
+
+        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+        String id = params.get("trackId");
+        setTrackId(Long.parseLong(id));
     }
 }

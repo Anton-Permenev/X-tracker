@@ -23,17 +23,18 @@
     <!-- Ionicons -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
     <f:metadata>
-        <f:viewParam name="email" value="#{trackListBean.email}" />
+        <f:viewParam name="email" value="#{trackListBean.email}"/>
     </f:metadata>
 </h:head>
-<h:body styleClass="skin-blue fixed" >
+<h:body styleClass="skin-blue fixed">
     <div>
         <ui:repeat value="#{trackListBean.trackList}" var="track">
             <li>
-                <a href="#">
-                    <span>#{track.trackId} </span>
-                    <h6 style="color:rgb(60,141,188);margin-top: 0;margin-bottom: 0;">#{track.title}</h6>
-                </a>
+                <h:commandButton value="#{track.trackId}" action="#{trackInfoBean.setTrackIdHidden}"
+                                 styleClass="sidebarBtn"
+                                 onclick="loadTrack(#{track.trackId})">
+                    <f:param name="trackId" value="#{track.trackId}"/>
+                </h:commandButton>
             </li>
         </ui:repeat>
     </div>
