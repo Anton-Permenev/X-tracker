@@ -2,6 +2,7 @@ package com.xtracker.android.objects;
 
 import android.app.FragmentManager;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,6 +78,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         PolylineOptions pOptions = new PolylineOptions();
         Polyline pLine = null;
         Point pPoint = new Point();
+        Point pPoint2 = new Point();
         Collections.sort(listOfPoints, new Comparator<Point>() {
             @Override
             public int compare(Point lhs, Point rhs) {
@@ -85,55 +87,72 @@ public class GoogleMapsManager implements OnMapReadyCallback {
             }
         });
 
-        for (int i = 0; i < listOfPoints.size(); i++) {
+        for (int i = 0; i < listOfPoints.size() - 1; i++){
             pPoint = listOfPoints.get(i);
+            pPoint2 = listOfPoints.get(i+1);
 
-            //polylineOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon())).color(getColor(i % 4)).width(5);
+            pOptions = new PolylineOptions();
+            pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+            pOptions.add(new LatLng(pPoint2.getLat(), pPoint2.getLon()));
 
-            if (pPoint.getSpeed() <= (maxSpeed / 3)) {
-                n = 1;
-                if (k == n) {
-                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-                } else {
-                    if (pOptions != null) {
-                        pLine = googleMap.addPolyline(pOptions);
-                        pLine.setColor(getColor(k));
-                        pLine.setWidth(9);
-                    }
-                    k = n;
-                    i--;
-                }
-            }
-            if ((pPoint.getSpeed() > (maxSpeed / 3)) && (pPoint.getSpeed() <= 2 * (maxSpeed / 3))) {
-                n = 2;
-                if (k == n) {
-                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-                } else {
-                    if (pOptions != null) {
-                        pLine = googleMap.addPolyline(pOptions);
-                        pLine.setColor(getColor(k));
-                        pLine.setWidth(9);
-                    }
-                    k = n;
-                    i--;
-                }
-            }
-            if (pPoint.getSpeed() > 2 * (maxSpeed / 3)) {
-                n = 3;
-                if (k == n) {
-                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-                } else {
-                    if (pOptions != null) {
-                        pLine = googleMap.addPolyline(pOptions);
-                        pLine.setColor(getColor(k));
-                        pLine.setWidth(9);
-                    }
-                    k = n;
-                    i--;
-                }
-            }
+            pLine = googleMap.addPolyline(pOptions);
+            int clr = getColor(pPoint.getSpeed(), maxSpeed, minSpeed);
+            pLine.setColor(clr);
 
         }
+//        for (int i = 0; i < listOfPoints.size(); i++) {
+//            pPoint = listOfPoints.get(i);
+//
+////            polylineOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon())).color(getColor(1)).width(5);
+////            googleMap.addPolyline(polylineOptions);
+//
+//            if (pPoint.getSpeed() <= (maxSpeed / 3)) {
+//                n = 1;
+//                if (k == n) {
+//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+//                } else {
+//                    if (pOptions != null) {
+//                        pLine = googleMap.addPolyline(pOptions);
+//                        pLine.setColor(getColor(k));
+//                        pLine.setWidth(12);
+//                        pOptions = new PolylineOptions();
+//                    }
+//                    k = n;
+//                    i--;
+//                }
+//            }
+//            if ((pPoint.getSpeed() > (maxSpeed / 3)) && (pPoint.getSpeed() <= 2 * (maxSpeed / 3))) {
+//                n = 2;
+//                if (k == n) {
+//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+//                } else {
+//                    if (pOptions != null) {
+//                        pLine = googleMap.addPolyline(pOptions);
+//                        pLine.setColor(getColor(k));
+//                        pLine.setWidth(12);
+//                        pOptions = new PolylineOptions();
+//                    }
+//                    k = n;
+//                    i--;
+//                }
+//            }
+//            if (pPoint.getSpeed() > 2 * (maxSpeed / 3)) {
+//                n = 3;
+//                if (k == n) {
+//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+//                } else {
+//                    if (pOptions != null) {
+//                        pLine = googleMap.addPolyline(pOptions);
+//                        pLine.setColor(getColor(k));
+//                        pLine.setWidth(12);
+//                        pOptions = new PolylineOptions();
+//                    }
+//                    k = n;
+//                    i--;
+//                }
+//            }
+//
+//        }
 
         //Polyline polyline = googleMap.addPolyline(polylineOptions);
 
@@ -167,9 +186,15 @@ public class GoogleMapsManager implements OnMapReadyCallback {
             case 3:
                 return Color.RED;
             case 0:
-                return Color.CYAN;
+                return Color.GREEN
+                        ;
         }
         return 0;
+    }
+
+    private int getColor(float speed, float maxSpeed, float minSpeed) {
+        double percentage = (speed - minSpeed) / (maxSpeed - minSpeed);
+        return Color.rgb((int)(255 * Math.min(2 * percentage, 1)), (int)(255 * Math.min(2 - 2 * percentage, 1)), Integer.valueOf(0));
     }
 
     public void workMethod() {
