@@ -98,7 +98,7 @@ body {
 
 .main-footer {
     background: #fff;
-    padding: 15px;
+    padding: 0px;
     color: #444;
     border-top: 1px solid #eee
 }
@@ -129,7 +129,7 @@ body {
 
 .content {
     min-height: 250px;
-    padding: 15px;
+    padding: 0px;
     margin-right: auto;
     margin-left: auto;
     padding-left: 0px;
@@ -282,7 +282,7 @@ a:hover, a:active, a:focus {
 
 .content-header {
     position: relative;
-    padding: 15px 15px 0 15px
+    padding: 0
 }
 
 .content-header > h1 {
