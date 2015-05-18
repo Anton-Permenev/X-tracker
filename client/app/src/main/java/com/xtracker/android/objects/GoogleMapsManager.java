@@ -57,12 +57,14 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         Float minSpeed = track.getPoints().get(0).getSpeed();
         Float maxSpeed = Float.valueOf(0);
         for (Point p : track.getPoints()) {
+
             if (p.getSpeed() > maxSpeed) {
                 maxSpeed = p.getSpeed();
             }
             if (p.getSpeed() < minSpeed) {
                 minSpeed = p.getSpeed();
             }
+            System.out.println("ORDINAL : " + p.getOrdinal());
             listOfPoints.add(p);
         }
 
@@ -72,54 +74,68 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         int n = 0;
         List<LatLng> pList = new ArrayList<LatLng>();
         PolylineOptions polylineOptions = new PolylineOptions();
+        PolylineOptions pOptions = new PolylineOptions();
+        Polyline pLine = null;
         Point pPoint = new Point();
         Collections.sort(listOfPoints, new Comparator<Point>() {
             @Override
             public int compare(Point lhs, Point rhs) {
-                return (int)(lhs.getOrdinal() - rhs.getOrdinal());
+                System.out.println(lhs.getOrdinal() + " " + rhs.getOrdinal());
+                return (int) (lhs.getOrdinal() - rhs.getOrdinal());
             }
         });
-        for (int i = 0; i < 6; i++) {
+
+        for (int i = 0; i < listOfPoints.size(); i++) {
             pPoint = listOfPoints.get(i);
 
-            googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(pPoint.getLat(), pPoint.getLon()))
-            );
-            polylineOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-            System.out.println(pPoint.getLat() + " | " + pPoint.getLon() + " | " + pPoint.getPointId());
+            //polylineOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon())).color(getColor(i % 4)).width(5);
 
-            //pList.clear();
-//            k = n;
-//            if (pPoint.getSpeed() <= (maxSpeed / 3)) {
-//                n = 1;
-//                if (n != k) {
-//                    System.out.println("green " + maxSpeed + " " + minSpeed);
-//                    Polyline polyline = googleMap.addPolyline(new PolylineOptions().color(getColor(k)).addAll(pList));
-//                    pList.clear();
-//                    k = n;
-//                }
-//            }
-//            if ((listOfPoints.get(i).getSpeed() <= 2 * (maxSpeed / 3)) && (pPoint.getSpeed() < (maxSpeed / 3))) {
-//                n = 2;
-//                if (n != k) {
-//                    System.out.println("yellow");
-//                    Polyline polyline = googleMap.addPolyline(new PolylineOptions().color(getColor(k)).addAll(pList));
-//                    pList.clear();
-//                    k = n;
-//                }
-//            }
-//            if (listOfPoints.get(i).getSpeed() > 2 * (maxSpeed / 3)) {
-//                n = 3;
-//                if (n != k) {
-//                    System.out.println("red");
-//                    Polyline polyline = googleMap.addPolyline(new PolylineOptions().color(getColor(k)).addAll(pList));
-//                    pList.clear();
-//                    k = n;
-//                }
-//            }
+            if (pPoint.getSpeed() <= (maxSpeed / 3)) {
+                n = 1;
+                if (k == n) {
+                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+                } else {
+                    if (pOptions != null) {
+                        pLine = googleMap.addPolyline(pOptions);
+                        pLine.setColor(getColor(k));
+                        pLine.setWidth(9);
+                    }
+                    k = n;
+                    i--;
+                }
+            }
+            if ((pPoint.getSpeed() > (maxSpeed / 3)) && (pPoint.getSpeed() <= 2 * (maxSpeed / 3))) {
+                n = 2;
+                if (k == n) {
+                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+                } else {
+                    if (pOptions != null) {
+                        pLine = googleMap.addPolyline(pOptions);
+                        pLine.setColor(getColor(k));
+                        pLine.setWidth(9);
+                    }
+                    k = n;
+                    i--;
+                }
+            }
+            if (pPoint.getSpeed() > 2 * (maxSpeed / 3)) {
+                n = 3;
+                if (k == n) {
+                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
+                } else {
+                    if (pOptions != null) {
+                        pLine = googleMap.addPolyline(pOptions);
+                        pLine.setColor(getColor(k));
+                        pLine.setWidth(9);
+                    }
+                    k = n;
+                    i--;
+                }
+            }
+
         }
 
-        Polyline polyline = googleMap.addPolyline(polylineOptions);
+        //Polyline polyline = googleMap.addPolyline(polylineOptions);
 
 
 //        Polyline polyline = googleMap.addPolyline(new PolylineOptions()
@@ -151,7 +167,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
             case 3:
                 return Color.RED;
             case 0:
-                return Color.BLACK;
+                return Color.CYAN;
         }
         return 0;
     }

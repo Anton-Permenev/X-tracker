@@ -109,18 +109,19 @@ public class LocationHelper extends Service implements GoogleApiClient.Connectio
                 System.out.println("Loc is changed");
 
                 if (location != null) {
-            if (isBetterLocation(location, mCurrentLocation)) {
-                    checkView.setText("+ " + String.valueOf(location.getLatitude()));
-                    mCurrentLocation = location;
-                    Point point = new Point();
-                    point.setLat(mCurrentLocation.getLatitude());
-                    point.setLon(mCurrentLocation.getLongitude());
-                    point.setSpeed(mCurrentLocation.getSpeed());
-                    point.setHeight(mCurrentLocation.getAltitude());
-                    System.out.println("********************************POINT ADDED****************************** " + mCurrentLocation.hasAltitude());
-                    currentTrack.addPoint(point);
-                    System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()) + " | " + String.valueOf(mCurrentLocation.getAltitude()));
-            }
+                    if (isBetterLocation(location, mCurrentLocation)) {
+                        mCurrentLocation = location;
+                        Point point = new Point();
+                        point.setLat(mCurrentLocation.getLatitude());
+                        point.setLon(mCurrentLocation.getLongitude());
+                        point.setSpeed(mCurrentLocation.getSpeed());
+                        point.setHeight(mCurrentLocation.getAltitude());
+                        point.setOrdinal(Long.valueOf(currentTrack.getPoints().size()));
+                        System.out.println("********************************POINT ADDED****************************** " + point.getOrdinal());
+                        checkView.setText("+ " + String.valueOf(point.getOrdinal()));
+                        currentTrack.addPoint(point);
+                        System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()) + " | " + String.valueOf(mCurrentLocation.getAltitude()));
+                    }
                 }
             }
 
@@ -256,9 +257,9 @@ public class LocationHelper extends Service implements GoogleApiClient.Connectio
         } else {
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
-            for (long i = 0; i < currentTrack.getPoints().size(); i++) {
-                currentTrack.getPoints().get((int)i).setOrdinal(i);
-            }
+//            for (long i = 0; i < currentTrack.getPoints().size(); i++) {
+//                currentTrack.getPoints().get((int)i).setOrdinal(i);
+//            }
             onTracking.trackPrepared(currentTrack);
         }
         tracking = !tracking;
