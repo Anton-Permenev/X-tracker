@@ -1,6 +1,7 @@
 package com.xtracker.backend.ejb.web;
 
 import com.xtracker.backend.ejb.ORMBean;
+import com.xtracker.backend.jpa.Point;
 import com.xtracker.backend.jpa.Track;
 import com.xtracker.backend.jpa.User;
 
@@ -24,6 +25,13 @@ public class TrackListBean {
 
     private User user;
     private String email;
+    private List<Point> pointList;
+
+
+
+    public void setPointList(List<Point> pointList) {
+        this.pointList = pointList;
+    }
 
     public List<Track> getTrackList() {
         trackList=user.getTracks();

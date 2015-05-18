@@ -11,7 +11,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 
 @ManagedBean
@@ -70,11 +69,4 @@ public class TrackInfoBean {
         this.pointList = pointList;
     }
 
-    public void setTrackIdHidden() throws SQLException {
-        System.out.println("setTrackIdHidden is running");
-
-        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
-        String id = params.get("trackId");
-        setTrackId(Long.parseLong(id));
-    }
 }
