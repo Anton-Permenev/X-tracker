@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -54,6 +56,12 @@ public class TrackInfoBean {
     public String getPointsAsJson() {
         if (track != null) {
             pointList=track.getPoints();
+            Collections.sort(pointList, new Comparator<Point>() {
+                @Override
+                public int compare(Point o1, Point o2) {
+                    return (int) (o1.getOrdinal() - o2.getOrdinal());
+                }
+            });
             for (Point point : pointList) {
                 point.setTrack(null);
             }
