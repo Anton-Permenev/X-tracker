@@ -98,6 +98,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
             pLine = googleMap.addPolyline(pOptions);
             int clr = getColor(pPoint.getSpeed(), maxSpeed, minSpeed);
             pLine.setColor(clr);
+            pLine.setWidth(14);
 
         }
 //        for (int i = 0; i < listOfPoints.size(); i++) {
