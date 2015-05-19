@@ -12,7 +12,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "user_id", nullable = false, insertable = true, updatable = true)
     private long userId;
     @Basic
@@ -29,6 +29,14 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Track> tracks = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    private UserStat userStat;
+
+    public User() {
+        userStat = new UserStat();
+    }
 
     public long getUserId() {
         return userId;
@@ -70,5 +78,19 @@ public class User {
 
     public void setPrivateKey(String private_key) {
         this.privateKey = private_key;
+    }
+
+
+    public UserStat getUserStat() {
+        return userStat;
+    }
+
+    public void setUserStat(UserStat userStat) {
+        this.userStat = userStat;
+    }
+
+    @PrePersist
+    public void initializeUserStat() {
+        this.userStat.setUserId(userId);
     }
 }

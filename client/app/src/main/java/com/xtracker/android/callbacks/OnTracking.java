@@ -4,5 +4,5 @@ import com.xtracker.android.objects.Track;
 
 public interface OnTracking {
     public void trackPrepared(Track track);
-    public void pointAdded();
+    public void pointAdded(double length);
 }

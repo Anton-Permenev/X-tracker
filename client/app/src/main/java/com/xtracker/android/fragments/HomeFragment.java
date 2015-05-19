@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment implements
     private View idleLayout;
     private View buttons;
     private TextView timeText;
+    private TextView distanceText;
 
     private ApiService apiService = RestClient.getInstance().getApiService();
     //GApiClient mGoogleClient;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment implements
     private State currentState = State.IDLE;
 
     private long millisPassed = 0;
+    private double currentDistance = 0;
 
     private static final String CURRENT_STATE_KEY = "CSK";
     private static final String TRACK_TITLE_KEY = "TTK";
@@ -69,6 +71,7 @@ public class HomeFragment extends Fragment implements
     private static final String PREPARED_TRACK_KEY = "PTK";
     private static final String TRACK_IMAGE_KEY = "TIK";
     private static final String MILLIS_PASSED_KEY = "MPK";
+    private static final String CURRENT_DISTANCE_KEY = "CDK";
     private static final int CHOOSE_PICTURE = 0;
 
     private final int TIMER_INTERVAL = 100;
@@ -111,6 +114,7 @@ public class HomeFragment extends Fragment implements
         pauseButton.setVisibility(View.GONE);
         trackButton = (ImageButton) rootView.findViewById(R.id.startCaptureBtn);
         timeText = (TextView) rootView.findViewById(R.id.currentTime);
+        distanceText = (TextView) rootView.findViewById(R.id.currentDistance);
 
         trackingLayout = rootView.findViewById(R.id.trackingLayout);
         addTrackLayout = rootView.findViewById(R.id.addTrackLayout);
@@ -140,7 +144,9 @@ public class HomeFragment extends Fragment implements
                 trackImage.setImageBitmap((Bitmap) savedInstanceState.getParcelable(TRACK_IMAGE_KEY));
             } else if (currentState == State.TRACKING) {
                 millisPassed = savedInstanceState.getLong(MILLIS_PASSED_KEY);
-                timeText.setText(Utils.getTimeTextFromMillis(millisPassed));
+                currentDistance = savedInstanceState.getLong(CURRENT_DISTANCE_KEY);
+                timeText.setText(Utils.getTimeTextFromMillis(millisPassed));;
+                distanceText.setText((int)currentDistance + "m");
                 if (!mCheckClient.isPaused())
                     startTimer();
             }
@@ -239,11 +245,13 @@ public class HomeFragment extends Fragment implements
             setState(State.ADD);
         }
         millisPassed = 0;
+        currentDistance = 0;
     }
 
     @Override
-    public void pointAdded() {
-
+    public void pointAdded(double lastDist) {
+        currentDistance += lastDist;
+        distanceText.setText((int)currentDistance + "m");
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {

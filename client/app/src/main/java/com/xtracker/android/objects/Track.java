@@ -22,6 +22,7 @@ public class Track implements Serializable{
     private String title;
     private String description;
     private Long userId;
+    private double length = 0.0;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -102,6 +103,14 @@ public class Track implements Serializable{
         this.userId = userId;
     }
 
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<Point> getPoints() {
         if (points == null) {
@@ -172,5 +181,9 @@ public class Track implements Serializable{
 
     public void addPoint(Point point) {
         points.add(point);
+    }
+
+    public void addLength(double dist) {
+        length += dist;
     }
 }

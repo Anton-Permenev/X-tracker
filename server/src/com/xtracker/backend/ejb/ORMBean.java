@@ -3,6 +3,7 @@ package com.xtracker.backend.ejb;
 import com.xtracker.backend.jpa.Point;
 import com.xtracker.backend.jpa.Track;
 import com.xtracker.backend.jpa.User;
+import com.xtracker.backend.jpa.UserStat;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,7 +19,7 @@ public class ORMBean {
     @PersistenceContext()
     EntityManager em;
 
-   // @EJB
+    // @EJB
     //AuthBean authBean;
 
 
@@ -31,11 +32,42 @@ public class ORMBean {
      */
     public void addTrack(Track track) {
         List<Point> points = track.getPoints();
+
         for (Point point : points) {
             point.setTrack(track);
         }
         em.persist(track);
-        detectJumps(track);
+
+        updateStats(track);
+        //detectJumps(track);
+    }
+
+    private void updateStats(Track track) {
+        UserStat stat = track.getUser().getUserStat();
+        double maxSpeed = stat.getMaxSpeed();
+        double sumSpeed = 0;
+        for (Point point : track.getPoints()) {
+            if (point.getSpeed() > maxSpeed) {
+                maxSpeed = point.getSpeed();
+            }
+            sumSpeed += point.getSpeed();
+        }
+        stat.setMaxSpeed(maxSpeed);
+
+        int totalPoints = getPointsAmount(track.getUser());
+        int pointsNumber = track.getPoints().size();
+        stat.setAvgSpeed((stat.getAvgSpeed() * totalPoints + sumSpeed) / (totalPoints + pointsNumber));
+
+        int tracksAmount = track.getUser().getTracks().size();
+
+        stat.addDistance(track.getLength());
+        stat.setAvgDistance(stat.getTotalDistance() / (tracksAmount + 1));
+        stat.setMaxDistance(Math.max(stat.getMaxDistance(), track.getLength()));
+
+        stat.setMaxDuration(Math.max(stat.getMaxDuration(), track.getDuration()));
+        stat.setAvgDuration((stat.getAvgDuration() * tracksAmount + track.getDuration()) / (tracksAmount + 1));
+
+        em.merge(stat);
     }
 
     public void editTrack(long trackId, Timestamp timeStart, Timestamp timeEnd) throws SQLException {
@@ -56,8 +88,10 @@ public class ORMBean {
     public List<Track> getTracks(long userId) throws SQLException {
         return getUser(userId).getTracks();
     }
+
     /**
      * Creates Point entity.
+     *
      * @return entity object
      */
     public Point makePoint(double acceleration, double lat, double lon, float speed) {
@@ -73,6 +107,7 @@ public class ORMBean {
         User user = new User();
         user.setEmail(email);
         user.setPrivateKey(privateKey);
+
         em.persist(user);
         return user;
 
@@ -90,6 +125,7 @@ public class ORMBean {
         } catch (NoResultException e) {
             user = registerUser(email, privateKey);
         }
+        System.out.println("userId: " + user.getUserId());
         return user.getUserId();
     }
 
@@ -108,7 +144,7 @@ public class ORMBean {
 
     }
 
-    private void saveTrack(Track track, Timestamp timeStart, Timestamp timeEnd){
+    private void saveTrack(Track track, Timestamp timeStart, Timestamp timeEnd) {
         //track.setTimeStart(timeStart);
         //track.setTimeEnd(timeEnd);
         //track.setUser(authBean.getUser());
@@ -117,6 +153,15 @@ public class ORMBean {
 
 
     private void detectJumps(Track track) {
+    }
+
+
+    private int getPointsAmount(User user) {
+        int points = 0;
+        for (Track track : user.getTracks()) {
+            points += track.getPoints().size();
+        }
+        return points;
     }
 
 
