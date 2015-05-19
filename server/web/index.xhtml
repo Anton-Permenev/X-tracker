@@ -26,7 +26,6 @@
 </h:head>
 <h:body styleClass="skin-blue fixed" onload="loadMap()">
     <h:inputHidden id="email-hidden" value="#{trackListBean.email}"/>
-    <h:inputHidden id="track-hidden" value="#{trackInfoBean.trackId}"/>
 
     <div class="wrapper">
         <header class="main-header">
@@ -77,37 +76,24 @@
             </section>
 
             <!-- Main content -->
-            <section class="content">
+            <section class="content" >
 
                 <!-- Your Page Content Here -->
-                <div id="map_container" style="width:100%;  height:500px;"></div>
+                <div id="map_container" style="width:100%;  height:593px;"></div>
             </section>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+        <div id="pointsHiddenDiv" style="visibility: hidden">
 
+        </div>
         <!-- Main Footer -->
         <div class="main-footer">
             <!-- footer -->
+
         </div>
 
     </div>
-
-    <script type="text/javascript">
-        function loadTrack(id) {
-
-            var trackIdHidden = document.getElementById('track-hidden');
-            trackIdHidden.value = id;
-            var points = [];
-            points.concat(#{trackInfoBean.pointsAsJson});
-            console.log(points);
-            var POINTS = [];
-            for (var i = 0; points.length > i; i++) {
-                POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
-            }
-            loadPoints(POINTS);
-        }
-    </script>
 
     <script type="text/javascript">
         (function () {

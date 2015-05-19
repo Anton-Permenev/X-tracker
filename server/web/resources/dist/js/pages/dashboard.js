@@ -14,8 +14,7 @@ function loadMap() {
 }
 
 function loadPoints(POINTS) {
-    console.log(POINTS);
-    var latlng = new google.maps.LatLng(55.9278956, 37.5238322);
+    var latlng = POINTS[0];
     var myOptions = {
         zoom: 17,
         center: latlng,
@@ -30,6 +29,7 @@ function loadPoints(POINTS) {
         strokeWeight: 2
     })
     flightPath.setMap(map);
+    console.log("map updated");
 
 }
 function signinCallback(authResult) {
@@ -69,6 +69,22 @@ function getEmailCallback(obj) {
 
     var emailSpan = document.getElementById('user-name-label');
     emailSpan.textContent = email;
-    jQuery("#tracks-sidebar").load('tracks.xhtml?email='+email);
+    jQuery("#tracks-sidebar").load('tracks.xhtml?email=' + email);
+}
+function loadTrack(trackId) {
+    var points;
+    jQuery("#pointsHiddenDiv").load('points.xhtml?trackId=' + trackId);
+    points = JSON.parse(document.getElementById('points_hidden').value);
+    points.sort(function (a, b) {
+        return a.ordinal - b.ordinal
+    });
+    console.log(points);
+    var POINTS = [];
+    for (var i = 0; points.length > i; i++) {
+        POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
+    }
+    loadPoints(POINTS);
+    console.log(POINTS);
+
 }
 
