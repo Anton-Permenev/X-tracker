@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.xtracker.android.Utils;
 import com.xtracker.android.callbacks.OnTracking;
 
 
@@ -25,6 +26,7 @@ import com.xtracker.android.callbacks.OnTracking;
 public class LocationHelper extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final String TAG = LocationHelper.class.getSimpleName();
+    private static final double MINIMUM_DISTANCE = 1; //in meters
 
     /**
      * For location
@@ -116,11 +118,19 @@ public class LocationHelper extends Service implements GoogleApiClient.Connectio
                         point.setLon(mCurrentLocation.getLongitude());
                         point.setSpeed(mCurrentLocation.getSpeed());
                         point.setHeight(mCurrentLocation.getAltitude());
-                        point.setOrdinal(Long.valueOf(currentTrack.getPoints().size()));
+                        point.setOrdinal((long) currentTrack.getPoints().size());
                         System.out.println("********************************POINT ADDED****************************** " + point.getOrdinal());
                         checkView.setText("+ " + String.valueOf(point.getOrdinal()));
-                        currentTrack.addPoint(point);
                         System.out.println(String.valueOf(mCurrentLocation.getLatitude()) + " | " + String.valueOf(mCurrentLocation.getLongitude()) + " | " + String.valueOf(mCurrentLocation.getAltitude()));
+                        if (point.getOrdinal() > 0) {
+                            Point lastPoint = currentTrack.getPoints().get(currentTrack.getPoints().size() - 1);
+                            double dist = Utils.distance(lastPoint.getLat(), lastPoint.getLon(), point.getLat(), point.getLon());
+                            if (dist < MINIMUM_DISTANCE)
+                                return;
+                            currentTrack.addLength(dist);
+                            onTracking.pointAdded(dist);
+                        }
+                        currentTrack.addPoint(point);
                     }
                 }
             }
