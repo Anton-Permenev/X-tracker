@@ -31,7 +31,7 @@
         <ui:repeat value="#{trackListBean.trackList}" var="track">
             <li>
                 <a href="#" onclick="loadTrack(#{track.trackId})">
-                    <h5>#{track.trackId}</h5>
+                    <h5 class="track-li">#{track.trackId}</h5>
                 </a>
             </li>
         </ui:repeat>

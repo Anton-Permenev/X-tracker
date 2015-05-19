@@ -24,7 +24,7 @@
     <!-- Ionicons -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
 </h:head>
-<h:body styleClass="skin-blue fixed" onload="loadMap()">
+<h:body styleClass="skin-blue fixed" onload="loadMap()" style="overflow: hidden;">
     <h:inputHidden id="email-hidden" value="#{trackListBean.email}"/>
 
     <div class="wrapper">
@@ -34,8 +34,7 @@
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-
-                <div class="navbar-custom-menu">
+                <div class="navbar-custom-menu" style="margin-top: 9px">
                     <span id="signinButton">
                         <span
                                 class="g-signin"
@@ -47,7 +46,7 @@
 
                         </span>
                     </span>
-                    <span id="user-name-label"> email
+                    <span id="user-name-label">
                     </span>
                 </div>
             </nav>
@@ -79,7 +78,7 @@
             <section class="content" >
 
                 <!-- Your Page Content Here -->
-                <div id="map_container" style="width:100%;  height:593px;"></div>
+                <div id="map_container" style="width:100%;  height:100%; position: absolute;"></div>
             </section>
             <!-- /.content -->
         </div>

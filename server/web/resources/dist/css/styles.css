@@ -1,24 +1,36 @@
 #customBtn {
-     display: inline-block;
-     margin-top: 10px;
-     background-image: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_base_32dp.png");
-     color: white;
-     width: 175px;
-     border-radius: 5px;
- }
+    display: inline-block;
+    margin-top: 10px;
+    background-image: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_base_32dp.png");
+    color: white;
+    width: 175px;
+    border-radius: 5px;
+}
 
 #customBtn:hover {
-    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_hover_32dp.png") ;
-    cursor : hand;
+    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_hover_32dp.png");
+    cursor: hand;
 }
-#customBtn:active
-{
-    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_press_32dp.png") ;
-    cursor : hand;
+
+#customBtn:active {
+    background: url("/resources/dist/img/+/Red%20signin_Google_32dp/Red-signin_Google_press_32dp.png");
+    cursor: hand;
 }
 
 span.label {
     font-weight: bold;
+}
+
+h5.track-li {
+    margin: 0;
+    padding: 7px;
+    border-left: 3px solid transparent;
+}
+
+h5.track-li:hover {
+    border-left-color: #dd4b39;
+    background: #1e282c;
+    border-left: 3px solid;
 }
 
 span.buttonText {
@@ -27,8 +39,9 @@ span.buttonText {
     padding-left: 40px;
     padding-right: 40px;
 }
-#sidebarBtn{
-    background: rgb(34, 45, 50) ;
+
+#sidebarBtn {
+    background: rgb(34, 45, 50);
     padding: 12px 5px 12px 15px;
     color: #fff;
     border: 0;
@@ -38,10 +51,12 @@ span.buttonText {
     display: block;
     text-align: left;
 }
-#sidebarBtn:hover{
+
+#sidebarBtn:hover {
     background: #1e282c;
     border-left: 3px solid;
 }
-#sidebarBtn:active{
+
+#sidebarBtn:active {
 
 }
