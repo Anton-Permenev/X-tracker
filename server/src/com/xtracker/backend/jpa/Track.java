@@ -26,6 +26,9 @@ public class Track {
     @Column(name="title")
     private String title = "";
     @Basic
+    @Column(name="length")
+    private double length;
+    @Basic
     @Column(name="description")
     private String description = "";
     @JsonManagedReference
@@ -110,5 +113,13 @@ public class Track {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
     }
 }
