@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
 
-@ManagedBean
+@ManagedBean(name="trackListBean", eager=true)
 @SessionScoped
 public class TrackListBean {
 
@@ -28,6 +28,9 @@ public class TrackListBean {
     private List<Point> pointList;
 
 
+    public TrackListBean() {
+
+    }
 
     public void setPointList(List<Point> pointList) {
         this.pointList = pointList;

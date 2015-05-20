@@ -34,6 +34,9 @@ function loadPoints(POINTS, color) {
     console.log("map updated");
 
 }
+
+function manageSignin() {}
+
 function signinCallback(authResult) {
     if (authResult['access_token']) {
         // Успешная авторизация
@@ -72,6 +75,7 @@ function getEmailCallback(obj) {
     var emailSpan = document.getElementById('user-name-label');
     emailSpan.textContent = email;
     jQuery("#tracks-sidebar").load('tracks.xhtml?email=' + email);
+
 }
 function loadTrack(trackId) {
     var points;

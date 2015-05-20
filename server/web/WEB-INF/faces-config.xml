@@ -14,4 +14,15 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>statBean</managed-bean-name>
+        <managed-bean-class>com.xtracker.backend.ejb.web.StatBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+
+        <managed-property>
+            <property-name>trackListBean</property-name>
+            <value>#{trackListBean}</value>
+        </managed-property>
+    </managed-bean>
 </faces-config>
+

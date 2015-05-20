@@ -492,8 +492,6 @@ a:hover, a:active, a:focus {
 .sidebar-menu > li {
     position: relative;
     margin: 0padding: 7px;
-    border-left: 3px solid transparent;
-    border-left-color: #dd4b39; 0
 }
 
 .sidebar-menu > li > a {
