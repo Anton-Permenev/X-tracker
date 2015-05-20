@@ -28,7 +28,8 @@ function loadPoints(map, POINTS, color) {
 
 }
 
-function manageSignin() {}
+function manageSignin() {
+}
 
 function signinCallback(authResult) {
     if (authResult['access_token']) {
@@ -73,8 +74,9 @@ function getEmailCallback(obj) {
 }
 function loadTrack(trackId) {
     var points;
-    jQuery("#pointsHiddenDiv").load('points.xhtml?trackId=' + trackId);
-    points = JSON.parse(document.getElementById('points_hidden').value);
+    jQuery("#pointsHiddenDiv").load('points.xhtml?trackId=' + trackId, function () {
+        points = JSON.parse(document.getElementById('points_hidden').value);
+    });
     points.sort(function (a, b) {
         return a.ordinal - b.ordinal
     });
