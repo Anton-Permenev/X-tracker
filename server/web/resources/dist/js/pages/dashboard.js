@@ -13,16 +13,9 @@ function loadMap() {
     var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
 }
 
-function loadPoints(POINTS, color) {
-    var latlng = POINTS[0];
-    var myOptions = {
-        zoom: 17,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+function loadPoints(map, POINTS, color) {
 
-    };
 
-    var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
     var flightPath = new google.maps.Polyline({
         path: POINTS,
         geodesic: false,
@@ -84,6 +77,7 @@ function loadTrack(trackId) {
     points.sort(function (a, b) {
         return a.ordinal - b.ordinal
     });
+
     console.log(points);
     var i;
     var maxSpeed = 0;
@@ -98,12 +92,21 @@ function loadTrack(trackId) {
     }
     var POINTS = [];
     var color;
+    var latlng = points[0];
+    var myOptions = {
+        zoom: 17,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+
+    };
+
+    var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
     for (var i = 0; i < points.length - 1; i++) {
         POINTS = [];
         POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
         POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
         color = getColor(maxSpeed, minSpeed, points[i].speed());
-        loadPoints(POINTS, color);
+        loadPoints(map, POINTS, color);
     }
 
     console.log(POINTS);
