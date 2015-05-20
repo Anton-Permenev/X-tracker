@@ -13,18 +13,20 @@ function loadMap() {
     var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
 }
 
-function loadPoints(POINTS) {
+function loadPoints(POINTS, color) {
     var latlng = POINTS[0];
     var myOptions = {
         zoom: 17,
         center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+
     };
+
     var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
     var flightPath = new google.maps.Polyline({
         path: POINTS,
-        geodesic: true,
-        strokeColor: '#FF0000',
+        geodesic: false,
+        strokeColor: color,
         strokeOpacity: 1.0,
         strokeWeight: 2
     })
@@ -79,12 +81,38 @@ function loadTrack(trackId) {
         return a.ordinal - b.ordinal
     });
     console.log(points);
-    var POINTS = [];
-    for (var i = 0; points.length > i; i++) {
-        POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
+    var i;
+    var maxSpeed = 0;
+    var minSpeed = points[i].speed();
+    for (i = 0; i < points.length; i++) {
+        if (points[i].speed() < minSpeed) {
+            minSpeed = points[i].speed();
+        }
+        if (points[i].speed() > maxSpeed) {
+            maxSpeed = points[i].speed();
+        }
     }
-    loadPoints(POINTS);
+    var POINTS = [];
+    var color;
+    for (var i = 0; i < points.length - 1; i++) {
+        POINTS = [];
+        POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
+        POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
+        color = getColor(maxSpeed, minSpeed, points[i].speed());
+        loadPoints(POINTS, color);
+    }
+
     console.log(POINTS);
+
+}
+
+function getColor(maxSpeed, minSpeed, speed) {
+    var percentage = (speed - minSpeed) / (maxSpeed - minSpeed),
+        r = Math.floor(255 * Math.min(2 * percentage, 1)),
+        g = Math.floor(255 * Math.min(2 - 2 * percentage, 1)),
+        bl = 0;
+
+    return "rgb(" + r + "," + g + "," + bl + ")";
 
 }
 
