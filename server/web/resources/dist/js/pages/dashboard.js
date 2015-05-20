@@ -82,13 +82,13 @@ function loadTrack(trackId) {
     console.log(points);
     var i;
     var maxSpeed = 0;
-    var minSpeed = points[i].speed();
+    var minSpeed = points[i].speed;
     for (i = 0; i < points.length; i++) {
         if (points[i].speed() < minSpeed) {
-            minSpeed = points[i].speed();
+            minSpeed = points[i].speed;
         }
         if (points[i].speed() > maxSpeed) {
-            maxSpeed = points[i].speed();
+            maxSpeed = points[i].speed;
         }
     }
     var POINTS = [];
@@ -106,7 +106,7 @@ function loadTrack(trackId) {
         POINTS = [];
         POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
         POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
-        color = getColor(maxSpeed, minSpeed, points[i].speed());
+        color = getColor(maxSpeed, minSpeed, points[i].speed);
         loadPoints(map, POINTS, color);
     }
 
