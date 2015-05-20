@@ -45,6 +45,7 @@ function signinCallback(authResult) {
         document.getElementById('signinButton').setAttribute('style', 'display: none');
         getEmail();
     } else if (authResult['error']) {
+        document.getElementById('signinButton').setAttribute('style', 'display: block');
         // Произошла ошибка.
         // Возможные коды ошибок:
         //   "access_denied" – пользователь отказался предоставить приложению доступ к данным
