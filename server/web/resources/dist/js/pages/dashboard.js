@@ -8,7 +8,7 @@ function loadMap() {
     var myOptions = {
         zoom: 5,
         center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.SATELLITE
     };
     var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
 }
@@ -21,7 +21,7 @@ function loadPoints(map, POINTS, color) {
         geodesic: false,
         strokeColor: color,
         strokeOpacity: 1.0,
-        strokeWeight: 2
+        strokeWeight: 5
     })
     flightPath.setMap(map);
     console.log("map updated");
@@ -76,43 +76,45 @@ function loadTrack(trackId) {
     var points;
     jQuery("#pointsHiddenDiv").load('points.xhtml?trackId=' + trackId, function () {
         points = JSON.parse(document.getElementById('points_hidden').value);
-    });
-    points.sort(function (a, b) {
-        return a.ordinal - b.ordinal
-    });
+        console.log(points);
+        points.sort(function (a, b) {
+            return a.ordinal - b.ordinal;
+        });
 
-    console.log(points);
-    var i;
-    var maxSpeed = 0;
-    var minSpeed = points[i].speed;
-    for (i = 0; i < points.length; i++) {
-        if (points[i].speed < minSpeed) {
-            minSpeed = points[i].speed;
+        var i;
+        var maxSpeed = 0;
+        var minSpeed = points[0].speed;
+        for (i = 0; i < points.length; i++) {
+            if (points[i].speed < minSpeed) {
+                minSpeed = points[i].speed;
+            }
+            if (points[i].speed > maxSpeed) {
+                maxSpeed = points[i].speed;
+            }
         }
-        if (points[i].speed > maxSpeed) {
-            maxSpeed = points[i].speed;
+        var POINTS ;
+        var color;
+        var latlng = new google.maps.LatLng(points[0].lat, points[0].lon);
+        var myOptions = {
+            zoom: 17,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+
+        };
+
+        var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
+        for (var i = 0; i < points.length - 1; i++) {
+            POINTS = [];
+            POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
+            POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
+            color = getColor(maxSpeed, minSpeed, points[i].speed);
+            loadPoints(map, POINTS, color);
         }
-    }
-    var POINTS = [];
-    var color;
-    var latlng = points[0];
-    var myOptions = {
-        zoom: 17,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
 
-    };
+        console.log(POINTS);
+    });
 
-    var map = new google.maps.Map(document.getElementById("map_container"), myOptions);
-    for (var i = 0; i < points.length - 1; i++) {
-        POINTS = [];
-        POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
-        POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
-        color = getColor(maxSpeed, minSpeed, points[i].speed);
-        loadPoints(map, POINTS, color);
-    }
 
-    console.log(POINTS);
 
 }
 

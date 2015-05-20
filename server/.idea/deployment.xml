@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="4trail">
+    <serverData>
+      <paths name="4trail">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/opt/glassfish4/glassfish/domains/domain1/applications/X-tracker_ear/web_war" local="$PROJECT_DIR$/web" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
