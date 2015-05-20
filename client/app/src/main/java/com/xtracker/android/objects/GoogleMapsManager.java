@@ -57,6 +57,7 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         List<Point> listOfPoints = new ArrayList<Point>();
         Float minSpeed = track.getPoints().get(0).getSpeed();
         Float maxSpeed = Float.valueOf(0);
+
         for (Point p : track.getPoints()) {
 
             if (p.getSpeed() > maxSpeed) {
@@ -74,7 +75,6 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         int k = 0;
         int n = 0;
         List<LatLng> pList = new ArrayList<LatLng>();
-        PolylineOptions polylineOptions = new PolylineOptions();
         PolylineOptions pOptions = new PolylineOptions();
         Polyline pLine = null;
         Point pPoint = new Point();
@@ -101,71 +101,6 @@ public class GoogleMapsManager implements OnMapReadyCallback {
             pLine.setWidth(14);
 
         }
-//        for (int i = 0; i < listOfPoints.size(); i++) {
-//            pPoint = listOfPoints.get(i);
-//
-////            polylineOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon())).color(getColor(1)).width(5);
-////            googleMap.addPolyline(polylineOptions);
-//
-//            if (pPoint.getSpeed() <= (maxSpeed / 3)) {
-//                n = 1;
-//                if (k == n) {
-//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-//                } else {
-//                    if (pOptions != null) {
-//                        pLine = googleMap.addPolyline(pOptions);
-//                        pLine.setColor(getColor(k));
-//                        pLine.setWidth(12);
-//                        pOptions = new PolylineOptions();
-//                    }
-//                    k = n;
-//                    i--;
-//                }
-//            }
-//            if ((pPoint.getSpeed() > (maxSpeed / 3)) && (pPoint.getSpeed() <= 2 * (maxSpeed / 3))) {
-//                n = 2;
-//                if (k == n) {
-//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-//                } else {
-//                    if (pOptions != null) {
-//                        pLine = googleMap.addPolyline(pOptions);
-//                        pLine.setColor(getColor(k));
-//                        pLine.setWidth(12);
-//                        pOptions = new PolylineOptions();
-//                    }
-//                    k = n;
-//                    i--;
-//                }
-//            }
-//            if (pPoint.getSpeed() > 2 * (maxSpeed / 3)) {
-//                n = 3;
-//                if (k == n) {
-//                    pOptions.add(new LatLng(pPoint.getLat(), pPoint.getLon()));
-//                } else {
-//                    if (pOptions != null) {
-//                        pLine = googleMap.addPolyline(pOptions);
-//                        pLine.setColor(getColor(k));
-//                        pLine.setWidth(12);
-//                        pOptions = new PolylineOptions();
-//                    }
-//                    k = n;
-//                    i--;
-//                }
-//            }
-//
-//        }
-
-        //Polyline polyline = googleMap.addPolyline(polylineOptions);
-
-
-//        Polyline polyline = googleMap.addPolyline(new PolylineOptions()
-//                .color(Color.RED)
-//                .geodesic(true));
-
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(point.getLat(), point.getLon()))
-//                .title("Hello world"));
-
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
@@ -178,20 +113,6 @@ public class GoogleMapsManager implements OnMapReadyCallback {
         googleMap.setMyLocationEnabled(true);
     }
 
-    private int getColor(int k) {
-        switch (k) {
-            case 1:
-                return Color.GREEN;
-            case 2:
-                return Color.YELLOW;
-            case 3:
-                return Color.RED;
-            case 0:
-                return Color.GREEN
-                        ;
-        }
-        return 0;
-    }
 
     private int getColor(float speed, float maxSpeed, float minSpeed) {
         double percentage = (speed - minSpeed) / (maxSpeed - minSpeed);
