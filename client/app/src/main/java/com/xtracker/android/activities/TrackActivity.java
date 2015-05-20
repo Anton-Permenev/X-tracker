@@ -1,8 +1,10 @@
 package com.xtracker.android.activities;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -51,8 +53,12 @@ public class TrackActivity extends ActionBarActivity {
         trackId = intent.getLongExtra("TRACK_ID", 1);
         apiService = RestClient.getInstance().getApiService();
 
-        final TextView editText = (TextView) findViewById(R.id.textView2);
-        editText.setText(String.valueOf(trackId));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //final TextView editText = (TextView) findViewById(R.id.textView2);
+        //editText.setText(String.valueOf(trackId));
 
         if (Utils.isNetworkConnected(this)) {
             apiService.getTrack(trackId, new Callback<Track>() {
@@ -66,7 +72,7 @@ public class TrackActivity extends ActionBarActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    editText.setText(error.getMessage());
+                   // editText.setText(error.getMessage());
                 }
             });
         } else {
@@ -90,16 +96,13 @@ public class TrackActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                finish();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
