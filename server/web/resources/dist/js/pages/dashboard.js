@@ -84,10 +84,10 @@ function loadTrack(trackId) {
     var maxSpeed = 0;
     var minSpeed = points[i].speed;
     for (i = 0; i < points.length; i++) {
-        if (points[i].speed() < minSpeed) {
+        if (points[i].speed < minSpeed) {
             minSpeed = points[i].speed;
         }
-        if (points[i].speed() > maxSpeed) {
+        if (points[i].speed > maxSpeed) {
             maxSpeed = points[i].speed;
         }
     }
