@@ -106,13 +106,13 @@ public class GoogleMapsManager implements OnMapReadyCallback {
 
         CircleOptions startCircleOpt = new CircleOptions()
                 .center(new LatLng(listOfPoints.get(0).getLat(),listOfPoints.get(0).getLon()))
-                .radius(Math.min(listOfPoints.size() / 40, 5))
-                .fillColor(Color.BLUE)
+                .radius(Math.min(listOfPoints.size() / 40, 7))
+                .fillColor(Color.LTGRAY)
                 .strokeColor(Color.WHITE);
 
         CircleOptions endCircleOpt = new CircleOptions()
-                .center(new LatLng(listOfPoints.get(0).getLat(),listOfPoints.get(0).getLon()))
-                .radius(Math.min(listOfPoints.size() / 40, 5))
+                .center(new LatLng(listOfPoints.get(listOfPoints.size()-1).getLat(),listOfPoints.get(listOfPoints.size()-1).getLon()))
+                .radius(Math.min(listOfPoints.size() / 40, 7))
                 .fillColor(Color.BLACK)
                 .strokeColor(Color.WHITE);
 
