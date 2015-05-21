@@ -9,6 +9,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -102,6 +104,20 @@ public class GoogleMapsManager implements OnMapReadyCallback {
 
         }
 
+        CircleOptions startCircleOpt = new CircleOptions()
+                .center(new LatLng(listOfPoints.get(0).getLat(),listOfPoints.get(0).getLon()))
+                .radius(Math.min(listOfPoints.size() / 40, 5))
+                .fillColor(Color.BLUE)
+                .strokeColor(Color.WHITE);
+
+        CircleOptions endCircleOpt = new CircleOptions()
+                .center(new LatLng(listOfPoints.get(0).getLat(),listOfPoints.get(0).getLon()))
+                .radius(Math.min(listOfPoints.size() / 40, 5))
+                .fillColor(Color.BLACK)
+                .strokeColor(Color.WHITE);
+
+        Circle startCircle = googleMap.addCircle(startCircleOpt);
+        Circle endCircle = googleMap.addCircle(endCircleOpt);
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         //Set camera on our point
