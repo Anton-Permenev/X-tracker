@@ -15,7 +15,6 @@ function loadMap() {
 
 function loadPoints(map, POINTS, color) {
 
-
     var flightPath = new google.maps.Polyline({
         path: POINTS,
         geodesic: false,
@@ -92,12 +91,14 @@ function loadTrack(trackId) {
                 maxSpeed = points[i].speed;
             }
         }
-        var POINTS ;
+        var POINTS;
         var color;
-        var latlng = new google.maps.LatLng(points[0].lat, points[0].lon);
+        var start = new google.maps.LatLng(points[0].lat, points[0].lon);
+        var end = new google.maps.LatLng(points[points.length - 1].lat, points[points.length - 1].lon);
+        var middle = new google.maps.LatLng(Math.floor((points[0].lat - points[points.length - 1].lat) / 2) + points[0].lat, Math.floor((points[0].lon - points[points.length - 1].lon) / 2) + points[0].lon);
         var myOptions = {
-            zoom: 17,
-            center: latlng,
+            zoom: 18,
+            center: start,
             mapTypeId: google.maps.MapTypeId.SATELLITE
 
         };
@@ -108,12 +109,36 @@ function loadTrack(trackId) {
             POINTS.push(new google.maps.LatLng(points[i].lat, points[i].lon));
             POINTS.push(new google.maps.LatLng(points[i + 1].lat, points[i + 1].lon));
             color = getColor(maxSpeed, minSpeed, points[i].speed);
+
             loadPoints(map, POINTS, color);
         }
 
+        var startCircleOpt = {
+            strokeColor: '#FFFFFF',
+            fillColor: '#0000FF',
+            map: map,
+            center: start,
+            fillOpacity: 1,
+            radius: Math.min(Math.floor(points.length / 40), 6)
+        };
+
+        var endCircleOpt = {
+            strokeColor: '#FFFFFF',
+            fillColor: '#000000',
+            map: map,
+            center: end,
+            fillOpacity: 1,
+            radius: Math.min(Math.floor(points.length / 40), 6)
+        };
+
+        var startCircle,
+            endCircle;
+
+        endCircle = new google.maps.Circle(endCircleOpt);
+        startCircle = new google.maps.Circle(startCircleOpt);
+
         console.log(POINTS);
     });
-
 
 
 }
